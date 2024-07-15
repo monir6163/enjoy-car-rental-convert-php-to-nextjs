@@ -49,7 +49,13 @@ export default function Mobile() {
   return (
     <>
       {/* only mobile */}
-      <div className="absolute top-0 left-0 w-full z-50 bg-transparent md:hidden">
+      <div
+        className={`absolute top-0 left-0 w-full z-50 md:hidden ${
+          pathname === "/login" || pathname === "/register"
+            ? "bg-white shadow-md"
+            : "bg-transparent"
+        }`}
+      >
         <Container>
           <div className="flex items-center justify-between py-3">
             <div className="flex-shrink-0">
@@ -59,7 +65,11 @@ export default function Mobile() {
               <SheetTrigger>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
-                  className="h-10 w-10 text-white"
+                  className={`h-10 w-10 ${
+                    pathname === "/login" || pathname === "/register"
+                      ? "text-black"
+                      : "text-white"
+                  }`}
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
