@@ -7,13 +7,13 @@ import {
 
 export default function Language() {
   return (
-    <div>
+    <div className="text-center">
       <DropdownMenu>
-        <DropdownMenuTrigger className="text-lg font-medium text-gray-600 cursor-pointer">
+        <DropdownMenuTrigger className="text-lg font-medium text-white md:text-gray-600 cursor-pointer">
           En
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white ">
-          <DropdownMenuItem className="text-lg font-medium text-gray-600 cursor-pointer">
+          <DropdownMenuItem className="text-lg font-medium text-white md:text-gray-600  cursor-pointer">
             Me
           </DropdownMenuItem>
         </DropdownMenuContent>

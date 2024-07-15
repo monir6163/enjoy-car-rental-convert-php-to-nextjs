@@ -23,7 +23,7 @@ export default function RootLayout({
         className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
       >
         <NextTopLoader />
-        {children}
+        <main>{children}</main>
       </body>
     </html>
   );

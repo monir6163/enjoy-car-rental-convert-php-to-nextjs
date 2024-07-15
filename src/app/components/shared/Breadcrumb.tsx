@@ -6,10 +6,10 @@ import Container from "../shared/Container";
 
 const Breadcrumb = ({ label }: { label: string }) => {
   const pathname = usePathname();
-  const pathSegments = pathname.split("/").filter((segment) => segment !== ""); // ['about']
+  const pathSegments = pathname.split("/").filter((segment) => segment !== "");
 
   return (
-    <div className="relative w-full h-[280px] mt-[90px]">
+    <section className="relative w-full h-[280px] md:mt-[90px]">
       <div className="absolute inset-0 bg-[url('/images/headerbg.jpg')] bg-cover bg-center bg-no-repeat"></div>
       <div className="absolute inset-0 bg-primary opacity-80 flex justify-center items-center">
         <Container>
@@ -33,7 +33,7 @@ const Breadcrumb = ({ label }: { label: string }) => {
                   <Link
                     key={index}
                     href={`/${pathSegments.slice(0, index + 1).join("/")}`}
-                    className=" text-gray-200 hover:text-gray-500 text-xl capitalize"
+                    className="text-gray-200 hover:text-gray-500 text-xl capitalize"
                   >
                     {segment}
                   </Link>
@@ -43,7 +43,7 @@ const Breadcrumb = ({ label }: { label: string }) => {
           </div>
         </Container>
       </div>
-    </div>
+    </section>
   );
 };
 

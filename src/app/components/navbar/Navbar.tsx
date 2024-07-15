@@ -2,10 +2,12 @@
 import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
 import Logo from "../shared/Logo";
 import NavItem from "./NavItem";
+
 const navItems = [
   { name: "Home", path: "/", current: false },
   { name: "Renter a Car", path: "/renter-car", current: false },
@@ -48,7 +50,7 @@ export default function Navbar() {
                   </span>
                 </Link>
               </div>
-              <div className="ml-10 flex items-baseline space-x-4">
+              <div className="flex items-baseline space-x-4">
                 {navItems.map((item) => (
                   <NavItem
                     key={item.name}
@@ -58,24 +60,13 @@ export default function Navbar() {
                   />
                 ))}
                 <Language />
-                {/* <AuthButton />
-              <DashboardButton /> */}
+                <AuthButton />
+                {/*<DashboardButton /> */}
               </div>
             </div>
           </div>
         </Container>
       </nav>
-
-      {/* only mobile */}
-      <div className="md:hidden fixed w-full h-[90px] bg-transparent">
-        <Container>
-          <div className="flex relative items-center justify-between py-3">
-            <div className="flex-shrink-0">
-              <Logo />
-            </div>
-          </div>
-        </Container>
-      </div>
     </>
   );
 }

@@ -7,7 +7,7 @@ const AuthButton = () => {
   const isLogin = false;
 
   return (
-    <div>
+    <div className="text-center">
       {isLogin ? (
         <button
           className={` bg-red-500 hover:bg-red-600 transition duration-100 ease-in-out rounded text-white  px-3 py-2 text-lg font-medium cursor-pointer  `}
