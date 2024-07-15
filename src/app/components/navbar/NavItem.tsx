@@ -4,6 +4,7 @@ interface NavItemProps {
   label: string;
   active?: boolean;
   path: string;
+  onClick?: () => void;
 }
 const NavItem = ({ path, label, active }: NavItemProps) => {
   return (

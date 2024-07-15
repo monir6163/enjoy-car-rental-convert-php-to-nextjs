@@ -12,8 +12,8 @@ export default function Language() {
         <DropdownMenuTrigger className="text-lg font-medium text-white md:text-gray-600 cursor-pointer">
           En
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="bg-white ">
-          <DropdownMenuItem className="text-lg font-medium text-white md:text-gray-600  cursor-pointer">
+        <DropdownMenuContent className="bg-white">
+          <DropdownMenuItem className="text-lg font-medium text-gray-600  cursor-pointer">
             Me
           </DropdownMenuItem>
         </DropdownMenuContent>

@@ -7,13 +7,19 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState } from "react";
 import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
 import Logo from "../shared/Logo";
-import NavItem from "./NavItem";
-
+interface NavItemProps {
+  label: string;
+  active?: boolean;
+  path: string;
+  onClick?: () => void;
+}
 const navItems = [
   { name: "Home", path: "/", current: false },
   { name: "Renter a Car", path: "/renter-car", current: false },
@@ -24,7 +30,21 @@ const navItems = [
 ];
 export default function Mobile() {
   const pathname = usePathname();
-  // when i click about, close the menu and navigate to about
+  const [isOpen, setIsOpen] = useState(false);
+
+  const NavItem = ({ path, label, active, onClick }: NavItemProps) => {
+    return (
+      <Link
+        href={`${path}`}
+        onClick={onClick}
+        className={`text-gray-600 text-center hover:text-green-500 px-3 py-2 rounded-md text-lg font-medium cursor-pointer border-b-2 md:border-b-0 ${
+          active ? "text-green-500" : "text-white md:text-gray-600"
+        }`}
+      >
+        {label}
+      </Link>
+    );
+  };
 
   return (
     <>
@@ -35,7 +55,7 @@ export default function Mobile() {
             <div className="flex-shrink-0">
               <Logo />
             </div>
-            <Sheet>
+            <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -68,6 +88,7 @@ export default function Mobile() {
                       path={item.path}
                       label={item.name}
                       active={pathname === item.path}
+                      onClick={() => setIsOpen(false)}
                     />
                   ))}
                   <Language />
