@@ -1,9 +1,9 @@
-import Breadcrumb from "../components/shared/Breadcrumb";
+import HeroSection from "../components/home/HeroSection";
 
 export default function Home() {
   return (
-    <div>
-      <Breadcrumb label="Home" />
-    </div>
+    <>
+      <HeroSection />
+    </>
   );
 }
