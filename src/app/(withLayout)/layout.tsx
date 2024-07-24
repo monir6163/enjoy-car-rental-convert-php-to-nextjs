@@ -1,7 +1,6 @@
 import Footer from "../components/footer/Footer";
 import Mobile from "../components/navbar/Mobile";
 import Navbar from "../components/navbar/Navbar";
-import ClientOnly from "../components/shared/ClientOnly";
 import "../globals.css";
 
 export default function commonLayout({
@@ -11,9 +10,7 @@ export default function commonLayout({
 }) {
   return (
     <>
-      <ClientOnly>
-        <Navbar />
-      </ClientOnly>
+      <Navbar />
       <Mobile />
       {children}
       <Footer />
