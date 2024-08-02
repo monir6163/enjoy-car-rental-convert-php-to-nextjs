@@ -34,19 +34,19 @@ export default function Navbar() {
                 <Link href="/" className="flex items-center space-x-2">
                   <MapPin size={24} className="text-red-500" />{" "}
                   <span className="text-white font-medium text-base">
-                    Šuranj bb., 85330 Kotor, Montenegro
+                    Fieldcrest Rd 660 Avery Creek, NY 10301, USA
                   </span>
                 </Link>
                 <Link href="/" className="flex items-center space-x-2">
                   <Mail size={24} className="text-red-500" />{" "}
                   <span className="text-white font-medium text-base">
-                    info@enjoyrentacar.me
+                    info@googamania.com
                   </span>
                 </Link>
                 <Link href="/" className="flex items-center space-x-2">
                   <PhoneCall size={24} className="text-red-500" />{" "}
                   <span className="text-white font-medium text-base">
-                    +382 69 576 000
+                    (646) 893-6694
                   </span>
                 </Link>
               </div>
