@@ -18,7 +18,14 @@ nav::before {
   right: 0;
 }
 
-.background-image::before {
+.indexTop .background_Image {
+  background-image: url(../../public/images/home-bg.jpg);
+  width: 100%;
+  padding-bottom: 40px;
+  margin-bottom: 70px;
+}
+
+.indexTop .background_Image::before {
   content: "";
   background-size: cover;
   background-color: black;
@@ -29,5 +36,80 @@ nav::before {
   background-repeat: no-repeat;
   top: 0;
   right: 0;
-  opacity: 0.7;
+  opacity: 0.6;
+}
+
+.indexTop .background_Image .max_width {
+  display: grid;
+  grid-template-columns: 55% 45%;
+  gap: 30px;
+}
+
+.indexTop .background_Image .indexTop_Left {
+  color: white;
+}
+
+.indexTop .background_Image .indexTop_Right {
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.indexTop .background_Image .indexTop_Right .carReservation {
+  width: 100%;
+  max-width: 420px;
+  height: fit-content;
+  padding: 25px 20px;
+  background-color: white;
+  border-radius: 25px;
+}
+
+.indexTop .background_Image .indexTop_Right form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 10px;
+  row-gap: 15px;
+}
+.indexTop .background_Image .indexTop_Right form select {
+  padding: 10px;
+  border-radius: 10px;
+  grid-column: span 2;
+  border: 1px solid #e6e6e6;
+  background-color: transparent;
+}
+.indexTop .background_Image .indexTop_Right form .buttons {
+  grid-column: span 2;
+  margin-top: 10px;
+  display: flex;
+}
+.indexTop .background_Image .indexTop_Right form button {
+  width: 100%;
+  padding: 10px;
+  background: linear-gradient(317deg, #c80b0b 40%, #840f0f 100%);
+  color: white;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+/* carosul css */
+.react-multi-carousel-dot--active button {
+  background: #cc0505 !important;
+}
+.react-multi-carousel-dot-list {
+  justify-content: left !important;
+}
+
+.red_btn {
+  background: linear-gradient(317deg, #c80b0b 40%, #840f0f 100%);
+}
+
+@media screen and (max-width: 768px) {
+  .indexTop .background_Image .max_width {
+    grid-template-columns: 100%;
+  }
+  .react-multi-carousel-dot-list {
+    justify-content: center !important;
+  }
 }
