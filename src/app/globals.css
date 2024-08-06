@@ -105,6 +105,17 @@ nav::before {
   background: linear-gradient(317deg, #c80b0b 40%, #840f0f 100%);
 }
 
+/* slick sider */
+
+.slick-prev:before,
+.slick-next:before {
+  color: #cc0505 !important;
+}
+
+.slick-dots li.slick-active button:before {
+  color: #cc0505 !important;
+}
+
 @media screen and (max-width: 768px) {
   .indexTop .background_Image .max_width {
     grid-template-columns: 100%;
