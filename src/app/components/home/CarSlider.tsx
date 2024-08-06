@@ -59,7 +59,7 @@ const CarSlider = () => {
               Book now
             </Button>
             <Button className="bg-transparent text-xl text-white py-2 px-4 border border-white rounded ml-2">
-              From £{car.price} /day
+              From € {car.price} /day
             </Button>
           </div>
         </div>
