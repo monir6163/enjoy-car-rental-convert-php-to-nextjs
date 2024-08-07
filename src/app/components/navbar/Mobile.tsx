@@ -21,7 +21,7 @@ interface NavItemProps {
   onClick?: () => void;
 }
 const navItems = [
-  { name: "Home", path: "/", current: false },
+  // { name: "Home", path: "/", current: false },
   { name: "Renter a Car", path: "/renter-car", current: false },
   { name: "About", path: "/about", current: false },
   { name: "Other Services", path: "/other-services", current: false },
@@ -37,8 +37,8 @@ export default function Mobile() {
       <Link
         href={`${path}`}
         onClick={onClick}
-        className={`text-gray-600 text-center hover:text-green-500 px-3 py-2 rounded-md text-lg font-medium cursor-pointer border-b-2 md:border-b-0 ${
-          active ? "text-green-500" : "text-white md:text-gray-600"
+        className={`text-gray-600 text-center hover:text-red-600 px-3 py-2 rounded-md text-lg font-medium cursor-pointer border-b-2 md:border-b-0 ${
+          active ? "red_color" : "text-white md:text-gray-600"
         }`}
       >
         {label}
@@ -92,6 +92,11 @@ export default function Mobile() {
                   <SheetDescription></SheetDescription>
                 </SheetHeader>
                 <div className="flex flex-col gap-2">
+                  <NavItem
+                    path="/"
+                    label="Home"
+                    onClick={() => setIsOpen(false)}
+                  />
                   {navItems.map((item) => (
                     <NavItem
                       key={item.name}

@@ -78,12 +78,20 @@ nav::before {
   border: 1px solid #e6e6e6;
   background-color: transparent;
 }
+
+.indexTop .background_Image .indexTop_Right form input {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid #e6e6e6;
+  background-color: transparent;
+  font-weight: 500;
+}
 .indexTop .background_Image .indexTop_Right form .buttons {
   grid-column: span 2;
   margin-top: 10px;
   display: flex;
 }
-.indexTop .background_Image .indexTop_Right form button {
+.indexTop .background_Image .indexTop_Right form .btn {
   width: 100%;
   padding: 10px;
   background: linear-gradient(317deg, #c80b0b 40%, #840f0f 100%);
@@ -91,6 +99,18 @@ nav::before {
   border: none;
   border-radius: 10px;
   cursor: pointer;
+}
+
+.pick-input-date {
+  background: url("../../public/images/calendar-black.png") no-repeat 95% 50%;
+  background-size: 20px 20px;
+}
+.pick-input-time {
+  background: url("../../public/images/clock-black.png") no-repeat 95% 50%;
+  background-size: 20px 20px;
+}
+.react-datepicker__close-icon {
+  right: 30px !important;
 }
 
 /* carosul css */
@@ -164,5 +184,11 @@ nav::before {
   }
   .react-multi-carousel-dot-list {
     justify-content: center !important;
+  }
+  .react-datepicker__close-icon {
+    right: 15px !important;
+  }
+  .react-datepicker-popper {
+    left: 30px !important;
   }
 }

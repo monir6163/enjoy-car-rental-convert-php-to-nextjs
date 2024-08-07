@@ -9,7 +9,7 @@ import Logo from "../shared/Logo";
 import NavItem from "./NavItem";
 
 const navItems = [
-  { name: "Home", path: "/", current: false },
+  // { name: "Home", path: "/", current: false },
   { name: "Renter a Car", path: "/renter-car", current: false },
   { name: "About", path: "/about", current: false },
   { name: "Other Services", path: "/other-services", current: false },
@@ -51,6 +51,7 @@ export default function Navbar() {
                 </Link>
               </div>
               <div className="flex items-baseline space-x-4">
+                <NavItem path="/" label="Home" />
                 {navItems.map((item) => (
                   <NavItem
                     key={item.name}

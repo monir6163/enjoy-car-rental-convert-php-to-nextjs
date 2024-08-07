@@ -17,7 +17,7 @@ const AuthButton = () => {
       ) : (
         <Link
           href="/login"
-          className={` bg-green-500 hover:bg-green-600 transition duration-100 ease-in-out rounded text-white  px-3 py-2 text-lg font-medium cursor-pointer  `}
+          className={` red_btn hover:bg-red-600 transition duration-100 ease-in-out rounded text-white  px-3 py-2 text-lg font-medium cursor-pointer  `}
         >
           Login
         </Link>
