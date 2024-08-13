@@ -4,6 +4,7 @@ import FormWrapper from "@/app/components/form/FormWrapper";
 import Container from "@/app/components/shared/Container";
 import { loginZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
@@ -12,19 +13,14 @@ export default function Login() {
   const router = useRouter();
   const handleLogin = async (payload: FieldValues) => {
     try {
-      const res = await fetch(
+      const response = await axios.post(
         "https://medicine-e-commerce-backend.vercel.app/api/v1/users/login",
+        payload,
         {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-          credentials: "include",
+          withCredentials: true,
         }
       );
-      const data = await res.json();
-      console.log(data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
