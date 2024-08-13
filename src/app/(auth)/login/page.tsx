@@ -5,10 +5,30 @@ import Container from "@/app/components/shared/Container";
 import { loginZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 
 export default function Login() {
-  const handleLogin = async (payload: FieldValues) => {};
+  const router = useRouter();
+  const handleLogin = async (payload: FieldValues) => {
+    try {
+      const res = await fetch(
+        "https://medicine-e-commerce-backend.vercel.app/api/v1/users/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(payload),
+          credentials: "include",
+        }
+      );
+      const data = await res.json();
+      console.log(data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <div className="py-32  lg:px-10  min-h-[calc(100vh-90px)]">
       <Container>

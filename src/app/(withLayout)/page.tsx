@@ -1,24 +1,22 @@
+import axiosInstance from "@/lib/axiosApi/axiosInstance";
 import AboutUs from "../components/home/AboutUs";
 import CarSection from "../components/home/CarSection";
 import HeroSection from "../components/home/HeroSection";
-import DataTransfer from "../components/shared/DataTransfer";
+
+const fecthData = async () => {
+  try {
+    const response = await axiosInstance.get("/api/cars");
+    console.log(response.data);
+    return response.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
 
 export default function Home() {
-  const products = [
-    {
-      id: 1,
-      name: "Product 1",
-      price: 100,
-    },
-    {
-      id: 2,
-      name: "Product 2",
-      price: 200,
-    },
-  ];
+  const data = fecthData();
   return (
     <>
-      <DataTransfer data={products} />
       <HeroSection />
       <CarSection />
       <AboutUs />

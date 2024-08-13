@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import StoreProvider from "./StoreProvider";
 
 export const metadata: Metadata = {
   title: "Car Rental App",
@@ -24,9 +23,7 @@ export default function RootLayout({
         className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
       >
         <NextTopLoader />
-        <StoreProvider>
-          <main>{children}</main>
-        </StoreProvider>
+        <main>{children}</main>
       </body>
     </html>
   );

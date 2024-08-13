@@ -14,7 +14,8 @@ export const loginZodSchema = z.object({
   password: z
     .string()
     .min(1, "Password is required")
-    .min(6, "Password must be at least 6 characters"),
+    .min(6, "Password must be at least 6 characters")
+    .max(10, "Password must be at most 10 characters"),
 });
 
 export const carSliderData = [
