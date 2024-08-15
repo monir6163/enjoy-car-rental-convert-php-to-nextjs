@@ -5,7 +5,7 @@ const base_URL =
     ? "https://enjoycarrental.vercel.app"
     : "http://localhost:3000";
 const axiosInstance = axios.create({
-  baseURL: base_URL,
+  baseURL: "https://enjoycarrental.vercel.app",
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -29,7 +29,7 @@ axiosInstance.interceptors.response.use(
         const cookie = await getCookie();
         // console.log("token nai", cookie?.refreshToken?.value);
         const res = await axiosInstance.get(
-          `${base_URL}/api/auth/refresh-token`,
+          "https://enjoycarrental.vercel.app/api/auth/refresh-token",
           {
             withCredentials: true,
           }

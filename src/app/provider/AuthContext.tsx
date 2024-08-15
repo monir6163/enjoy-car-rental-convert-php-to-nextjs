@@ -35,10 +35,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setUser(data);
       } catch (error: any) {
         if (error.response?.status === 401) {
-          // Handle token expiration logic
-          console.log("Access token expired. Attempting to refresh...");
+          setUser(null);
         } else {
-          console.log("Request error: AuthContext");
+          console.log("Request error in checkUser");
         }
       }
     };
