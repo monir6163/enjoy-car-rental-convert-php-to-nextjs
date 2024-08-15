@@ -1,11 +1,11 @@
 import axios from "axios";
 import { getCookie } from "./getCookies";
-
+const base_URL =
+  process.env.NODE_ENV === "production"
+    ? "https://enjoycarrental.vercel.app"
+    : "http://localhost:3000";
 const axiosInstance = axios.create({
-  baseURL:
-    process.env.NODE_ENV === "production"
-      ? "https://enjoycarrental.vercel.app"
-      : "http://localhost:3000",
+  baseURL: base_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
@@ -29,12 +29,12 @@ axiosInstance.interceptors.response.use(
         const cookie = await getCookie();
         // console.log("token nai", cookie?.refreshToken?.value);
         const res = await axiosInstance.get(
-          "http://localhost:3000/api/auth/refresh-token",
+          `${base_URL}/api/auth/refresh-token`,
           {
             withCredentials: true,
           }
         );
-        // console.log("Refresh token new", res.data);
+        console.log("Refresh token new");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.log("Refresh token error");
