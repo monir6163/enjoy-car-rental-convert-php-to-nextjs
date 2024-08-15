@@ -1,9 +1,15 @@
-import { useAuth } from "@/app/provider/AuthContext";
 import axios from "axios";
+import { getCookie } from "./getCookies";
 
 const axiosInstance = axios.create({
-  baseURL: "https://enjoycarrental.vercel.app",
-  withCredentials: true, // This ensures cookies are sent with requests
+  baseURL:
+    process.env.NODE_ENV === "production"
+      ? "https://enjoycarrental.vercel.app"
+      : "http://localhost:3000",
+  withCredentials: true,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });
 
 axiosInstance.interceptors.response.use(
@@ -11,22 +17,27 @@ axiosInstance.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (
+      error.response.data.status === 401 &&
+      error.response.data.message === "Unauthorized Token" &&
+      !originalRequest._retry
+    ) {
       originalRequest._retry = true;
 
       try {
-        const response = await axiosInstance.post("/api/auth/refresh-token");
-        const accessToken = response.data.accessToken;
-
-        axiosInstance.defaults.headers.common[
-          "Authorization"
-        ] = `Bearer ${accessToken}`;
-        originalRequest.headers["Authorization"] = `Bearer ${accessToken}`;
-
+        console.log("Attempting to refresh token...");
+        const cookie = await getCookie();
+        // console.log("token nai", cookie?.refreshToken?.value);
+        const res = await axiosInstance.get(
+          "http://localhost:3000/api/auth/refresh-token",
+          {
+            withCredentials: true,
+          }
+        );
+        // console.log("Refresh token new", res.data);
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        const { logout } = useAuth() as any;
-        if (logout) logout(); // Log out if refresh fails
+        console.log("Refresh token error");
         return Promise.reject(refreshError);
       }
     }

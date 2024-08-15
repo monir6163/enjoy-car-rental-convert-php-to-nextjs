@@ -1,6 +1,7 @@
 "use client";
 
 import axiosInstance from "@/lib/axiosInstance";
+import { baseUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -30,15 +31,21 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     const checkUser = async () => {
       try {
-        const { data } = await axiosInstance.get("/api/auth/profile");
+        const { data } = await axiosInstance.get(`${baseUrl}/users/profile`);
         setUser(data);
-      } catch (error) {
-        console.error(error);
+      } catch (error: any) {
+        if (error.response?.status === 401) {
+          // Handle token expiration logic
+          console.log("Access token expired. Attempting to refresh...");
+        } else {
+          console.log("Request error: AuthContext");
+        }
       }
     };
 
     checkUser();
   }, []);
+  console.log("User", user);
   const login = async (email: string, password: string) => {
     try {
       const { data } = await axiosInstance.post("/api/auth/login", {
@@ -46,7 +53,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
-      router.push("/");
+      window.location.href = "/";
     } catch (error) {
       console.error(error);
       throw error;
