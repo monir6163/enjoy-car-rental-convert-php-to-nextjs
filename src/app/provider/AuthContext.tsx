@@ -52,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
-      window.location.href = "/";
+      router.replace("/");
     } catch (error) {
       console.error(error);
       throw error;
