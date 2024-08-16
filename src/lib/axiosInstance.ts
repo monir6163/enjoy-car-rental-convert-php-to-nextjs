@@ -1,16 +1,42 @@
 import axios from "axios";
 import { getCookie } from "./getCookies";
-const base_URL =
-  process.env.NODE_ENV === "production"
-    ? "https://enjoycarrental.vercel.app"
-    : "http://localhost:3000";
+import { baseUrl } from "./utils";
+
+const serverCookie = async () => {
+  const cookie = await getCookie();
+  const accessToken = cookie?.accessToken?.value;
+  const refreshToken = cookie?.refreshToken?.value;
+  return { accessToken, refreshToken };
+};
 const axiosInstance = axios.create({
-  baseURL: "https://enjoycarrental.vercel.app",
+  baseURL: baseUrl,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",
   },
 });
+
+// Add a request interceptor
+axiosInstance.interceptors.request.use(
+  async (config) => {
+    // Get the cookies
+    const { accessToken, refreshToken } = await serverCookie();
+
+    // Add cookies to the headers
+    if (accessToken) {
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
+    }
+    if (refreshToken) {
+      config.headers["x-refresh-token"] = refreshToken;
+    }
+
+    return config;
+  },
+  (error) => {
+    // Handle the error
+    return Promise.reject(error);
+  }
+);
 
 axiosInstance.interceptors.response.use(
   (response) => response,
@@ -26,14 +52,8 @@ axiosInstance.interceptors.response.use(
 
       try {
         console.log("Attempting to refresh token...");
-        const cookie = await getCookie();
         // console.log("token nai", cookie?.refreshToken?.value);
-        const res = await axiosInstance.get(
-          "https://enjoycarrental.vercel.app/api/auth/refresh-token",
-          {
-            withCredentials: true,
-          }
-        );
+        const res = await axiosInstance.post(`${baseUrl}/users/refresh-token`);
         console.log("Refresh token new");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
