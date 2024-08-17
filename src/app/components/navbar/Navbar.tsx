@@ -1,6 +1,5 @@
 "use client";
 import { useAuth } from "@/app/provider/AuthContext";
-import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -29,14 +28,18 @@ const navItems = [
 ];
 export default function Navbar() {
   const [loading, setLoading] = useState(true);
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
   const pathname = usePathname();
-
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 1000);
   }, []);
+
+  const handleLogout = async () => {
+    await logout();
+  };
+
   return (
     <>
       {/* only desktop */}
@@ -108,10 +111,13 @@ export default function Navbar() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent className="bg-white">
                             <DropdownMenuItem className="text-lg font-medium text-gray-600  cursor-pointer">
-                              <Link href="/profile">Profile</Link>
+                              Profile
                             </DropdownMenuItem>
-                            <DropdownMenuItem className="text-lg font-medium text-gray-600  cursor-pointer">
-                              <Button>Logout</Button>
+                            <DropdownMenuItem
+                              onClick={handleLogout}
+                              className="text-lg font-medium text-gray-600  cursor-pointer"
+                            >
+                              Logout
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

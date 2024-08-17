@@ -20,7 +20,7 @@ interface AuthContextType {
   //   email: string,
   //   password: string
   // ) => Promise<void>;
-  // logout: () => Promise<void>;
+  logout: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -78,17 +78,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   //   }
   // };
 
-  // const logout = async () => {
-  //   try {
-  //     await axiosInstance.post("/api/auth/logout");
-  //     setUser(null);
-  //     router.push("/");
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
+  const logout = async () => {
+    try {
+      await axiosInstance.post(`${baseUrl}/users/logout`);
+      setUser(null);
+      router.push("/");
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
-  const value = { user, login };
+  const value = { user, login, logout };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
