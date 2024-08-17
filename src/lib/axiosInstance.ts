@@ -21,7 +21,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     // Get the cookies
-    const { accessToken, refreshToken } = await serverCookie();
+    const { accessToken, refreshToken, csrfToken } = await serverCookie();
+    console.log("csrf token", csrfToken);
 
     // Add cookies to the headers
     if (accessToken) {
@@ -35,11 +36,10 @@ axiosInstance.interceptors.request.use(
     if (
       config.method === "post" ||
       config.method === "put" ||
+      config.method === "patch" ||
       config.method === "delete"
     ) {
-      config.headers["x-csrf-token"] = await serverCookie().then((cookie) => {
-        return cookie.csrfToken;
-      });
+      config.headers["x-csrf-token"] = csrfToken;
     }
 
     return config;
