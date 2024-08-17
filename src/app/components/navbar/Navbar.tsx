@@ -26,10 +26,11 @@ export default function Navbar() {
   const pathname = usePathname();
 
   useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 2000);
-  }, []);
+    user &&
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+  }, [user]);
   return (
     <>
       {/* only desktop */}

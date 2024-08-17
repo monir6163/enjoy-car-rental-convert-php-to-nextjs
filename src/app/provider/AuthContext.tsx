@@ -52,7 +52,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
-      router.refresh();
       router.push("/");
     } catch (error) {
       console.error(error);
