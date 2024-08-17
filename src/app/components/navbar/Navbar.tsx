@@ -28,7 +28,7 @@ export default function Navbar() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 2000);
+    }, 1000);
   }, []);
   return (
     <>
@@ -79,6 +79,7 @@ export default function Navbar() {
                   <>
                     {user?.data ? (
                       <div className="space-x-4 border border-red-600 rounded-full">
+                        {user === null && <ProfileSkeleton />}
                         <Image
                           src={user?.data?.avatar?.url}
                           alt={user?.data?.role}
