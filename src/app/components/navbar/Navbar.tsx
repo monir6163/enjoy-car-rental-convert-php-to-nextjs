@@ -84,7 +84,9 @@ export default function Navbar() {
                         ) : (
                           <Image
                             src={
-                              user?.data?.avatar?.url || "/images/avatar.jpg"
+                              user?.data?.avatar
+                                ? user?.data?.avatar?.url
+                                : "/images/demo.jpg"
                             }
                             alt={user?.data?.role}
                             width={40}
