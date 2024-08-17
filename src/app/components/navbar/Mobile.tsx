@@ -1,4 +1,11 @@
 "use client";
+import { useAuth } from "@/app/provider/AuthContext";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import {
   Sheet,
   SheetContent,
@@ -7,9 +14,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
+import ProfileSkeleton from "@/lib/skeleton/ProfileSkeleton";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
@@ -29,7 +38,18 @@ const navItems = [
   { name: "Contact", path: "/contact", current: false },
 ];
 export default function Mobile() {
+  const [loading, setLoading] = useState(true);
+  const { user, logout } = useAuth();
   const pathname = usePathname();
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
+
+  const handleLogout = async () => {
+    await logout();
+  };
   const [isOpen, setIsOpen] = useState(false);
 
   const NavItem = ({ path, label, active, onClick }: NavItemProps) => {
@@ -107,7 +127,50 @@ export default function Mobile() {
                     />
                   ))}
                   <Language />
-                  <AuthButton />
+                  {loading ? (
+                    <ProfileSkeleton />
+                  ) : (
+                    <>
+                      {user?.data ? (
+                        <div className="text-center">
+                          <DropdownMenu>
+                            <DropdownMenuTrigger className="text-lg font-medium text-white md:text-gray-600 cursor-pointer">
+                              <div className="space-x-4 border border-red-600 rounded-full">
+                                {user === null ? (
+                                  <ProfileSkeleton />
+                                ) : (
+                                  <Image
+                                    src={
+                                      user?.data?.avatar
+                                        ? user?.data?.avatar?.url
+                                        : "/images/demo.jpg"
+                                    }
+                                    alt={user?.data?.role}
+                                    width={40}
+                                    height={40}
+                                    className="rounded-full"
+                                  />
+                                )}
+                              </div>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent className="bg-white">
+                              <DropdownMenuItem className="text-lg font-medium text-gray-600  cursor-pointer">
+                                Profile
+                              </DropdownMenuItem>
+                              <DropdownMenuItem
+                                onClick={handleLogout}
+                                className="text-lg font-medium text-gray-600  cursor-pointer"
+                              >
+                                Logout
+                              </DropdownMenuItem>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      ) : (
+                        <AuthButton />
+                      )}
+                    </>
+                  )}
                   {/*<DashboardButton /> */}
                 </div>
               </SheetContent>
