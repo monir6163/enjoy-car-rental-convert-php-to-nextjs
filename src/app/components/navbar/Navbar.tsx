@@ -79,14 +79,19 @@ export default function Navbar() {
                   <>
                     {user?.data ? (
                       <div className="space-x-4 border border-red-600 rounded-full">
-                        {user === null && <ProfileSkeleton />}
-                        <Image
-                          src={user?.data?.avatar?.url}
-                          alt={user?.data?.role}
-                          width={40}
-                          height={40}
-                          className="rounded-full"
-                        />
+                        {user === null ? (
+                          <ProfileSkeleton />
+                        ) : (
+                          <Image
+                            src={
+                              user?.data?.avatar?.url || "/images/avatar.jpg"
+                            }
+                            alt={user?.data?.role}
+                            width={40}
+                            height={40}
+                            className="rounded-full"
+                          />
+                        )}
                       </div>
                     ) : (
                       <AuthButton />
