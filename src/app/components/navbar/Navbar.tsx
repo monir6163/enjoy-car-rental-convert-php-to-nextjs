@@ -5,6 +5,7 @@ import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
@@ -20,8 +21,15 @@ const navItems = [
   { name: "Contact", path: "/contact", current: false },
 ];
 export default function Navbar() {
+  const [loading, setLoading] = useState(true);
   const { user } = useAuth();
   const pathname = usePathname();
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
+  }, []);
   return (
     <>
       {/* only desktop */}
@@ -65,7 +73,7 @@ export default function Navbar() {
                   />
                 ))}
                 <Language />
-                {user === null ? (
+                {loading ? (
                   <ProfileSkeleton />
                 ) : (
                   <>
