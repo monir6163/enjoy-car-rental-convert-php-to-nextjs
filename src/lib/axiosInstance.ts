@@ -2,7 +2,13 @@ import axios from "axios";
 import { getCookie } from "./getCookies";
 import { baseUrl } from "./utils";
 
-// Create an axios instance
+const serverCookie = async () => {
+  const cookie = await getCookie();
+  const accessToken = cookie?.accessToken?.value;
+  const refreshToken = cookie?.refreshToken?.value;
+  const csrfToken = cookie?.csrfToken?.value;
+  return { accessToken, refreshToken, csrfToken };
+};
 const axiosInstance = axios.create({
   baseURL: baseUrl,
   withCredentials: true,
@@ -15,20 +21,25 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     // Get the cookies
-    const { accessToken, refreshToken, csrfToken } = await getCookie();
-    console.log("CSRF Token: ", csrfToken?.value);
+    const { accessToken, refreshToken } = await serverCookie();
 
     // Add cookies to the headers
     if (accessToken) {
-      config.headers["Authorization"] = `Bearer ${accessToken?.value}`;
+      config.headers["Authorization"] = `Bearer ${accessToken}`;
     }
     if (refreshToken) {
-      config.headers["x-refresh-token"] = refreshToken?.value;
+      config.headers["x-refresh-token"] = refreshToken;
     }
 
-    // add csrf token to the headers
-    if (csrfToken) {
-      config.headers["x-csrf-token"] = csrfToken?.value;
+    // Add csrf token to the headers
+    if (
+      config.method === "post" ||
+      config.method === "put" ||
+      config.method === "delete"
+    ) {
+      config.headers["x-csrf-token"] = await serverCookie().then((cookie) => {
+        return cookie.csrfToken;
+      });
     }
 
     return config;
