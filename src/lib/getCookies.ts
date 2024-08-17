@@ -5,5 +5,6 @@ export const getCookie = () => {
   const cookieStore = cookies();
   const accessToken = cookieStore.get("accessToken");
   const refreshToken = cookieStore.get("refreshToken");
-  return { accessToken, refreshToken };
+  const csrfToken = cookieStore.get("csrfToken");
+  return { accessToken, refreshToken, csrfToken };
 };
