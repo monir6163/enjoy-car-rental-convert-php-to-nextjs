@@ -25,12 +25,19 @@ export default function Navbar() {
   const { user } = useAuth();
   const pathname = usePathname();
 
+  // user call again
+
   useEffect(() => {
-    user &&
-      setTimeout(() => {
-        setLoading(false);
-      }, 1000);
+    if (user?.data) {
+      setLoading(false);
+    }
   }, [user]);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1000);
+  }, []);
   return (
     <>
       {/* only desktop */}
