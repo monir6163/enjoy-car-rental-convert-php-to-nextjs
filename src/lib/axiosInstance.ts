@@ -22,7 +22,6 @@ axiosInstance.interceptors.request.use(
   async (config) => {
     // Get the cookies
     const { accessToken, refreshToken, csrfToken } = await serverCookie();
-    console.log("csrf token", csrfToken);
 
     // Add cookies to the headers
     if (accessToken) {

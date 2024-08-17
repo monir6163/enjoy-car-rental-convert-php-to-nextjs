@@ -1,5 +1,8 @@
 "use client";
+import { useAuth } from "@/app/provider/AuthContext";
+import ProfileSkeleton from "@/lib/skeleton/ProfileSkeleton";
 import { Mail, MapPin, PhoneCall } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import AuthButton from "../shared/AuthButton";
@@ -17,6 +20,7 @@ const navItems = [
   { name: "Contact", path: "/contact", current: false },
 ];
 export default function Navbar() {
+  const { user } = useAuth();
   const pathname = usePathname();
   return (
     <>
@@ -50,7 +54,7 @@ export default function Navbar() {
                   </span>
                 </Link>
               </div>
-              <div className="flex items-baseline space-x-4">
+              <div className="flex items-center space-x-4">
                 <NavItem path="/" label="Home" />
                 {navItems.map((item) => (
                   <NavItem
@@ -61,7 +65,26 @@ export default function Navbar() {
                   />
                 ))}
                 <Language />
-                <AuthButton />
+                {user === null ? (
+                  <ProfileSkeleton />
+                ) : (
+                  <>
+                    {user?.data ? (
+                      <div className="space-x-4 border border-red-600 rounded-full">
+                        <Image
+                          src={user?.data?.avatar?.url}
+                          alt={user?.data?.role}
+                          width={40}
+                          height={40}
+                          className="rounded-full"
+                        />
+                      </div>
+                    ) : (
+                      <AuthButton />
+                    )}
+                  </>
+                )}
+
                 {/*<DashboardButton /> */}
               </div>
             </div>

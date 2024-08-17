@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
 interface User {
+  [x: string]: any;
   _id: string;
   username: string;
   email: string;
@@ -44,7 +45,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     checkUser();
   }, []);
-  console.log("User", user);
   const login = async (email: string, password: string) => {
     try {
       const { data } = await axiosInstance.post(`${baseUrl}/users/login`, {
