@@ -28,21 +28,19 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
-
-  useEffect(() => {
-    const checkUser = async () => {
-      try {
-        const { data } = await axiosInstance.get(`${baseUrl}/users/profile`);
-        setUser(data);
-      } catch (error: any) {
-        if (error.response?.status === 401) {
-          setUser(null);
-        } else {
-          console.log("Request error in checkUser");
-        }
+  const checkUser = async () => {
+    try {
+      const { data } = await axiosInstance.get(`${baseUrl}/users/profile`);
+      setUser(data);
+    } catch (error: any) {
+      if (error.response?.status === 401) {
+        setUser(null);
+      } else {
+        console.log("Request error in checkUser");
       }
-    };
-
+    }
+  };
+  useEffect(() => {
     checkUser();
   }, []);
   const login = async (email: string, password: string) => {
@@ -52,6 +50,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
+      // call checkUser to get the user data
+      checkUser();
       router.push("/");
     } catch (error) {
       console.error(error);
