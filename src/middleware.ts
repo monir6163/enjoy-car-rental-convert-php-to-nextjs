@@ -6,8 +6,7 @@ export async function middleware(request: NextRequest) {
 
   const isPublicPath = path === "/login" || path === "/register";
 
-  const token = request.cookies.get("token")?.value;
-  console.log("token", token);
+  const token = request.cookies.get("accessToken")?.value;
 
   if (isPublicPath && token) {
     return NextResponse.redirect(

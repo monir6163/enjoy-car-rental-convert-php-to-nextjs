@@ -12,10 +12,7 @@ export default function LoginApp() {
   const { login, user } = useAuth();
   const handleLogin = async (payload: FieldValues) => {
     try {
-      const data = await login(
-        payload.email as string,
-        payload.password as string
-      );
+      await login(payload.email as string, payload.password as string);
     } catch (error) {
       console.log(error);
     }

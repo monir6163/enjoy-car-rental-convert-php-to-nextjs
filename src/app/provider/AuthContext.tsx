@@ -2,7 +2,6 @@
 
 import axiosInstance from "@/lib/axiosInstance";
 import { baseUrl } from "@/lib/utils";
-import { setCookie } from "cookies-next";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -51,11 +50,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
-      setCookie("token", data.data.accessToken, {
-        expires: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
-        secure: true,
-        sameSite: "strict",
-      });
       // call checkUser to get the user data
       checkUser();
       router.push("/");
@@ -88,12 +82,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await axiosInstance.post(`${baseUrl}/users/logout`);
       setUser(null);
-      // remove the token cookie
-      setCookie("token", "", {
-        expires: new Date(Date.now() - 1000),
-        secure: true,
-        sameSite: "strict",
-      });
       router.push("/");
     } catch (error) {
       console.error(error);
