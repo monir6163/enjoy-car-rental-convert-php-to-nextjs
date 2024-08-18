@@ -88,6 +88,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     try {
       await axiosInstance.post(`${baseUrl}/users/logout`);
       setUser(null);
+      // remove the token cookie
+      setCookie("token", "", {
+        expires: new Date(Date.now() - 1000),
+        secure: true,
+        sameSite: "strict",
+      });
       router.push("/");
     } catch (error) {
       console.error(error);
