@@ -1,13 +1,12 @@
 import axios from "axios";
-import { getCookie } from "./getCookies";
+import { getCookie, setCookie } from "./getCookies";
 import { baseUrl } from "./utils";
 
 const serverCookie = async () => {
   const cookie = await getCookie();
   const accessToken = cookie?.accessToken?.value;
   const refreshToken = cookie?.refreshToken?.value;
-  const csrfToken = cookie?.csrfToken?.value;
-  return { accessToken, refreshToken, csrfToken };
+  return { accessToken, refreshToken };
 };
 const axiosInstance = axios.create({
   baseURL: baseUrl,
@@ -21,7 +20,7 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   async (config) => {
     // Get the cookies
-    const { accessToken, refreshToken, csrfToken } = await serverCookie();
+    const { accessToken, refreshToken } = await serverCookie();
 
     // Add cookies to the headers
     if (accessToken) {
@@ -29,16 +28,6 @@ axiosInstance.interceptors.request.use(
     }
     if (refreshToken) {
       config.headers["x-refresh-token"] = refreshToken;
-    }
-
-    // Add csrf token to the headers
-    if (
-      config.method === "post" ||
-      config.method === "put" ||
-      config.method === "patch" ||
-      config.method === "delete"
-    ) {
-      config.headers["x-csrf-token"] = csrfToken;
     }
 
     return config;
@@ -65,9 +54,11 @@ axiosInstance.interceptors.response.use(
         console.log("Attempting to refresh token...");
         // console.log("token nai", cookie?.refreshToken?.value);
         const res = await axiosInstance.post(`${baseUrl}/users/refresh-token`);
+        setCookie(res.data.data.accessToken, res.data.data.refreshToken);
         console.log("Refresh token new");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
+        console.log(refreshError);
         console.log("Refresh token error");
         return Promise.reject(refreshError);
       }
