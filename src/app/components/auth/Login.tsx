@@ -9,7 +9,7 @@ import { FieldValues } from "react-hook-form";
 import Container from "../shared/Container";
 
 export default function LoginApp() {
-  const { login } = useAuth();
+  const { login, user } = useAuth();
   const handleLogin = async (payload: FieldValues) => {
     try {
       await login(payload.email as string, payload.password as string);
