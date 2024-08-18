@@ -1,5 +1,5 @@
 import axios from "axios";
-import { getCookie, setCookie } from "./getCookies";
+import { getCookie } from "./getCookies";
 import { baseUrl } from "./utils";
 
 const serverCookie = async () => {
@@ -54,11 +54,9 @@ axiosInstance.interceptors.response.use(
         console.log("Attempting to refresh token...");
         // console.log("token nai", cookie?.refreshToken?.value);
         const res = await axiosInstance.post(`${baseUrl}/users/refresh-token`);
-        setCookie(res.data.data.accessToken, res.data.data.refreshToken);
         console.log("Refresh token new");
         return axiosInstance(originalRequest);
       } catch (refreshError) {
-        console.log(refreshError);
         console.log("Refresh token error");
         return Promise.reject(refreshError);
       }

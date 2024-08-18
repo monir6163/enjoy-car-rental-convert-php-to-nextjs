@@ -1,7 +1,6 @@
 "use client";
 
 import axiosInstance from "@/lib/axiosInstance";
-import { removeCookie, setCookie } from "@/lib/getCookies";
 import { baseUrl } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
@@ -52,7 +51,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
-      setCookie(data.data.accessToken, data.data.refreshToken);
       // call checkUser to get the user data
       checkUser();
       router.push("/");
@@ -83,9 +81,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const logout = async () => {
     try {
-      // await axiosInstance.post(`${baseUrl}/users/logout`);
+      await axiosInstance.post(`${baseUrl}/users/logout`);
       setUser(null);
-      removeCookie();
       router.push("/");
     } catch (error) {
       console.error(error);
