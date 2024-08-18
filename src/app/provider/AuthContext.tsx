@@ -2,6 +2,7 @@
 
 import axiosInstance from "@/lib/axiosInstance";
 import { baseUrl } from "@/lib/utils";
+import { useCookies } from "next-client-cookies";
 import { useRouter } from "next/navigation";
 import { createContext, useContext, useEffect, useState } from "react";
 
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
+  const cookies = useCookies();
   const checkUser = async () => {
     try {
       const { data } = await axiosInstance.get(`${baseUrl}/users/profile`);
@@ -50,6 +52,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         password,
       });
       setUser(data);
+      cookies.set("token", data.data.accessToken, {
+        expires: new Date(Date.now() + 1000 * 60 * 60), // 1 hour
+        secure: true,
+        sameSite: "strict",
+      });
       // call checkUser to get the user data
       checkUser();
       router.push("/");

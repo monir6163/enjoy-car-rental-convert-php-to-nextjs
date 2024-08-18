@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { CookiesProvider } from "next-client-cookies/server";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
@@ -25,7 +26,9 @@ export default function RootLayout({
           className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
         >
           <NextTopLoader />
-          <main>{children}</main>
+          <main>
+            <CookiesProvider>{children}</CookiesProvider>
+          </main>
         </body>
       </AuthProvider>
     </html>
