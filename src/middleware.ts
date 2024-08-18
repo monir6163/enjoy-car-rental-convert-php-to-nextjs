@@ -1,12 +1,13 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
+import { getCookie } from "./lib/getCookies";
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const path = request.nextUrl.pathname;
 
   const isPublicPath = path === "/login" || path === "/register";
 
-  const token = request.cookies.get("accessToken")?.value || "";
+  const token = await getCookie()?.accessToken?.value;
 
   if (isPublicPath && token) {
     return NextResponse.redirect(
