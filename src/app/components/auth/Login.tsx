@@ -5,12 +5,11 @@ import { loginZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import Container from "../shared/Container";
 
 export default function LoginApp() {
-  const router = useRouter();
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl");
   const handleLogin = async (payload: FieldValues) => {

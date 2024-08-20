@@ -1,7 +1,5 @@
-"use client";
 import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
@@ -17,8 +15,6 @@ const navItems = [
   { name: "Contact", path: "/contact", current: false },
 ];
 export default function Navbar() {
-  const pathname = usePathname();
-
   return (
     <>
       {/* only desktop */}
@@ -54,12 +50,7 @@ export default function Navbar() {
               <div className="flex items-center space-x-4">
                 <NavItem path="/" label="Home" />
                 {navItems.map((item) => (
-                  <NavItem
-                    key={item.name}
-                    path={item.path}
-                    label={item.name}
-                    active={pathname === item.path}
-                  />
+                  <NavItem key={item.name} path={item.path} label={item.name} />
                 ))}
                 <Language />
 

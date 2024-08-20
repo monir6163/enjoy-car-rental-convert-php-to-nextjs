@@ -1,12 +1,16 @@
+"use client";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 interface NavItemProps {
   label: string;
   active?: boolean;
   path: string;
-  onClick?: () => void;
 }
-const NavItem = ({ path, label, active }: NavItemProps) => {
+const NavItem = ({ path, label }: NavItemProps) => {
+  const pathname = usePathname();
+  const active = pathname === path;
+
   return (
     <Link
       href={`${path}`}
