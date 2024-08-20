@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "./globals.css";
-import { AuthProvider } from "./provider/AuthContext";
+import Providers from "./provider/sessionProvider";
 
 export const metadata: Metadata = {
   title: "Car Rental App",
@@ -13,21 +14,22 @@ const barlowCondensed = Barlow_Condensed({
   subsets: ["latin"],
   weight: ["400", "500", "700"],
 });
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
   return (
     <html lang="en">
-      <AuthProvider>
+      <Providers session={session}>
         <body
           className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
         >
           <NextTopLoader />
           <main>{children}</main>
         </body>
-      </AuthProvider>
+      </Providers>
     </html>
   );
 }

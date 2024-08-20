@@ -1,21 +1,34 @@
 "use client";
 import FormInput from "@/app/components/form/FormInput";
 import FormWrapper from "@/app/components/form/FormWrapper";
-import { useAuth } from "@/app/provider/AuthContext";
 import { loginZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
+import { useRouter, useSearchParams } from "next/navigation";
 import { FieldValues } from "react-hook-form";
 import Container from "../shared/Container";
 
 export default function LoginApp() {
-  const { login, user } = useAuth();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   const handleLogin = async (payload: FieldValues) => {
-    try {
-      await login(payload.email as string, payload.password as string);
-    } catch (error) {
-      console.log(error);
-    }
+    await signIn("credentials", {
+      email: payload.email,
+      password: payload.password,
+      redirect: false,
+    })
+      .then(() => {
+        if (callbackUrl) {
+          window.location.href = `${callbackUrl}`;
+        } else {
+          window.location.href = "/";
+        }
+      })
+      .catch((error) => {
+        console.error("Login error", error);
+      });
   };
   return (
     <Container>

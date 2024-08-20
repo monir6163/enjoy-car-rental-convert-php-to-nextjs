@@ -1,27 +1,27 @@
-import type { NextRequest } from "next/server";
-import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
+import { NextRequest, NextResponse } from "next/server";
+import { authOptions } from "./lib/auth";
 
-export async function middleware(request: NextRequest) {
-  const path = request.nextUrl.pathname;
-
-  const isPublicPath = path === "/login" || path === "/register";
-
-  const token = request.cookies.get("accessToken")?.value;
-
-  if (isPublicPath && token) {
-    return NextResponse.redirect(
-      new URL("/", request.nextUrl.origin).toString()
-    );
+export async function middleware(req: NextRequest) {
+  const path = req.nextUrl.pathname;
+  const isPublic = path === "/login" || path === "/register";
+  const token = await getToken({
+    req,
+    secret: authOptions.secret,
+  });
+  if (isPublic && token) {
+    return NextResponse.redirect(new URL("/", req.nextUrl.origin).toString());
   }
-
-  if (!isPublicPath && !token) {
+  if (!isPublic && !token) {
     return NextResponse.redirect(
-      new URL("/login", request.nextUrl.origin).toString()
+      new URL(
+        "/login?callbackUrl=" + req.nextUrl.pathname,
+        req.nextUrl.origin
+      ).toString()
     );
   }
 }
 
-// See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/about", "/login", "/register"],
+  matcher: ["/login", "/register", "/about", "/contact"],
 };

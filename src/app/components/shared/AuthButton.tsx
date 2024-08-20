@@ -1,16 +1,20 @@
 "use client";
+import { signOut, useSession } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 
 const AuthButton = () => {
-  const router = useRouter();
-  const isLogin = false;
+  const { data: session } = useSession();
+  const isLogin = !!session?.user;
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+  };
 
   return (
     <div className="text-center">
       {isLogin ? (
         <button
           className={` bg-red-500 hover:bg-red-600 transition duration-100 ease-in-out rounded text-white  px-3 py-2 text-lg font-medium cursor-pointer  `}
+          onClick={handleLogout}
         >
           Logout
         </button>
