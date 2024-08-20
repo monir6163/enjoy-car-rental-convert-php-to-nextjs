@@ -13,12 +13,28 @@ export const authOptions: NextAuthOptions = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        username: { label: "Username", type: "text", placeholder: "jsmith" },
-        password: { label: "Password", type: "password" },
+        email: {
+          label: "Email",
+          type: "email",
+          placeholder: "Write your email",
+        },
+        password: {
+          label: "Password",
+          type: "password",
+          placeholder: "Write your password",
+        },
       },
-      async authorize(credentials, req) {
-        const user = { id: "1", name: "J Smith", email: "jsmith@example.com" };
-        if (user) {
+      async authorize(credentials: any, req) {
+        const user = {
+          id: "1",
+          name: "Monir",
+          email: "admin@admin.com",
+          password: "123456",
+        };
+        if (
+          credentials.email === user.email &&
+          credentials.password === user.password
+        ) {
           return user;
         } else {
           return null;

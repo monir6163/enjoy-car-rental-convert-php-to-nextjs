@@ -7,11 +7,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Logout = ({ user }: any) => {
+  const router = useRouter();
   const handleLogout = async () => {
-    await signOut();
-    window.location.href = "/";
+    await signOut({ redirect: false });
+    toast.success("Logged out successfully");
+    router.push("/");
   };
   return (
     <div className="text-center">

@@ -1,3 +1,4 @@
+import Toast from "@/lib/Toast";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
@@ -27,6 +28,7 @@ export default async function RootLayout({
           className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
         >
           <NextTopLoader />
+          <Toast />
           <main>{children}</main>
         </body>
       </Providers>

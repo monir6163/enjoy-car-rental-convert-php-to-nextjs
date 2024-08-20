@@ -48,7 +48,13 @@ export default function Navbar() {
                 </Link>
               </div>
               <div className="flex items-center space-x-4">
-                <NavItem path="/" label="Home" />
+                <Link
+                  href={`/`}
+                  className={`text-gray-600 text-center hover:text-red-600 px-3 py-2 rounded-md text-lg font-medium cursor-pointer border-b-2 md:border-b-0 md:text-gray-600
+                  `}
+                >
+                  Home
+                </Link>
                 {navItems.map((item) => (
                   <NavItem key={item.name} path={item.path} label={item.name} />
                 ))}

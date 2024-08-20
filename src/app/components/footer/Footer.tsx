@@ -1,3 +1,101 @@
+import {
+  Facebook,
+  Instagram,
+  MailOpenIcon,
+  MapPin,
+  PhoneCall,
+  Twitter,
+} from "lucide-react";
+import Link from "next/link";
+import Container from "../shared/Container";
+import Logo from "../shared/Logo";
+import styles from "./footer.module.css";
+
 export default function Footer() {
-  return <div>Footer</div>;
+  return (
+    <footer className="bg-[#0d0101]">
+      <Container>
+        <div className={styles.footer}>
+          <div className={styles.footer_left}>
+            <Logo />
+            <p className="text-base mt-5 text-justify">
+              Enjoy Rent a Car offers you a safe and reliable car rental service
+              with and without a driver. We have been operating in the territory
+              of Montenegro for 5 years, with more than 3000 satisfied clients.
+            </p>
+            <p className="text-sm mt-5 text-justify">
+              All our experiences and offers are created to make your
+              unforgettable trip and everyday life in Montenegro easier, more
+              comfortable, safer and faster with Enjoy Rent a Car.
+            </p>
+          </div>
+          <div className={styles.footer_center}>
+            <div className={styles.footer_center_top}>
+              <h3>Contact information</h3>
+              <div className={styles.info}>
+                <Link href="" className="text-white flex gap-1">
+                  <MapPin size={24} className="text-red-500" />
+                  Šuranj bb., 85330 Kotor, Montenegro
+                </Link>
+                <Link
+                  href={`mailto:admin@admin.com`}
+                  className="text-white flex gap-1"
+                >
+                  <MailOpenIcon size={24} className="text-red-500" />
+                  info@enjoycarrental.com
+                </Link>
+                <Link
+                  href={`tel:+382 69 123 456`}
+                  className="text-white flex gap-1"
+                >
+                  <PhoneCall size={24} className="text-red-500" />
+                  +382 69 123 456
+                </Link>
+              </div>
+            </div>
+            <div className={styles.footer_center_bottom}>
+              <h3>Follow Us</h3>
+              <div className="flex pt-4 gap-2">
+                <Link
+                  href={""}
+                  className="border border-red-500 p-1 rounded-[10px] text-white hover:bg-blue-700 hover:border-blue-700"
+                  title="Facebook"
+                  target="_blank"
+                >
+                  <Facebook size={24} />
+                </Link>
+                <Link
+                  href={""}
+                  className="border border-red-500 p-1 rounded-[10px] text-white hover:bg-sky-600 hover:border-sky-600"
+                  title="Twitter"
+                  target="_blank"
+                >
+                  <Twitter size={24} />
+                </Link>
+                <Link
+                  href={""}
+                  className="border border-red-500 p-1 rounded-[10px] text-white hover:bg-red-700 hover:border-red-700"
+                  title="Instagram"
+                  target="_blank"
+                >
+                  <Instagram size={24} />
+                </Link>
+              </div>
+            </div>
+          </div>
+          <div className={styles.footer_right}></div>
+        </div>
+        <div className={styles.copyright}>
+          <p className="text-center text-white text-base">
+            &copy; 2024 -{" "}
+            <Link href={"/"} className="text-red-600 hover:underline">
+              Monir Hossain
+            </Link>{" "}
+            - {"  "}
+            All rights reserved
+          </p>
+        </div>
+      </Container>
+    </footer>
+  );
 }

@@ -1,7 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import Container from "../shared/Container";
-import "./about.module.css";
 
 const AboutUs = () => {
   return (

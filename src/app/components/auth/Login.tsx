@@ -5,29 +5,29 @@ import { loginZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { FieldValues } from "react-hook-form";
+import { toast } from "react-toastify";
 import Container from "../shared/Container";
 
 export default function LoginApp() {
-  const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
   const handleLogin = async (payload: FieldValues) => {
-    await signIn("credentials", {
+    setIsSubmitting(true);
+    const response = await signIn("credentials", {
+      redirect: false,
       email: payload.email,
       password: payload.password,
-      redirect: false,
-    })
-      .then(() => {
-        if (callbackUrl) {
-          window.location.href = `${callbackUrl}`;
-        } else {
-          window.location.href = "/";
-        }
-      })
-      .catch((error) => {
-        console.error("Login error", error);
-      });
+    });
+    if (response?.error) {
+      toast.error("Invalid email or password");
+      setIsSubmitting(false);
+    } else {
+      toast.success("Logged in successfully");
+      router.push("/");
+    }
   };
   return (
     <Container>
@@ -69,8 +69,9 @@ export default function LoginApp() {
           <button
             type="submit"
             className="bg-red-600 hover:bg-red-700 w-full text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"
+            disabled={isSubmitting}
           >
-            Login
+            {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </FormWrapper>
         <Link href={"/register"} className="">
