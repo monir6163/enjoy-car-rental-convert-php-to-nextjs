@@ -1,5 +1,38 @@
-import { NextAuthOptions } from "next-auth";
+import { ISODateString, NextAuthOptions, User } from "next-auth";
+import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+
+export type CustomSession = {
+  user?: CustomUser;
+  expires: ISODateString;
+};
+export type CustomUser = {
+  id?: string | null;
+  name?: string | null;
+  email?: string | null;
+  role?: string | null;
+  avatar?: string | null;
+};
+
+const users = [
+  {
+    id: "1",
+    name: "Monir",
+    email: "admin@gmail.com",
+    password: "admin6",
+    role: "admin",
+    avatar: "img",
+  },
+
+  {
+    id: "2",
+    name: "User",
+    email: "user@gmail.com",
+    password: "user12",
+    role: "user",
+    avatar: "img",
+  },
+];
 
 export const authOptions: NextAuthOptions = {
   session: {
@@ -24,17 +57,13 @@ export const authOptions: NextAuthOptions = {
           placeholder: "Write your password",
         },
       },
-      async authorize(credentials: any, req) {
-        const user = {
-          id: "1",
-          name: "Monir",
-          email: "admin@admin.com",
-          password: "123456",
-        };
-        if (
-          credentials.email === user.email &&
-          credentials.password === user.password
-        ) {
+      async authorize(credentials: any, req: any) {
+        const user = users.find(
+          (user) =>
+            user.email === credentials.email &&
+            user.password === credentials.password
+        );
+        if (user) {
           return user;
         } else {
           return null;
@@ -43,17 +72,29 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: JWT; user: CustomUser }) {
       if (user) {
-        return { ...token, username: user.email };
+        // return { ...token, ...user };
+        user.role = user.role == null ? "user" : user.role;
+        token.user = user;
       }
       return token;
     },
-    async session({ session, token }) {
-      return {
-        ...session,
-        username: token.email,
-      };
+    async session({
+      session,
+      token,
+      user,
+    }: {
+      session: CustomSession;
+      token: JWT;
+      user: User;
+    }) {
+      // return {
+      //   ...session,
+      //   username: token.email,
+      // };
+      session.user = token.user as CustomUser;
+      return session;
     },
   },
 };

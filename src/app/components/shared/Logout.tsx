@@ -8,14 +8,14 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { toast } from "react-toastify";
 
 const Logout = ({ user }: any) => {
   const router = useRouter();
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    toast.success("Logged out successfully");
-    router.push("/");
+    // toast.success("Logged out successfully");
+    // router.push("/");
+    window.location.href = "/";
   };
   return (
     <div className="text-center">

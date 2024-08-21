@@ -1,18 +1,20 @@
 "use client";
 import FormInput from "@/app/components/form/FormInput";
 import FormWrapper from "@/app/components/form/FormWrapper";
+import Toast from "@/lib/Toast";
 import { loginZodSchema } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signIn } from "next-auth/react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import { FieldValues } from "react-hook-form";
 import { toast } from "react-toastify";
 import Container from "../shared/Container";
 
 export default function LoginApp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+
   const router = useRouter();
   const handleLogin = async (payload: FieldValues) => {
     setIsSubmitting(true);
@@ -21,16 +23,27 @@ export default function LoginApp() {
       email: payload.email,
       password: payload.password,
     });
-    if (response?.error) {
-      toast.error("Invalid email or password");
-      setIsSubmitting(false);
+    if (response?.status == 200) {
+      // toast.success("Login successful");
+      // router.replace("/");
+      window.location.href = "/";
     } else {
-      toast.success("Logged in successfully");
-      router.push("/");
+      toast.error("Invalid email or password", { theme: "colored" });
+      setIsSubmitting(false);
     }
   };
+
+  //get error from query params
+  const searchParams = useSearchParams();
+  useEffect(() => {
+    if (searchParams.get("error")) {
+      toast.error(searchParams.get("error") as string, { theme: "colored" });
+    }
+  }, [searchParams]);
   return (
     <Container>
+      <Toast />
+
       <div className="w-full sm:w-2/3 lg:2/4 2xl:w-3/5  mx-auto border py-10 px-5 sm:px-12 md:px-20 lg:px-32">
         <h2 className="text-3xl lg:text-4xl text-gray-800 text-center">
           Login
@@ -38,7 +51,6 @@ export default function LoginApp() {
         <p className="text-gray-500 mt-3 font-inter text-sm text-center mb-5">
           Login to your account
         </p>
-
         <FormWrapper
           onSubmit={handleLogin}
           resolver={zodResolver(loginZodSchema)}
