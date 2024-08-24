@@ -6,10 +6,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 const Logout = ({ user }: any) => {
+  const { data: session }: any = useSession();
   const router = useRouter();
   const handleLogout = async () => {
     await signOut({ redirect: false });
@@ -21,11 +24,21 @@ const Logout = ({ user }: any) => {
     <div className="text-center">
       <DropdownMenu>
         <DropdownMenuTrigger className="text-lg font-medium text-white md:text-gray-600 cursor-pointer">
-          {user.name}
+          <Image
+            src="/images/demo.jpg"
+            alt={user.name}
+            width={40}
+            height={40}
+            className="rounded-full"
+          />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="bg-white">
           <DropdownMenuItem className="text-lg font-medium text-gray-600  cursor-pointer">
-            Profile
+            {session?.user?.role === "admin" ? (
+              <Link href="/admin/dashboard">Profile</Link>
+            ) : (
+              <Link href="/profile">Profile</Link>
+            )}
           </DropdownMenuItem>
           <DropdownMenuItem
             onClick={handleLogout}

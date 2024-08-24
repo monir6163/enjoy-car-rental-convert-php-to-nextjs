@@ -41,7 +41,7 @@ footer .copyright {
   footer .footer_left {
     grid-column: span 1;
     width: 100%;
-    text-align: center;
+    /* text-align: center; */
   }
 
   footer .footer_center_bottom {

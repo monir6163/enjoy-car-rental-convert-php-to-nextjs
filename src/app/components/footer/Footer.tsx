@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import Container from "../shared/Container";
 import Logo from "../shared/Logo";
+import ContactFrom from "./ContactFrom";
 import styles from "./footer.module.css";
 
 export default function Footer() {
@@ -18,12 +19,12 @@ export default function Footer() {
         <div className={styles.footer}>
           <div className={styles.footer_left}>
             <Logo />
-            <p className="text-base mt-5 text-justify">
+            <p className="text-base mt-4 text-justify">
               Enjoy Rent a Car offers you a safe and reliable car rental service
               with and without a driver. We have been operating in the territory
               of Montenegro for 5 years, with more than 3000 satisfied clients.
             </p>
-            <p className="text-sm mt-5 text-justify">
+            <p className="text-sm mt-4 text-justify">
               All our experiences and offers are created to make your
               unforgettable trip and everyday life in Montenegro easier, more
               comfortable, safer and faster with Enjoy Rent a Car.
@@ -83,7 +84,10 @@ export default function Footer() {
               </div>
             </div>
           </div>
-          <div className={styles.footer_right}></div>
+          <div className={styles.footer_right}>
+            <h3>Send us a message</h3>
+            <ContactFrom />
+          </div>
         </div>
         <div className={styles.copyright}>
           <p className="text-center text-white text-base">
