@@ -8,7 +8,7 @@ import NavItem from "./NavItem";
 
 const navItems = [
   // { name: "Home", path: "/", current: false },
-  { name: "Renter a Car", path: "/renter-car", current: false },
+  { name: "Rent a Car", path: "/rent-car", current: false },
   { name: "About", path: "/about", current: false },
   { name: "Other Services", path: "/other-services", current: false },
   { name: "Faq", path: "/faq", current: false },
