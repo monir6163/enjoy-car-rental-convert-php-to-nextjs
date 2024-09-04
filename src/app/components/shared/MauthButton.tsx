@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Logout from "./Logout";
 
-const MauthButton = async ({ user }: any) => {
+const MauthButton = ({ user }: any) => {
   return (
     <div className="text-center">
       {user ? (
