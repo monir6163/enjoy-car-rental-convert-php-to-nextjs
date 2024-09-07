@@ -14,7 +14,6 @@ import { useState } from "react";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
 import Logo from "../shared/Logo";
-import MauthButton from "../shared/MauthButton";
 interface NavItemProps {
   label: string;
   active?: boolean;
@@ -109,7 +108,7 @@ export default function Mobile() {
                 ))}
                 <Language />
 
-                <MauthButton user={session?.user} />
+                {/* <MauthButton user={session?.user} /> */}
                 {/*<DashboardButton /> */}
               </div>
             </SheetContent>

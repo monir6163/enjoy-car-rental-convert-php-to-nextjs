@@ -24,21 +24,23 @@ const Breadcrumb = ({ label }: { label: string }) => {
               >
                 Home
               </Link>
-              <div className="flex justify-center items-center">
-                <ChevronRight size={20} className="text-white" />
-              </div>
-
-              <div>
-                {pathSegments.map((segment, index) => (
-                  <Link
-                    key={index}
-                    href={`/${pathSegments.slice(0, index + 1).join("/")}`}
-                    className="text-gray-200 hover:text-gray-500 text-xl capitalize"
-                  >
-                    {segment}
-                  </Link>
-                ))}
-              </div>
+              {pathSegments.map((segment, index) => (
+                <div key={index} className="flex items-center space-x-2">
+                  <ChevronRight size={20} className="text-white" />
+                  {index === pathSegments.length - 1 ? (
+                    <span className="text-white font-bold text-xl capitalize">
+                      {segment}
+                    </span>
+                  ) : (
+                    <Link
+                      href={`/${pathSegments.slice(0, index + 1).join("/")}`}
+                      className="text-gray-200 hover:text-gray-500 text-xl capitalize"
+                    >
+                      {segment}
+                    </Link>
+                  )}
+                </div>
+              ))}
             </div>
           </div>
         </Container>

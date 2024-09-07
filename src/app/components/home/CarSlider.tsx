@@ -51,7 +51,7 @@ const CarSlider = () => {
             className="w-full px-4 md:px-0 h-48 md:h-96 object-cover"
           />
           <div className="absolute bottom-14 left-1/2 transform -translate-x-1/2 w-full">
-            <h3 className="text-white text-3xl font-bold">{car.name}</h3>
+            <h3 className="text-white text-3xl font-bold">{car?.name}</h3>
             <h4 className="text-red-600 text-xl font-bold">{car.system}</h4>
           </div>
           <div className="px-4 mt-16 md:mt-0 md:px-0 mb-10 flex items-center justify-center md:justify-start">

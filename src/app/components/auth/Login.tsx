@@ -86,14 +86,6 @@ export default function LoginApp() {
             {isSubmitting ? "Logging in..." : "Login"}
           </button>
         </FormWrapper>
-        <Link href={"/register"} className="">
-          <p className="text-center my-4  w-full py-3 text-gray-500 text-lg">
-            Don&apos;t have an account?{" "}
-            <span className="inline-block text-blue-500 hover:text-blue-600 hover:underline">
-              Create account
-            </span>
-          </p>
-        </Link>
       </div>
     </Container>
   );

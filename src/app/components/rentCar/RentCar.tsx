@@ -49,7 +49,7 @@ export default function RentCar() {
                   />
                 </div>
                 <div className="pl-5 pr-5">
-                  <div className="text-xl text-black pt-4">Toyota Yaris</div>
+                  <div className="text-xl text-black pt-4">{car?.name}</div>
                   <div className="text-xs red_color pb-2">Automatic</div>
                   <div className="flex justify-between text-black text-sm pt-2">
                     <div>1-3 days</div>
@@ -72,7 +72,7 @@ export default function RentCar() {
                   </div>
 
                   <div className="pt-5 pb-5 details_btn">
-                    <Link href="/car/1" className="w-full">
+                    <Link href={`rent-car/${car?.slug}`} className="w-full">
                       <button className="bg-white text-[#cc0505] border border-red-600 rounded-[10px] flex justify-center items-center text-sm cursor-pointer w-full font-semibold h-[40px]">
                         View Details
                       </button>

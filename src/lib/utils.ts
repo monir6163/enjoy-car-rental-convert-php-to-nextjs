@@ -98,6 +98,7 @@ export const rentalCarData = [
   {
     id: 1,
     name: "Toyota Yaris",
+    slug: "toyota-yaris",
     transmission: "Automatic",
     fuelType: "Petrol",
     seats: 5,
@@ -130,6 +131,7 @@ export const rentalCarData = [
   {
     id: 2,
     name: "Toyota Land Cruiser",
+    slug: "toyota-land-cruiser",
     transmission: "Automatic",
     fuelType: "Petrol",
     seats: 5,
@@ -162,6 +164,7 @@ export const rentalCarData = [
   {
     id: 3,
     name: "Toyota Yaris Cross",
+    slug: "toyota-yaris-cross",
     transmission: "Automatic",
     fuelType: "Petrol",
     seats: 5,
@@ -194,6 +197,7 @@ export const rentalCarData = [
   {
     id: 4,
     name: "Toyota Corolla",
+    slug: "toyota-corolla",
     transmission: "Automatic",
     fuelType: "Petrol",
     seats: 5,
@@ -226,6 +230,7 @@ export const rentalCarData = [
   {
     id: 5,
     name: "Toyota C HR",
+    slug: "toyota-c-hr",
     transmission: "Automatic",
     fuelType: "Petrol",
     seats: 5,
@@ -258,6 +263,7 @@ export const rentalCarData = [
   {
     id: 6,
     name: "Toyota bZ4X",
+    slug: "toyota-bz4x",
     transmission: "Automatic",
     fuelType: "Electric",
     seats: 5,

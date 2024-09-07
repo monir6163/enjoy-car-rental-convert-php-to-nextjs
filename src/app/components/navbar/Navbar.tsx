@@ -1,6 +1,5 @@
 import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Link from "next/link";
-import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
 import Language from "../shared/Language";
 import Logo from "../shared/Logo";
@@ -60,7 +59,7 @@ export default function Navbar() {
                 ))}
                 <Language />
 
-                <AuthButton />
+                {/* <AuthButton /> */}
 
                 {/*<DashboardButton /> */}
               </div>
