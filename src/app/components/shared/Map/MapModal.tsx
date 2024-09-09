@@ -9,16 +9,7 @@ export default function MapModal() {
   const [opened, { open, close }] = useDisclosure(false);
   return (
     <>
-      <Modal
-        opened={opened}
-        onClose={close}
-        overlayProps={{
-          backgroundOpacity: 0.55,
-          blur: 3,
-        }}
-        centered
-        size={"70%"}
-      >
+      <Modal opened={opened} onClose={close}>
         <MapBox />
       </Modal>
 
