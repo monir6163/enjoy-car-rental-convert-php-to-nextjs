@@ -63,35 +63,6 @@ export const carSliderData = [
   },
 ];
 
-// const carSchema = new mongoose.Schema({
-//   name: { type: String, required: true },
-//   transmission: { type: String, enum: ['Automatic', 'Manual'], required: true },
-//   fuelType: { type: String, enum: ['Petrol', 'Diesel', 'Electric', 'Hybrid'], required: true },
-//   seats: { type: Number, required: true },
-//   doors: { type: Number, required: true },
-//   image: { type: String, required: true }, // URL of the car image
-//   price: {
-//     oneToThreeDays: { type: Number, required: true },
-//     fourToSevenDays: { type: Number, required: true },
-//     eightToFifteenDays: { type: Number, required: true },
-//     fifteenPlusDays: { type: Number, required: true },
-//     basePrice: { type: Number, required: true } // Starting price
-//   },
-//   availableOnRequest: {
-//     type: [String], // e.g., ["Navigation", "Wi-Fi", "Child seat"]
-//   },
-//   amenities: {
-//     abs: { type: Boolean, default: false },
-//     remoteLock: { type: Boolean, default: false },
-//     airConditioner: { type: Boolean, default: false },
-//     electricWindows: { type: Boolean, default: false },
-//     cdPlayer: { type: Boolean, default: false },
-//     // Add other amenities as needed
-//   }
-// });
-
-// const Car = mongoose.model('Car', carSchema);
-
 //rental car data
 
 export const rentalCarData = [

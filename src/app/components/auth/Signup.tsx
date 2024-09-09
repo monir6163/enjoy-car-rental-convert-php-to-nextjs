@@ -9,17 +9,13 @@ import { toast } from "react-toastify";
 import Container from "../shared/Container";
 import { GoogleButton } from "./GoogleLogin";
 
-export default function LoginApp() {
+export default function SignupApp() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const router = useRouter();
   const handleLogin = async (e: any) => {
     e.preventDefault();
     setIsSubmitting(true);
-    const payload = {
-      email: e.target.email.value,
-      password: e.target.password.value,
-    };
     const response = await signIn("credentials", {
       redirect: false,
       email: payload.email,
@@ -72,14 +68,21 @@ export default function LoginApp() {
               placeholder="Enter your password"
               type="password"
             />
+
+            <PasswordInput
+              name="confirmPassword"
+              label="Confirm Password"
+              placeholder="Enter your password"
+              type="password"
+            />
           </Stack>
 
           <div className="flex justify-between text-sm text-blue-500 my-4 ">
             <Link
-              href={"/signup"}
+              href={"/login"}
               className="text-right hover:underline hover:text-green-700 "
             >
-              Create an account ? Signup
+              Already have an account? Login
             </Link>
             <Link
               href={"/forgot-password"}

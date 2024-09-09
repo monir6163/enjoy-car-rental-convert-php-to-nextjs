@@ -1,4 +1,7 @@
 import Toast from "@/lib/Toast";
+import { MantineProvider } from "@mantine/core";
+import "@mantine/core/styles.css";
+import "@mantine/dates/styles.css";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
@@ -29,7 +32,9 @@ export default async function RootLayout({
         >
           <NextTopLoader />
           <Toast />
-          <main>{children}</main>
+          <MantineProvider>
+            <main>{children}</main>
+          </MantineProvider>
         </body>
       </Providers>
     </html>

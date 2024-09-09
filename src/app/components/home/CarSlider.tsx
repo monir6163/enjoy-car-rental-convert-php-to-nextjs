@@ -30,7 +30,7 @@ const CarSlider = () => {
       draggable={true}
       showDots={true}
       responsive={responsive}
-      ssr={true} // means to render carousel on server-side.
+      ssr={true}
       infinite={true}
       autoPlay={false}
       autoPlaySpeed={5000}

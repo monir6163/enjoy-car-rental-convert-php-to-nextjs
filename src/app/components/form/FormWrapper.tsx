@@ -40,7 +40,7 @@ const FormWrapper = ({
   };
   return (
     <FormProvider {...methods}>
-      <form onSubmit={handleSubmit(submitHandler)} className="mt-5">
+      <form onSubmit={handleSubmit(submitHandler)} className="">
         {children}
       </form>
     </FormProvider>

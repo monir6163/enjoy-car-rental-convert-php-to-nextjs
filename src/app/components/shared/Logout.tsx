@@ -10,15 +10,18 @@ import { signOut, useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Logout = ({ user }: any) => {
   const { data: session }: any = useSession();
   const router = useRouter();
   const handleLogout = async () => {
     await signOut({ redirect: false });
-    // toast.success("Logged out successfully");
-    // router.push("/");
-    window.location.href = "/";
+    toast.success("Logged out successfully");
+    setTimeout(() => {
+      router.push("/login");
+    }, 500);
+    // window.location.href = "/";
   };
   return (
     <div className="text-center">
@@ -26,7 +29,7 @@ const Logout = ({ user }: any) => {
         <DropdownMenuTrigger className="text-lg font-medium text-white md:text-gray-600 cursor-pointer">
           <Image
             src="/images/demo.jpg"
-            alt={user.name}
+            alt={session?.user?.name}
             width={40}
             height={40}
             className="rounded-full"
