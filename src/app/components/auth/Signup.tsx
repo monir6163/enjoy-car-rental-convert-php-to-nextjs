@@ -18,8 +18,8 @@ export default function SignupApp() {
     setIsSubmitting(true);
     const response = await signIn("credentials", {
       redirect: false,
-      email: payload.email,
-      password: payload.password,
+      email: "",
+      password: "",
     });
     if (response?.status == 200) {
       toast.success("Login successful");
