@@ -22,7 +22,7 @@ export default function OtherService() {
                 width={300}
                 height={200}
                 alt="other"
-                className="rounded"
+                className="rounded w-full"
               />
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <ShieldCheck
@@ -50,7 +50,7 @@ export default function OtherService() {
                 width={300}
                 height={200}
                 alt="other"
-                className="rounded"
+                className="rounded w-full"
               />
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <ShieldCheck
@@ -78,7 +78,7 @@ export default function OtherService() {
                 width={300}
                 height={200}
                 alt="other"
-                className="rounded"
+                className="rounded w-full"
               />
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <ShieldCheck
@@ -106,7 +106,7 @@ export default function OtherService() {
                 width={300}
                 height={200}
                 alt="other"
-                className="rounded"
+                className="rounded w-full"
               />
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <ShieldCheck
