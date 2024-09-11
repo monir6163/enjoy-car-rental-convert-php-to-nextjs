@@ -1,5 +1,4 @@
 "use client";
-import { signUp } from "@/actions/authAction";
 import { useSignupFrom } from "@/hooks/useSignupFrom";
 import Toast from "@/lib/Toast";
 import {
@@ -26,7 +25,6 @@ export default function SignupApp() {
     const { email, password } = signupForm.values;
     setIsSubmitting(true);
     try {
-      await signUp(email, password);
       toast.success("Signup successful. ");
       setIsSubmitted(true);
       push("/");
