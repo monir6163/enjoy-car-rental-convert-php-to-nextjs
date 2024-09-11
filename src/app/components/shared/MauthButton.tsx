@@ -1,19 +1,18 @@
+"use client";
 import Link from "next/link";
-import Logout from "./Logout";
+import Profile from "./Profile";
 
-const MauthButton = ({ user }: any) => {
+const MauthButton = () => {
   return (
     <div className="text-center">
-      {user ? (
-        <Logout user={user} />
-      ) : (
-        <Link
-          href="/login"
-          className={` red_btn hover:bg-red-600 transition duration-100 ease-in-out rounded text-white  px-3 py-2 text-lg font-medium cursor-pointer  `}
-        >
-          Login
-        </Link>
-      )}
+      <Profile />
+
+      <Link
+        href="/login"
+        className={` red_btn hover:bg-red-600 transition duration-100 ease-in-out rounded text-white  px-3 py-2 text-lg font-medium cursor-pointer  `}
+      >
+        Login
+      </Link>
     </div>
   );
 };

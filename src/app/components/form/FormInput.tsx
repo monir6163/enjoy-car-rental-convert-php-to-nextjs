@@ -24,7 +24,7 @@ const FormInput = ({
       name={name}
       control={control}
       render={({ field, fieldState: { error } }) => (
-        <div className="mb-4">
+        <div className="mb-2">
           <label htmlFor={name} className="block text-gray-700 text-lg mb-2">
             {label}
           </label>
@@ -39,7 +39,7 @@ const FormInput = ({
                 type === "number" ? Number(e.target.value) : e.target.value;
               field.onChange(value);
             }}
-            className={`border rounded w-full py-4 px-3 text-gray-700 leading-tight focus:outline-none focus:border-green-500 ${
+            className={`border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:border-green-500 ${
               error ? "border-red-500" : "border-gray-200"
             }`}
             placeholder={placeholder}

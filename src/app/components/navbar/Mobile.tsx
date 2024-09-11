@@ -7,7 +7,6 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet";
-import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
@@ -30,7 +29,6 @@ const navItems = [
 ];
 
 export default function Mobile() {
-  const { data: session } = useSession();
   const pathname = usePathname();
 
   const [isOpen, setIsOpen] = useState(false);

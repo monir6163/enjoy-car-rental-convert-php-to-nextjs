@@ -1,13 +1,13 @@
 import { getServerSession } from "next-auth";
 import Link from "next/link";
-import Logout from "./Logout";
+import Profile from "./Profile";
 
 const AuthButton = async () => {
   const session = await getServerSession();
   return (
     <div className="text-center">
-      {session?.user ? (
-        <Logout user={session?.user} />
+      {session ? (
+        <Profile user={session?.user} />
       ) : (
         <Link
           href="/login"

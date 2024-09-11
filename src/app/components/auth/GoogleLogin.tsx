@@ -1,18 +1,32 @@
-import { Button, Group } from "@mantine/core";
+"use client";
+import { Button, Group, LoadingOverlay } from "@mantine/core";
+import { signIn } from "next-auth/react";
 import React from "react";
 
 export const GoogleButton = () => {
+  const [loading, setLoading] = React.useState(false);
   return (
-    <Group grow mb="md" mt="md">
-      <Button
-        leftSection={<GoogleIcon />}
-        variant="default"
-        color="gray"
-        radius=""
-      >
-        Google
-      </Button>
-    </Group>
+    <>
+      <LoadingOverlay
+        visible={loading}
+        overlayProps={{ blur: 2, radius: "md" }}
+      />
+      <Group grow mb="md" mt="md">
+        <Button
+          leftSection={<GoogleIcon />}
+          variant="default"
+          color="gray"
+          radius=""
+          onClick={async () => {
+            setLoading(true);
+            await signIn("google", { callbackUrl: "/" });
+            setLoading(false);
+          }}
+        >
+          Google
+        </Button>
+      </Group>
+    </>
   );
 };
 

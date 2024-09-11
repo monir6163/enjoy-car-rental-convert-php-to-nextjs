@@ -1,6 +1,10 @@
+import { PrismaAdapter } from "@auth/prisma-adapter";
 import { ISODateString, NextAuthOptions, User } from "next-auth";
+import { Adapter } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
+import { prisma } from "../../prisma";
 
 export type CustomSession = {
   user?: CustomUser;
@@ -35,14 +39,21 @@ const users = [
 ];
 
 export const authOptions: NextAuthOptions = {
+  adapter: PrismaAdapter(prisma) as Adapter,
   session: {
     strategy: "jwt",
     maxAge: 60 * 60, // 1 hour
   },
   pages: {
     signIn: "/login",
+    error: "/login",
   },
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
+    GoogleProvider({
+      clientId: process.env.AUTH_GOOGLE_ID as string,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET as string,
+    }),
     CredentialsProvider({
       name: "Credentials",
       credentials: {

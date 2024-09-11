@@ -1,6 +1,6 @@
 import { getToken } from "next-auth/jwt";
 import { NextRequest, NextResponse } from "next/server";
-import { CustomUser } from "./lib/auth";
+import { CustomUser } from "./app/auth";
 
 export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   const user: CustomUser | null = token?.user as CustomUser;
 
   // * Protected routes for user
-  const userProtectedRoutes = [""];
+  const userProtectedRoutes = ["/rent-car"];
 
   // * Protected routes for admin
   const adminProtectedRoutes = ["/admin/dashboard"];
