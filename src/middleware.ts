@@ -8,7 +8,7 @@ export async function middleware(request: NextRequest) {
   const user: CustomUser | null = token?.user as CustomUser;
 
   // * Protected routes for user
-  const userProtectedRoutes = ["/rent-car"];
+  const userProtectedRoutes = ["/cars"];
 
   // * Protected routes for admin
   const adminProtectedRoutes = ["/admin/dashboard"];

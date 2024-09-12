@@ -8,14 +8,17 @@ import {
   TextInput,
 } from "@mantine/core";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import Container from "../shared/Container";
 import { GoogleButton } from "./GoogleLogin";
 import { NotRegisteredAlert } from "./NotRegisteredAlert";
 import { NotVerifiedAlert } from "./NotVerifiedAlert";
 const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
+  const params = useSearchParams();
+  const error = params.get("error");
   const [notRegistered, setNotRegistered] = useState<boolean>(false);
   const [notVerified, setNotVerified] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
@@ -24,6 +27,14 @@ export default function LoginApp() {
   const handleLogin = async () => {
     const { email, password } = loginForm.values;
   };
+
+  //protecting error message
+  useEffect(() => {
+    if (window !== undefined) {
+      toast.error(error);
+    }
+  }, [error]);
+
   return (
     <Container>
       <LoadingOverlay

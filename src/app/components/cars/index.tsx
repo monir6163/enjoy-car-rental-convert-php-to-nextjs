@@ -29,10 +29,12 @@ const MapBox = dynamic(() => import("../shared/Map/Map"), {
 
 export default function CarsPageLayout() {
   const [showMap, setShowMap] = useState<boolean>(false);
+
   //map toggle button
   const mapToggle = () => {
     setShowMap(!showMap);
   };
+
   return (
     <>
       <Breadcrumb label="Cars" />
@@ -78,6 +80,7 @@ export default function CarsPageLayout() {
               <FuelType />
             </Box>
           </Card>
+
           <CarList />
         </Flex>
       </Container>

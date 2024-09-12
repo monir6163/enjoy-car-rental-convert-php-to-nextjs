@@ -33,7 +33,7 @@ export default async function RootLayout({
         <Providers session={session}>
           <MantineProvider>
             <NextTopLoader />
-            <ToastContainer />
+            <ToastContainer position="bottom-right" theme="colored" />
             <main>{children}</main>
           </MantineProvider>
         </Providers>
