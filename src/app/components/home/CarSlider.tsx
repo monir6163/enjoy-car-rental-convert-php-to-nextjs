@@ -1,7 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 "use client";
-import { Button } from "@/components/ui/button";
 import { carSliderData } from "@/lib/utils";
+import { Button } from "@mantine/core";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 
@@ -55,7 +55,10 @@ const CarSlider = () => {
             <h4 className="text-red-600 text-xl font-bold">{car.system}</h4>
           </div>
           <div className="px-4 mt-16 md:mt-0 md:px-0 mb-10 flex items-center justify-center md:justify-start">
-            <Button className="red_btn text-white text-xl py-2 px-10 border border-white rounded">
+            <Button
+              variant="gradient"
+              className=" text-white text-xl py-2 px-10 border border-white rounded"
+            >
               Book now
             </Button>
             <Button className="bg-transparent text-xl text-white py-2 px-4 border border-white rounded ml-2">

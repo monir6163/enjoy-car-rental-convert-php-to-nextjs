@@ -2,13 +2,12 @@ import { Mail, MapPin, PhoneCall } from "lucide-react";
 import Link from "next/link";
 import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
-import Language from "../shared/Language";
 import Logo from "../shared/Logo";
 import NavItem from "./NavItem";
 
 const navItems = [
   // { name: "Home", path: "/", current: false },
-  { name: "Rent a Car", path: "/rent-car", current: false },
+  { name: "Rent a Car", path: "/cars", current: false },
   { name: "About", path: "/about", current: false },
   { name: "Other Services", path: "/other-services", current: false },
   { name: "Faq", path: "/faq", current: false },
@@ -58,7 +57,7 @@ export default function Navbar() {
                 {navItems.map((item) => (
                   <NavItem key={item.name} path={item.path} label={item.name} />
                 ))}
-                <Language />
+                {/* <Language /> */}
 
                 <AuthButton />
 

@@ -3,7 +3,7 @@ import { Select } from "@mantine/core";
 export default function SelectCountry() {
   return (
     <Select
-      className="w-full custom"
+      className="custom"
       placeholder="Select Country"
       data={["United States", "Serbia", "Bangladesh"]}
       defaultValue={"Bangladesh"}

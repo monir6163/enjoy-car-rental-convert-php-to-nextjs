@@ -2,14 +2,19 @@
 import { Container } from "@mantine/core";
 import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import styles from "./map.module.css";
-const MapBox = () => {
+
+interface Props {
+  height?: string;
+}
+
+const MapBox = ({ height }: Props) => {
   return (
-    <Container className={styles.container}>
+    <Container className={styles.container} mb="1rem" size="100%">
       <MapContainer
         className={styles.mapContainer}
         center={[51.505, -0.09]}
         zoom={14}
-        style={{ height: "300px" }}
+        style={{ height: height || "300px" }}
       >
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'

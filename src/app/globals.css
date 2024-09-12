@@ -68,7 +68,7 @@ nav::before {
 }
 .indexTop .background_Image .indexTop_Right form {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  /* grid-template-columns: repeat(2, 1fr); */
   column-gap: 10px;
   row-gap: 15px;
 }
@@ -82,7 +82,7 @@ nav::before {
   margin-top: 10px;
   display: flex;
 }
-.indexTop .background_Image .indexTop_Right form .btn {
+/* .indexTop .background_Image .indexTop_Right form .btn {
   width: 100%;
   padding: 10px;
   background: linear-gradient(317deg, #c80b0b 40%, #840f0f 100%);
@@ -90,7 +90,7 @@ nav::before {
   border: none;
   border-radius: 10px;
   cursor: pointer;
-}
+} */
 /* end hero */
 
 /* carosul css */

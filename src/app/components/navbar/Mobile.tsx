@@ -10,8 +10,8 @@ import {
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import AuthButton from "../shared/AuthButton";
 import Container from "../shared/Container";
-import Language from "../shared/Language";
 import Logo from "../shared/Logo";
 interface NavItemProps {
   label: string;
@@ -21,7 +21,7 @@ interface NavItemProps {
 }
 const navItems = [
   // { name: "Home", path: "/", current: false },
-  { name: "Rent a Car", path: "/rent-car", current: false },
+  { name: "Rent a Car", path: "/cars", current: false },
   { name: "About", path: "/about", current: false },
   { name: "Other Services", path: "/other-services", current: false },
   { name: "Faq", path: "/faq", current: false },
@@ -104,8 +104,8 @@ export default function Mobile() {
                     onClick={() => setIsOpen(false)}
                   />
                 ))}
-                <Language />
-
+                {/* <Language /> */}
+                <AuthButton />
                 {/* <MauthButton user={session?.user} /> */}
                 {/*<DashboardButton /> */}
               </div>

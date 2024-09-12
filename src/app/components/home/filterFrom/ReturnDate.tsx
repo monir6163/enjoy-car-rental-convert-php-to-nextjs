@@ -7,7 +7,7 @@ interface props {
   minDate?: Date;
   maxDate?: Date;
 }
-export default function PicupDate({
+export default function ReturnDate({
   value,
   onChange,
   palceholder,
@@ -19,7 +19,7 @@ export default function PicupDate({
         value={value}
         onChange={onChange}
         placeholder={palceholder}
-        minDate={new Date() || minDate}
+        minDate={dayjs(new Date()).add(1, "day").toDate() || minDate}
         maxDate={dayjs(new Date()).add(1, "month").toDate()}
         width="100%"
       />

@@ -3,7 +3,7 @@ import { Select } from "@mantine/core";
 export default function CarModel() {
   return (
     <Select
-      className="w-full custom"
+      className="custom"
       placeholder="Select Car Model"
       data={[
         { value: "usa", label: "Toyota" },

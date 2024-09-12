@@ -1,10 +1,10 @@
 "use client";
 
+import { Button } from "@mantine/core";
 import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import MapModal from "../shared/Map/MapModal";
+import DatePicker from "../cars/DatePicker";
 import CarModel from "./filterFrom/CarModel";
-import PicupDate from "./filterFrom/PicupDate";
 import ReturnLocation from "./filterFrom/ReturnLocation";
 import SelectCity from "./filterFrom/SelectCity";
 import SelectCountry from "./filterFrom/SelectCountry";
@@ -37,21 +37,19 @@ const CarReserveFrom = () => {
 
   return (
     <div className="carReservation">
-      <div className="flex justify-between">
+      <div className="">
         <h2 className="mb-5 font-bold text-3xl">Car Reservation</h2>
-        <MapModal />
       </div>
       <form onSubmit={handleSubmit}>
         <SelectCountry />
         <SelectCity />
         <ReturnLocation />
         <CarModel />
-        <PicupDate palceholder="Pickup Date" />
-        <PicupDate palceholder="Return Date" />
+        <DatePicker />
         <div className="buttons">
-          <button className="red_btn btn w-full text-white text-xl border border-white rounded">
-            Book now
-          </button>
+          <Button type="submit" variant="gradient" className="w-full" size="md">
+            Search for car
+          </Button>
         </div>
       </form>
     </div>

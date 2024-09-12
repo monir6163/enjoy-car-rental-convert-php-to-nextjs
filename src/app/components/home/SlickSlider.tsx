@@ -89,7 +89,7 @@ const SlickSlider = () => {
                 </div>
 
                 <div className="pt-5 hidden details_btn">
-                  <Link href={`rent-car/${car?.slug}`} className="w-full">
+                  <Link href={`cars/${car?.slug}`} className="w-full">
                     <button className="bg-white text-[#cc0505] border border-red-600 rounded-[10px] flex justify-center items-center text-sm cursor-pointer w-full font-semibold h-[40px]">
                       View Details
                     </button>
