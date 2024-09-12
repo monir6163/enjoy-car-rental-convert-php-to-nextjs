@@ -57,7 +57,6 @@ export default function Navbar() {
                 {navItems.map((item) => (
                   <NavItem key={item.name} path={item.path} label={item.name} />
                 ))}
-                {/* <Language /> */}
 
                 <AuthButton />
 

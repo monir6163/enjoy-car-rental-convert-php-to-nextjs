@@ -2,11 +2,13 @@ import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import type { Metadata } from "next";
+import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import Providers from "./provider/SessionProvider";
 
 export const metadata: Metadata = {
   title: "Car Rental App",
@@ -22,16 +24,19 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body
         className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
       >
-        <MantineProvider>
-          <NextTopLoader />
-          <ToastContainer />
-          <main>{children}</main>
-        </MantineProvider>
+        <Providers session={session}>
+          <MantineProvider>
+            <NextTopLoader />
+            <ToastContainer />
+            <main>{children}</main>
+          </MantineProvider>
+        </Providers>
       </body>
     </html>
   );
