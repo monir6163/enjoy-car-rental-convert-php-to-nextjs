@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import Container from "../shared/Container";
+import { GithubLogin } from "./GithubLogin";
 import { GoogleButton } from "./GoogleLogin";
 import { NotRegisteredAlert } from "./NotRegisteredAlert";
 import { NotVerifiedAlert } from "./NotVerifiedAlert";
@@ -46,7 +47,10 @@ export default function LoginApp() {
         <p className="text-gray-500 font-inter text-sm text-center">
           Login to your account
         </p>
-        <GoogleButton />
+        <div className="flex gap-3">
+          <GoogleButton />
+          <GithubLogin />
+        </div>
         <Divider
           label="Or continue with email"
           labelPosition="center"

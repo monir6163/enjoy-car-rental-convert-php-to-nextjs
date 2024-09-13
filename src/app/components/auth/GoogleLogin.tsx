@@ -5,13 +5,14 @@ import React from "react";
 
 export const GoogleButton = () => {
   const [loading, setLoading] = React.useState(false);
+
   return (
     <>
       <LoadingOverlay
         visible={loading}
         overlayProps={{ blur: 2, radius: "md" }}
       />
-      <Group grow mb="md" mt="md">
+      <Group grow mb="md" mt="md" className="w-full">
         <Button
           leftSection={<GoogleIcon />}
           variant="default"
@@ -36,8 +37,8 @@ function GoogleIcon(props: React.ComponentPropsWithoutRef<"svg">) {
       xmlns="http://www.w3.org/2000/svg"
       preserveAspectRatio="xMidYMid"
       viewBox="0 0 256 262"
-      width="0.9rem"
-      height="0.9rem"
+      width="24"
+      height="24"
       {...props}
     >
       <path
