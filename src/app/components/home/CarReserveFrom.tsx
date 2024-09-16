@@ -1,38 +1,35 @@
 "use client";
 
+import { useAppContext } from "@/context/AppContext";
+import { useCountries } from "@/hooks/useCountries";
+import { useRegions } from "@/hooks/useRegions";
 import { Button } from "@mantine/core";
-import { useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
 import DatePicker from "../cars/DatePicker";
 import CarModel from "./filterFrom/CarModel";
-import ReturnLocation from "./filterFrom/ReturnLocation";
 import SelectCity from "./filterFrom/SelectCity";
 import SelectCountry from "./filterFrom/SelectCountry";
 const CarReserveFrom = () => {
-  const [pickup_date, setPickupdate] = useState<Date | null>(null);
-  const [return_date, setReturnDate] = useState(null);
-  const [pickup_time, setPickupTime] = useState(null);
-  const [return_time, setReturnTime] = useState(null);
+  const {
+    state: { selectedCountry, selectedRegion },
+    setCountry,
+    setRegion,
+  } = useAppContext();
+  const { countries } = useCountries();
+  const { regions } = useRegions(selectedCountry?.id);
 
-  const addMonths = (date: Date, months: number) => {
-    const d = new Date(date);
-    d.setMonth(d.getMonth() + months);
-    return d;
+  const handleCountryChange = (value: string | null) => {
+    if (countries) {
+      const country = countries?.filter((country) => country.id === value)[0];
+      setCountry(country);
+    }
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
-    const formData = new FormData(e.target);
-    const data = {
-      location: formData.get("location"),
-      returning_location: formData.get("returning_location"),
-      car_model: formData.get("car_model"),
-      pickup_date: pickup_date,
-      return_date: return_date,
-      pickup_time: pickup_time,
-      return_time: return_time,
-    };
-    console.log(data);
+  const handleRegionChange = (value: string | null) => {
+    if (regions) {
+      const region = regions?.filter((region) => region.id === value)[0];
+      setRegion(region);
+    }
   };
 
   return (
@@ -40,10 +37,16 @@ const CarReserveFrom = () => {
       <div className="">
         <h2 className="mb-5 font-bold text-3xl">Car Reservation</h2>
       </div>
-      <form onSubmit={handleSubmit}>
-        <SelectCountry />
-        <SelectCity />
-        <ReturnLocation />
+      <form>
+        <SelectCountry
+          onChange={handleCountryChange}
+          value={selectedCountry?.id}
+        />
+        <SelectCity
+          onChange={handleRegionChange}
+          value={selectedRegion?.id}
+          countryId={selectedCountry?.id}
+        />
         <CarModel />
         <DatePicker />
         <div className="buttons">

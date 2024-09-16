@@ -1,6 +1,8 @@
 import { MantineProvider } from "@mantine/core";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
+
+import { AppContextProvider } from "@/context/AppContext";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
@@ -8,6 +10,7 @@ import NextTopLoader from "nextjs-toploader";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
+import ReactQueryProvider from "./provider/ReactQueryProvider";
 import Providers from "./provider/SessionProvider";
 
 export const metadata: Metadata = {
@@ -30,13 +33,17 @@ export default async function RootLayout({
       <body
         className={`${barlowCondensed.className} w-full h-full m-0 p-0 overflow-x-hidden`}
       >
-        <Providers session={session}>
-          <MantineProvider>
-            <NextTopLoader />
-            <ToastContainer position="bottom-right" theme="colored" />
-            <main>{children}</main>
-          </MantineProvider>
-        </Providers>
+        <ReactQueryProvider>
+          <Providers session={session}>
+            <AppContextProvider>
+              <MantineProvider>
+                <NextTopLoader />
+                <ToastContainer position="bottom-right" theme="colored" />
+                <main>{children}</main>
+              </MantineProvider>
+            </AppContextProvider>
+          </Providers>
+        </ReactQueryProvider>
       </body>
     </html>
   );

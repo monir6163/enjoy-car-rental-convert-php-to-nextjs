@@ -6,6 +6,6 @@ export const optionsFilter: OptionsFilter = ({ options, search }) => {
   );
 
   filtered.sort((a, b) => a.label.localeCompare(b.label));
-  console.log(filtered);
+
   return filtered;
 };

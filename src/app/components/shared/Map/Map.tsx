@@ -1,6 +1,8 @@
 "use client";
+import { useAppContext } from "@/context/AppContext";
 import { Container } from "@mantine/core";
-import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
+import { useEffect } from "react";
+import { MapContainer, Marker, Popup, TileLayer, useMap } from "react-leaflet";
 import styles from "./map.module.css";
 
 interface Props {
@@ -8,11 +10,24 @@ interface Props {
 }
 
 const MapBox = ({ height }: Props) => {
+  const {
+    state: { selectedCountry, selectedRegion },
+  } = useAppContext();
+
+  const getCordinates = (): [number, number] => {
+    if (selectedCountry) {
+      return [selectedCountry.latitude || 0, selectedCountry.longitude || 0];
+    }
+    if (selectedRegion) {
+      return [selectedRegion.latitude || 0, selectedRegion.longitude || 0];
+    }
+    return [23.777176, 90.399452];
+  };
   return (
     <Container className={styles.container} mb="1rem" size="100%">
       <MapContainer
         className={styles.mapContainer}
-        center={[51.505, -0.09]}
+        center={getCordinates()}
         zoom={14}
         style={{ height: height || "300px" }}
       >
@@ -20,11 +35,38 @@ const MapBox = ({ height }: Props) => {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png"
         />
-        <Marker position={[51.505, -0.09]}>
-          <Popup>City name</Popup>
-        </Marker>
+        <MapPossition
+          latitude={getCordinates()[0]}
+          longitude={getCordinates()[1]}
+          name={
+            selectedRegion
+              ? selectedRegion.name || ""
+              : selectedCountry
+              ? selectedCountry.name || ""
+              : "Bangladesh"
+          }
+        />
       </MapContainer>
     </Container>
   );
 };
+
 export default MapBox;
+
+interface MapMarkerProps {
+  latitude: number;
+  longitude: number;
+  name: string;
+}
+
+const MapPossition = ({ latitude, longitude, name }: MapMarkerProps) => {
+  const map = useMap();
+  useEffect(() => {
+    map.setView([latitude, longitude]);
+  }, [map, latitude, longitude]);
+  return (
+    <Marker position={[latitude, longitude]}>
+      <Popup>{name}</Popup>
+    </Marker>
+  );
+};

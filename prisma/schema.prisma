@@ -1,9 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -15,18 +9,23 @@ datasource db {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String        @id @default(cuid())
   name          String?
-  email         String    @unique
+  email         String        @unique
   password      String?
-  role          String?
+  role          String?       @default("user")
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
+  profile       UserProfile[]
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  userProfileId String?
+  Provider      Provider[]
+  Booking       Booking[]
+  Review        Review[]
 }
 
 model Account {
@@ -66,4 +65,156 @@ model VerificationToken {
   expires    DateTime
 
   @@id([identifier, token])
+}
+
+model UserProfile {
+  id        String    @id @default(cuid())
+  userId    String
+  firstName String?
+  lastName  String?
+  avatar    String?
+  email     String?
+  phone     String?
+  longitude Float?
+  latitude  Float?
+  city      String?
+  state     String?
+  countryId String?
+  regionId  String?
+  gender    String?
+  dob       DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country   Country?  @relation(fields: [countryId], references: [id])
+  region    Region?   @relation(fields: [regionId], references: [id])
+}
+
+model Provider {
+  id           String    @id @default(cuid())
+  userId       String
+  companyName  String
+  businessReg  String
+  contactName  String
+  contactPhone String
+  countryId    String
+  regionId     String
+  city         String
+  street       String
+  longitude    Float?
+  latitude     Float?
+  avatar       String?
+  active       Boolean   @default(true)
+  email        String
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  country      Country   @relation(fields: [countryId], references: [id])
+  region       Region    @relation(fields: [regionId], references: [id])
+  Car          Car[]
+  Booking      Booking[]
+  Review       Review[]
+}
+
+model Country {
+  id          String        @id @default(cuid())
+  name        String
+  code        String?
+  longitude   Float?
+  latitude    Float?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  Region      Region[]
+  UserProfile UserProfile[]
+  Provider    Provider[]
+  Car         Car[]
+}
+
+model Region {
+  id        String   @id @default(cuid())
+  name      String
+  countryId String
+  longitude Float?
+  latitude  Float?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  country     Country       @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  UserProfile UserProfile[]
+  Provider    Provider[]
+  Car         Car[]
+}
+
+model Car {
+  id            String   @id @default(cuid())
+  slug          String   @unique
+  make          String
+  model         String
+  year          Int
+  color         String
+  description   String?
+  images        String[]
+  fuelType      String
+  bodyType      String
+  transmission  String
+  engineCapaciy Int
+  seatsCapacity Int
+  doorsCapacity Int
+  bagsCapacity  Int
+  acAvailable   Boolean
+  gpsAvailable  Boolean
+  wifiAvailable Boolean
+  otherFeatures String[]
+  minimumRent   Int
+  maximumRent   Int
+  pricePerHour  Int
+  pricePerDay   Int
+  pricePerWeek  Int
+  pricePerMonth Int
+  status        String   @default("available")
+  countryId     String
+  regionId      String
+  providerId    String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  country  Country   @relation(fields: [countryId], references: [id], onDelete: Cascade)
+  region   Region    @relation(fields: [regionId], references: [id], onDelete: Cascade)
+  provider Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  Booking  Booking[]
+  Review   Review[]
+}
+
+model Booking {
+  id         String   @id @default(cuid())
+  userId     String
+  carId      String
+  providerId String
+  pickUpDate DateTime
+  returnDate DateTime
+  totalPrice Int
+  status     String   @default("pending")
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car      Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+}
+
+model Review {
+  id         String   @id @default(cuid())
+  userId     String
+  providerId String
+  carId      String
+  rate       Float
+  comment    String?
+  likes      Int      @default(0)
+  dislikes   Int      @default(0)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  car      Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
 }

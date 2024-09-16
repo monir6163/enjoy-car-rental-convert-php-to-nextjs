@@ -1,4 +1,4 @@
-import { ghCurrency } from "@/const";
+import { ghCurrencySymbol } from "@/const";
 import { Box, Flex, NumberInput, RangeSlider, Text } from "@mantine/core";
 
 const lowestPrice = 0;
@@ -6,7 +6,7 @@ const highestPrice = 5000;
 
 export const PriceRange = () => {
   const labelFormatter = (value: number) => {
-    return `${ghCurrency} ${value}`;
+    return `${ghCurrencySymbol} ${value}`;
   };
 
   return (

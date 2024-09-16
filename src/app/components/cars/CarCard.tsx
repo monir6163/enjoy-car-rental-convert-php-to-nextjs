@@ -1,4 +1,4 @@
-import { ghCurrency } from "@/const";
+import { ghCurrencySymbol } from "@/const";
 import {
   Box,
   Button,
@@ -73,7 +73,7 @@ export const CarCard = () => {
 
         <Flex align="flex-end">
           <Text fw="bold" size="lg">
-            {ghCurrency}
+            {ghCurrencySymbol}
             {300}
           </Text>
           <Text size="xs">/day</Text>
