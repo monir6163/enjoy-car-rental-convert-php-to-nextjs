@@ -1,3 +1,4 @@
+import prisma from "@/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { ISODateString, NextAuthOptions, User } from "next-auth";
 import { Adapter } from "next-auth/adapters";
@@ -5,7 +6,6 @@ import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-import { prisma } from "../../prisma";
 
 export type CustomSession = {
   user?: CustomUser;

@@ -1,6 +1,6 @@
 "use server";
-import prisma from "../../prisma";
 import { CountryGetAllType, RegionGetAllType } from "../../types";
+import prisma from "../prisma";
 
 export async function getAllCountriesAsync(): Promise<CountryGetAllType[]> {
   try {
