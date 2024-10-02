@@ -73,10 +73,7 @@ model UserProfile {
   firstName String?
   lastName  String?
   avatar    String?
-  email     String?
   phone     String?
-  longitude Float?
-  latitude  Float?
   city      String?
   state     String?
   countryId String?

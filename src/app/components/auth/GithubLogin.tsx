@@ -1,10 +1,13 @@
 "use client";
 import { Button, Group, LoadingOverlay } from "@mantine/core";
 import { signIn } from "next-auth/react";
+import { useSearchParams } from "next/navigation";
 import React from "react";
 
 export const GithubLogin = () => {
   const [loading, setLoading] = React.useState(false);
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl");
   return (
     <>
       <LoadingOverlay
@@ -19,7 +22,7 @@ export const GithubLogin = () => {
           radius=""
           onClick={async () => {
             setLoading(true);
-            await signIn("github", { callbackUrl: "/" });
+            await signIn("github", { callbackUrl: callbackUrl || "/" });
             setLoading(false);
           }}
         >
