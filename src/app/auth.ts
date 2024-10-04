@@ -6,6 +6,8 @@ import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
+// const publicRoutes = ["/auth/signin", "/auth/signup"];
+const authRoutes = ["/login", "/signup"];
 
 export type CustomSession = {
   user?: CustomUser;
@@ -32,7 +34,7 @@ const users = [
   {
     id: "2",
     name: "User",
-    email: "user@gmail.com",
+    email: "user2@gmail.com",
     password: "user12",
     role: "user",
     avatar: "img",

@@ -7,7 +7,6 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
-import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./globals.css";
 import ReactQueryProvider from "./provider/ReactQueryProvider";
@@ -38,7 +37,7 @@ export default async function RootLayout({
             <AppContextProvider>
               <MantineProvider>
                 <NextTopLoader />
-                <ToastContainer position="bottom-right" theme="colored" />
+
                 <main>{children}</main>
               </MantineProvider>
             </AppContextProvider>

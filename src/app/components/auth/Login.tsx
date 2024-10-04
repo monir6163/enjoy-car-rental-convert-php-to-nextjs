@@ -7,6 +7,7 @@ import {
   Stack,
   TextInput,
 } from "@mantine/core";
+import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -19,6 +20,7 @@ import { NotVerifiedAlert } from "./NotVerifiedAlert";
 const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
   const params = useSearchParams();
+  const callbackUrl = params.get("callbackUrl");
   const error = params.get("error");
   const [notRegistered, setNotRegistered] = useState<boolean>(false);
   const [notVerified, setNotVerified] = useState<boolean>(false);
@@ -27,6 +29,18 @@ export default function LoginApp() {
   const { push } = useRouter();
   const handleLogin = async () => {
     const { email, password } = loginForm.values;
+    setIsSubmitting(true);
+    await signIn("credentials", {
+      email,
+      password,
+      redirect: false,
+    }).then((res) => {
+      if (res?.ok === false) {
+        setIsSubmitting(false);
+      } else {
+        push(callbackUrl || "/");
+      }
+    });
   };
 
   //protecting error message
