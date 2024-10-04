@@ -20,12 +20,13 @@ export async function middleware(request: NextRequest) {
       adminProtectedRoutes.includes(pathname))
   ) {
     const redirectUrl = new URL("/login", request.url);
-    // i want to after login redirect to the page that user was trying to access
-    redirectUrl.searchParams.set("callbackUrl", pathname);
     redirectUrl.searchParams.set(
       "error",
       "Please login first to access this route"
     );
+    // i want to after login redirect to the page that user was trying to access
+
+    redirectUrl.searchParams.set("callbackUrl", pathname);
 
     return NextResponse.redirect(redirectUrl);
   }

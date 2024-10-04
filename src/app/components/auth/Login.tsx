@@ -11,7 +11,7 @@ import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import Container from "../shared/Container";
 import { GithubLogin } from "./GithubLogin";
 import { GoogleButton } from "./GoogleLogin";
@@ -21,6 +21,7 @@ const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl");
+  console.log(callbackUrl);
   const error = params.get("error");
   const [notRegistered, setNotRegistered] = useState<boolean>(false);
   const [notVerified, setNotVerified] = useState<boolean>(false);
@@ -56,7 +57,7 @@ export default function LoginApp() {
         visible={isSubmitting}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
-
+      <ToastContainer position="bottom-right" theme="colored" />
       <div className="w-full sm:w-2/3 md:w-2/5  mx-auto border py-5 px-5 sm:px-12 md:px-5">
         <p className="text-gray-500 font-inter text-sm text-center">
           Login to your account
