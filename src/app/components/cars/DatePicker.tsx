@@ -1,7 +1,7 @@
+import { useAppContext } from "@/context/AppContext";
 import { Flex } from "@mantine/core";
 import { DateInput, DateValue } from "@mantine/dates";
 import dayjs from "dayjs";
-import { useState } from "react";
 
 interface Props {
   placeholder?: string;
@@ -12,8 +12,11 @@ interface Props {
 }
 
 export default function DatePicker() {
-  const [pickupDate, setPickupDate] = useState<Date | null>(null);
-  const [returnDate, setReturnDate] = useState<Date | null>(null);
+  const {
+    state: { picupDate, returnDate },
+    setPicupDate,
+    setReturnDate,
+  } = useAppContext();
 
   return (
     <Flex
@@ -27,9 +30,9 @@ export default function DatePicker() {
       className="custom"
     >
       <PickupDate
-        value={pickupDate}
+        value={picupDate}
         onChange={(date) => {
-          setPickupDate(date);
+          setPicupDate(date);
           if (
             returnDate &&
             dayjs(returnDate).isBefore(dayjs(date).add(1, "day"))
@@ -46,7 +49,7 @@ export default function DatePicker() {
         onChange={setReturnDate}
         placeholder="Select return date"
         minDate={
-          pickupDate ? dayjs(pickupDate).add(1, "day").toDate() : new Date()
+          picupDate ? dayjs(picupDate).add(1, "day").toDate() : new Date()
         }
         maxDate={dayjs(new Date()).add(1, "month").toDate()}
       />

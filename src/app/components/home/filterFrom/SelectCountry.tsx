@@ -16,7 +16,6 @@ export default function SelectCountry({ value, onChange }: Props) {
       className="custom"
       placeholder="Select Country"
       searchable
-      clearable
       nothingFoundMessage="No country found"
       data={
         countries

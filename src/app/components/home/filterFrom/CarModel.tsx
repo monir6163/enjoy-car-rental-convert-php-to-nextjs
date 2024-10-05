@@ -1,17 +1,30 @@
 import { Select } from "@mantine/core";
-
-export default function CarModel() {
+interface Props {
+  value?: string;
+  label?: string;
+  onChange?: (value: string) => void;
+}
+export default function CarModel({ value, label, onChange }: Props) {
+  const carModels = [
+    { value: "one", label: "Model 1" },
+    { value: "two", label: "Model 2" },
+    { value: "three", label: "Model 3" },
+  ];
   return (
     <Select
       className="custom"
       placeholder="Select Car Model"
-      data={[
-        { value: "usa", label: "Toyota" },
-        { value: "serbia", label: "Honda" },
-        { value: "bd", label: "BMW" },
-      ]}
+      data={
+        carModels
+          ? carModels?.map((carModel) => ({
+              value: carModel.value,
+              label: carModel.label,
+            }))
+          : []
+      }
+      value={value}
+      onChange={(value) => onChange && onChange(value || "")}
       searchable
-      clearable
       nothingFoundMessage="No car model found"
     />
   );

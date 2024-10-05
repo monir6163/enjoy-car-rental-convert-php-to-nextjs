@@ -1,19 +1,23 @@
-import { Button, Container, Flex } from "@mantine/core";
+import { Container, Flex } from "@mantine/core";
 
+import { Button } from "@/components/ui/button";
 import { useAppContext } from "@/context/AppContext";
 import { useCountries } from "@/hooks/useCountries";
 import { useRegions } from "@/hooks/useRegions";
 import CarModel from "../home/filterFrom/CarModel";
-import SelectCity from "../home/filterFrom/SelectCity";
 import SelectCountry from "../home/filterFrom/SelectCountry";
+import SelectRegion from "../home/filterFrom/SelectRegion";
 import DatePicker from "./DatePicker";
 import styles from "./search.module.css";
 
 export const SearchEngine = () => {
   const {
-    state: { selectedCountry, selectedRegion },
+    state: { selectedCountry, selectedRegion, carModel, picupDate, returnDate },
     setCountry,
     setRegion,
+    setCarModel,
+    setPicupDate,
+    setReturnDate,
   } = useAppContext();
   const { countries } = useCountries();
   const { regions } = useRegions(selectedCountry?.id);
@@ -31,6 +35,10 @@ export const SearchEngine = () => {
       setRegion(region);
     }
   };
+  const handleCarModelChange = (value: string | null) => {
+    const carModel = { label: value || "", value: value || "" };
+    setCarModel(carModel);
+  };
   return (
     <Container className={styles.container} size="100%">
       <Flex
@@ -46,16 +54,22 @@ export const SearchEngine = () => {
           onChange={handleCountryChange}
           value={selectedCountry?.id}
         />
-        <SelectCity
+        <SelectRegion
           onChange={handleRegionChange}
           value={selectedRegion?.id}
           countryId={selectedCountry?.id}
         />
-        <CarModel />
+        <CarModel
+          onChange={handleCarModelChange}
+          value={carModel?.value}
+          label={carModel?.label}
+        />
         <DatePicker />
         {/* <PicupDate palceholder="Pickup Date" />
         <ReturnDate palceholder="Return Date" /> */}
-        <Button variant="gradient">Search for car</Button>
+        <Button type="submit" className="text-white rounded">
+          Search for car
+        </Button>
       </Flex>
     </Container>
   );

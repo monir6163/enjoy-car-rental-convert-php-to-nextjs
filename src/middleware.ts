@@ -28,7 +28,7 @@ export async function middleware(request: NextRequest) {
 
     redirectUrl.searchParams.set("callbackUrl", pathname);
 
-    return NextResponse.redirect(redirectUrl);
+    return NextResponse.redirect(new URL(redirectUrl.toString()));
   }
 
   // * If user tries to access admin routes

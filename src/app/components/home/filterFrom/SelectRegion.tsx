@@ -8,12 +8,18 @@ interface Props {
   onChange?: (value: string) => void;
 }
 
-export default function SelectCity({ value, countryId, onChange }: Props) {
+export default function SelectRegion({
+  value,
+  countryId,
+  onChange,
+  ...rest
+}: Props) {
   const { regions, isLoading } = useRegions(countryId);
   return (
     <Select
       className="custom"
       placeholder="Select Region"
+      {...rest}
       data={
         regions
           ? regions?.map((region: RegionGetAllType) => ({
@@ -23,13 +29,12 @@ export default function SelectCity({ value, countryId, onChange }: Props) {
           : []
       }
       searchable
-      clearable
       nothingFoundMessage="No city found"
       value={value}
       onChange={(value) => onChange && onChange(value || "")}
       filter={optionsFilter}
       maxDropdownHeight={280}
-      disabled={isLoading}
+      disabled={`${!countryId}` === "true" || isLoading}
     />
   );
 }
