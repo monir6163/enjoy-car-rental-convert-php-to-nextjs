@@ -1,5 +1,6 @@
 import prisma from "@/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcrypt";
 import { ISODateString, NextAuthOptions, User } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
@@ -20,26 +21,6 @@ export type CustomUser = {
   role?: string | null;
   avatar?: string | null;
 };
-
-const users = [
-  {
-    id: "1",
-    name: "Monir",
-    email: "admin@gmail.com",
-    password: "admin6",
-    role: "admin",
-    avatar: "img",
-  },
-
-  {
-    id: "2",
-    name: "User",
-    email: "user2@gmail.com",
-    password: "user12",
-    role: "user",
-    avatar: "img",
-  },
-];
 
 export const authOptions: NextAuthOptions = {
   adapter: PrismaAdapter(prisma) as Adapter,
@@ -77,11 +58,18 @@ export const authOptions: NextAuthOptions = {
         },
       },
       async authorize(credentials: any, req: any) {
-        const user = users.find(
-          (user) =>
-            user.email === credentials.email &&
-            user.password === credentials.password
-        );
+        const user = await prisma.user.findUnique({
+          where: {
+            email: credentials.email,
+          },
+        });
+        if (!user) {
+          return null;
+        }
+        const valid = await bcrypt.compare(credentials.password, user.password);
+        if (!valid) {
+          return null;
+        }
         if (user) {
           return user;
         } else {
@@ -112,6 +100,7 @@ export const authOptions: NextAuthOptions = {
       //   ...session,
       //   username: token.email,
       // };
+
       session.user = token.user as CustomUser;
       return session;
     },

@@ -3,6 +3,7 @@ import { Flex } from "@mantine/core";
 import { useState } from "react";
 import { initialCompanyDetails, IReqProviderProps } from "../../../../types";
 import CompanyDetails from "./CompanyDetails";
+import LoginDetails from "./LoginDetails";
 
 export default function ProvidersAccountCreation() {
   const [page, setPage] = useState<number>(1);
@@ -27,8 +28,11 @@ export default function ProvidersAccountCreation() {
       )}
       {page === 2 && (
         <div>
-          <h1>Page 2</h1>
-          <button onClick={() => setPage(1)}>Back</button>
+          <LoginDetails
+            prev={() => setPage(1)}
+            companyDetails={companyDetails}
+            setCompanyDetails={setCompanyDetails}
+          />
         </div>
       )}
     </Flex>

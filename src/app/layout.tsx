@@ -3,6 +3,7 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 
 import { AppContextProvider } from "@/context/AppContext";
+import { AuthContextProvider } from "@/context/AuthContext";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
@@ -27,6 +28,13 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const session = await getServerSession();
+  const user = session?.user
+    ? {
+        name: session.user.name ?? "",
+        email: session.user.email ?? "",
+        image: session.user.image ?? "",
+      }
+    : undefined;
   return (
     <html lang="en">
       <body
@@ -34,13 +42,15 @@ export default async function RootLayout({
       >
         <ReactQueryProvider>
           <Providers session={session}>
-            <AppContextProvider>
-              <MantineProvider>
-                <NextTopLoader />
+            <AuthContextProvider user={user} session={session}>
+              <AppContextProvider>
+                <MantineProvider>
+                  <NextTopLoader />
 
-                <main>{children}</main>
-              </MantineProvider>
-            </AppContextProvider>
+                  <main>{children}</main>
+                </MantineProvider>
+              </AppContextProvider>
+            </AuthContextProvider>
           </Providers>
         </ReactQueryProvider>
       </body>

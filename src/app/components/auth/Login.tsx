@@ -1,4 +1,5 @@
 "use client";
+import { useAuthContext } from "@/context/AuthContext";
 import { useLoginForm } from "@/hooks/useLoginForm";
 import {
   Divider,
@@ -7,7 +8,6 @@ import {
   Stack,
   TextInput,
 } from "@mantine/core";
-import { signIn } from "next-auth/react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -21,29 +21,29 @@ const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl");
-  console.log(callbackUrl);
   const error = params.get("error");
   const [notRegistered, setNotRegistered] = useState<boolean>(false);
   const [notVerified, setNotVerified] = useState<boolean>(false);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const loginForm = useLoginForm();
-  const { push } = useRouter();
+  const { push, refresh } = useRouter();
+  const { loginWithCredentials, user }: any = useAuthContext();
   const handleLogin = async () => {
     const { email, password } = loginForm.values;
     setIsSubmitting(true);
-    await signIn("credentials", {
-      email,
-      password,
-      redirect: false,
-    }).then((res) => {
-      if (res?.ok === false) {
-        setIsSubmitting(false);
-      } else {
-        push(callbackUrl || "/");
-      }
-    });
+    const { error, ok } = await loginWithCredentials(email, password);
+    refresh();
+    setIsSubmitting(false);
+    if (error && ok === false) {
+      setNotRegistered(true);
+      toast.error(errorMessage);
+      return;
+    } else {
+      setNotRegistered(false);
+      toast.success("Login successful");
+      window.location.assign(callbackUrl || "/");
+    }
   };
-
   //protecting error message
   useEffect(() => {
     if (window !== undefined) {

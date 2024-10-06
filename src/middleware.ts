@@ -13,26 +13,29 @@ export async function middleware(request: NextRequest) {
   // * Protected routes for admin
   const adminProtectedRoutes = ["/admin/dashboard"];
 
+  // * Protected routes for provider
+  const providerProtectedRoutes = ["/provider"];
+
   // * If no token or user exists and user/admin tries to access protected routes
   if (
     !token &&
     (userProtectedRoutes.includes(pathname) ||
-      adminProtectedRoutes.includes(pathname))
+      adminProtectedRoutes.includes(pathname) ||
+      providerProtectedRoutes.includes(pathname))
   ) {
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set(
       "error",
       "Please login first to access this route"
     );
-    // i want to after login redirect to the page that user was trying to access
-
-    redirectUrl.searchParams.set("callbackUrl", pathname);
-
-    return NextResponse.redirect(new URL(redirectUrl.toString()));
+    return NextResponse.redirect(redirectUrl);
   }
 
   // * If user tries to access admin routes
-  if (adminProtectedRoutes.includes(pathname) && user?.role === "user") {
+  if (
+    adminProtectedRoutes.includes(pathname) ||
+    (providerProtectedRoutes.includes(pathname) && user?.role === "user")
+  ) {
     return NextResponse.redirect(
       new URL("/login?error=You do not have access to this route.", request.url)
     );
@@ -43,6 +46,10 @@ export async function middleware(request: NextRequest) {
     if (token) {
       if (user?.role === "admin") {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));
+      } else if (user?.role === "provider") {
+        return NextResponse.redirect(
+          new URL("/provider/dashboard", request.url)
+        );
       } else if (user?.role === "user") {
         return NextResponse.redirect(new URL("/", request.url));
       }
