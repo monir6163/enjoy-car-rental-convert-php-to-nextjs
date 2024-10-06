@@ -8,6 +8,7 @@ import {
   Input,
   LoadingOverlay,
   Notification,
+  PasswordInput,
   Space,
   Text,
   Title,
@@ -112,7 +113,7 @@ export default function LoginDetails({
             <Group grow>
               <Box>
                 <Input.Label htmlFor="password">Password</Input.Label>
-                <Input
+                <PasswordInput
                   id="password"
                   required
                   value={password}
@@ -130,7 +131,7 @@ export default function LoginDetails({
                 <Input.Label htmlFor="confirmPassword">
                   Confirm Password
                 </Input.Label>
-                <Input
+                <PasswordInput
                   id="confirmPassword"
                   required
                   value={confirmPassword}

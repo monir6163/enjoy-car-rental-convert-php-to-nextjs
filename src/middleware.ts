@@ -20,8 +20,7 @@ export async function middleware(request: NextRequest) {
   if (
     !token &&
     (userProtectedRoutes.includes(pathname) ||
-      adminProtectedRoutes.includes(pathname) ||
-      providerProtectedRoutes.includes(pathname))
+      adminProtectedRoutes.includes(pathname))
   ) {
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set(
