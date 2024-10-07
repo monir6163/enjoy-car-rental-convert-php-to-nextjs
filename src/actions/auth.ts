@@ -72,7 +72,6 @@ export const signUpUserWithCredentials = async (
   password: string
 ) => {
   try {
-    // Hash the password before the transaction, as this is not a database operation.
     const hashedPassword = await bcrypt.hash(password, 10);
 
     // Check if the user already exists
@@ -80,29 +79,19 @@ export const signUpUserWithCredentials = async (
       where: { email: email.toLowerCase() },
     });
 
-    if (userExists) {
+    if (userExists?.emailVerified) {
       return { error: "User already exists. Please try another one." };
     }
 
-    // Execute database operations within the transaction
-    // const res = await prisma.$transaction(async (prisma: any) => {
-    //   // Create the user
-    //   const user = await prisma.user.create({
-    //     data: {
-    //       email: email.toLowerCase(),
-    //       password: hashedPassword,
-    //       role: "user",
-    //     },
-    //   });
-
-    //   // Generate the email verification token
-    //   const token = await generateVerificationToken(email.toLowerCase());
-
-    //   return { user, token };
-    // });
-
-    // Send the email outside of the transaction
-    // await sendMail(email.toLowerCase(), "Verify your email", res.token.token);
+    if (userExists && !userExists.emailVerified) {
+      // Generate the email verification token
+      const token = await generateVerificationToken(userExists?.email);
+      await sendMail(userExists?.email, "Verify your email", token.token);
+      return {
+        error:
+          "User is already registered but not verified. A new verification email has been sent.",
+      };
+    }
 
     const user = await prisma.user.create({
       data: {
