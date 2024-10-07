@@ -19,8 +19,7 @@ import { GoogleButton } from "./GoogleLogin";
 const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
   const params = useSearchParams();
-  const callbackUrl = params.get("callbackUrl");
-  const errorUrl = params.get("error");
+  const errorUrl = params.get("private");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const loginForm = useLoginForm();
@@ -36,7 +35,7 @@ export default function LoginApp() {
       return;
     } else {
       toast.success("Login successful");
-      window.location.assign(callbackUrl || "/");
+      window.location.href = "/";
     }
   };
   //protecting error message

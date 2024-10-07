@@ -24,19 +24,19 @@ export async function middleware(request: NextRequest) {
   ) {
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set(
-      "error",
+      "private",
       "Please login first to access this route"
     );
     return NextResponse.redirect(redirectUrl);
   }
 
   // * If user tries to access admin routes
-  if (
-    adminProtectedRoutes.includes(pathname) ||
-    (providerProtectedRoutes.includes(pathname) && user?.role === "user")
-  ) {
+  if (adminProtectedRoutes.includes(pathname) && user?.role === "user") {
     return NextResponse.redirect(
-      new URL("/login?error=You do not have access to this route.", request.url)
+      new URL(
+        "/login?private=You do not have access to this route.",
+        request.url
+      )
     );
   }
 
