@@ -10,28 +10,35 @@ import {
   TextInput,
 } from "@mantine/core";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 import Container from "../shared/Container";
+import { FormError } from "./Form-error";
+import { FormSuccess } from "./Form-success";
 import { GoogleButton } from "./GoogleLogin";
 
 export default function SignupApp() {
-  const [isSubmitted, setIsSubmitted] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const { push } = useRouter();
   const signupForm = useSignupFrom();
   const handleSignup = async () => {
     const { email, password } = signupForm.values;
     setIsSubmitting(true);
+    setError(null);
+    setSuccess(null);
     const res = await signUpUserWithCredentials(email, password);
     setIsSubmitting(false);
-    if (res.error) {
+    if (res?.error) {
+      console.log(res?.error);
+      setError(res?.error);
       toast.error(res.error);
       setIsSubmitting(false);
-    } else {
+    }
+    if (res?.message) {
+      setSuccess(res.message);
       toast.success(res.message);
-      push("/login");
+      setIsSubmitting(false);
     }
     setIsSubmitting(false);
   };
@@ -114,7 +121,8 @@ export default function SignupApp() {
                 Forgot password?
               </Link>
             </div>
-
+            <FormSuccess message={success} />
+            <FormError message={error} />
             <button
               type="submit"
               className="bg-red-600 hover:bg-red-700 w-full text-white font-bold py-2 px-8 rounded focus:outline-none focus:shadow-outline"

@@ -1,5 +1,7 @@
 "use server";
 
+import { sendMail } from "@/lib/mail";
+import { generateVerificationToken } from "@/lib/token";
 import prisma from "@/prisma";
 import bcrypt from "bcrypt";
 import { revalidatePath } from "next/cache";
@@ -70,28 +72,56 @@ export const signUpUserWithCredentials = async (
   password: string
 ) => {
   try {
+    // Hash the password before the transaction, as this is not a database operation.
     const hashedPassword = await bcrypt.hash(password, 10);
-    //check if the user already exists
+
+    // Check if the user already exists
     const userExists = await prisma.user.findUnique({
-      where: {
-        email: email,
-      },
+      where: { email: email.toLowerCase() },
     });
 
     if (userExists) {
-      return { error: "User already exists" };
+      return { error: "User already exists. Please try another one." };
     }
+
+    // Execute database operations within the transaction
+    // const res = await prisma.$transaction(async (prisma: any) => {
+    //   // Create the user
+    //   const user = await prisma.user.create({
+    //     data: {
+    //       email: email.toLowerCase(),
+    //       password: hashedPassword,
+    //       role: "user",
+    //     },
+    //   });
+
+    //   // Generate the email verification token
+    //   const token = await generateVerificationToken(email.toLowerCase());
+
+    //   return { user, token };
+    // });
+
+    // Send the email outside of the transaction
+    // await sendMail(email.toLowerCase(), "Verify your email", res.token.token);
 
     const user = await prisma.user.create({
       data: {
-        email: email,
+        email: email.toLowerCase(),
         password: hashedPassword,
         role: "user",
       },
     });
 
-    return { status: "success", message: "User created successfully" };
+    // Generate the email verification token
+    const token = await generateVerificationToken(email.toLowerCase());
+    await sendMail(email.toLowerCase(), "Verify your email", token.token);
+
+    return {
+      status: "success",
+      message: "User created successfully! Please check your email.",
+    };
   } catch (error: any) {
+    console.error("Error in signUpUserWithCredentials:", error);
     return { error: error.message };
   }
 };

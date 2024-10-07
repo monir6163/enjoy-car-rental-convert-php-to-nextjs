@@ -1,5 +1,5 @@
 "use client";
-import { useAuthContext } from "@/context/AuthContext";
+import { loginWithCredentials } from "@/hooks/login";
 import { useLoginForm } from "@/hooks/useLoginForm";
 import {
   Divider,
@@ -9,37 +9,32 @@ import {
   TextInput,
 } from "@mantine/core";
 import Link from "next/link";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Container from "../shared/Container";
+import { FormError } from "./Form-error";
 import { GithubLogin } from "./GithubLogin";
 import { GoogleButton } from "./GoogleLogin";
-import { NotRegisteredAlert } from "./NotRegisteredAlert";
-import { NotVerifiedAlert } from "./NotVerifiedAlert";
 const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
   const params = useSearchParams();
   const callbackUrl = params.get("callbackUrl");
-  const error = params.get("error");
-  const [notRegistered, setNotRegistered] = useState<boolean>(false);
-  const [notVerified, setNotVerified] = useState<boolean>(false);
+  const errorUrl = params.get("error");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
   const loginForm = useLoginForm();
-  const { push, refresh } = useRouter();
-  const { loginWithCredentials, user }: any = useAuthContext();
   const handleLogin = async () => {
     const { email, password } = loginForm.values;
     setIsSubmitting(true);
-    const { error, ok } = await loginWithCredentials(email, password);
-    refresh();
+    setError(null);
+    const res = await loginWithCredentials(email, password);
     setIsSubmitting(false);
-    if (error && ok === false) {
-      setNotRegistered(true);
+    if (res?.error) {
+      setError(res?.error && errorMessage);
       toast.error(errorMessage);
       return;
     } else {
-      setNotRegistered(false);
       toast.success("Login successful");
       window.location.assign(callbackUrl || "/");
     }
@@ -47,9 +42,9 @@ export default function LoginApp() {
   //protecting error message
   useEffect(() => {
     if (window !== undefined) {
-      toast.error(error);
+      toast.error(errorUrl);
     }
-  }, [error]);
+  }, [errorUrl]);
 
   return (
     <Container>
@@ -98,9 +93,6 @@ export default function LoginApp() {
             />
           </Stack>
 
-          {notRegistered && <NotRegisteredAlert />}
-          {notVerified && <NotVerifiedAlert />}
-
           <div className="flex justify-between text-sm text-blue-500 my-4 ">
             <Link
               href={"/signup"}
@@ -115,6 +107,8 @@ export default function LoginApp() {
               Forgot password?
             </Link>
           </div>
+
+          <FormError message={error} />
 
           <button
             type="submit"

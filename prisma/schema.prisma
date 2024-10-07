@@ -60,11 +60,12 @@ model Session {
 }
 
 model VerificationToken {
-  identifier String
-  token      String
-  expires    DateTime
+  id      String   @id @default(cuid())
+  email   String
+  token   String
+  expires DateTime
 
-  @@id([identifier, token])
+  @@unique([email, token])
 }
 
 model UserProfile {

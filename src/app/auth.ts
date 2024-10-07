@@ -30,7 +30,6 @@ export const authOptions: NextAuthOptions = {
   },
   pages: {
     signIn: "/login",
-    error: "/login",
   },
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
@@ -64,11 +63,11 @@ export const authOptions: NextAuthOptions = {
           },
         });
         if (!user) {
-          return null;
+          return { error: "No user found" };
         }
         const valid = await bcrypt.compare(credentials.password, user.password);
         if (!valid) {
-          return null;
+          return { error: "Password is incorrect" };
         }
         if (user) {
           return user;
@@ -79,6 +78,19 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
+    async signIn({ user, account }: { user: CustomUser; account: any }) {
+      if (account?.provider !== "credentials") {
+        return true;
+      }
+      const existingUser = await prisma.user.findUnique({
+        where: { id: user.id },
+      });
+      if (!existingUser?.emailVerified) {
+        return false;
+      }
+      return true;
+    },
+
     async jwt({ token, user }: { token: JWT; user: CustomUser }) {
       if (user) {
         // return { ...token, ...user };
