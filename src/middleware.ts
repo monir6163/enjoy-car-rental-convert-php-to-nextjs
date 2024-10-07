@@ -31,7 +31,10 @@ export async function middleware(request: NextRequest) {
   }
 
   // * If user tries to access admin routes
-  if (adminProtectedRoutes.includes(pathname) && user?.role === "user") {
+  if (
+    adminProtectedRoutes.includes(pathname) ||
+    (providerProtectedRoutes.includes(pathname) && user?.role === "user")
+  ) {
     return NextResponse.redirect(
       new URL(
         "/login?private=You do not have access to this route.",
@@ -41,7 +44,11 @@ export async function middleware(request: NextRequest) {
   }
 
   // * If user or admin tries to access login or register page while logged in
-  if (pathname === "/login" || pathname === "/register") {
+  if (
+    pathname === "/login" ||
+    pathname === "/register" ||
+    pathname === "/provider"
+  ) {
     if (token) {
       if (user?.role === "admin") {
         return NextResponse.redirect(new URL("/admin/dashboard", request.url));
