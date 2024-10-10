@@ -14,13 +14,14 @@ export async function middleware(request: NextRequest) {
   const adminProtectedRoutes = ["/admin/dashboard"];
 
   // * Protected routes for provider
-  const providerProtectedRoutes = ["/provider"];
+  const providerProtectedRoutes = ["/provider/dashboard"];
 
   // * If no token or user exists and user/admin tries to access protected routes
   if (
     !token &&
     (userProtectedRoutes.includes(pathname) ||
-      adminProtectedRoutes.includes(pathname))
+      adminProtectedRoutes.includes(pathname) ||
+      providerProtectedRoutes.includes(pathname))
   ) {
     const redirectUrl = new URL("/login", request.url);
     redirectUrl.searchParams.set(
@@ -66,3 +67,7 @@ export async function middleware(request: NextRequest) {
   // * If no special condition applies, proceed to the next handler
   return NextResponse.next();
 }
+
+export const config = {
+  matcher: ["/((?!api|_next/static|_next/image|.*\\.png$).*)"],
+};

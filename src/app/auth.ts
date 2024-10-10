@@ -3,14 +3,12 @@ import { generateVerificationToken } from "@/lib/token";
 import prisma from "@/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcrypt";
-import { ISODateString, NextAuthOptions, User } from "next-auth";
+import { ISODateString, NextAuthOptions } from "next-auth";
 import { Adapter } from "next-auth/adapters";
 import { JWT } from "next-auth/jwt";
 import CredentialsProvider from "next-auth/providers/credentials";
 import GitHubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
-// const publicRoutes = ["/auth/signin", "/auth/signup"];
-const authRoutes = ["/login", "/signup"];
 
 export type CustomSession = {
   user?: CustomUser;
@@ -22,6 +20,7 @@ export type CustomUser = {
   email?: string | null;
   role?: string | null;
   avatar?: string | null;
+  password?: string | null; // Optional, not used in session
 };
 
 export const authOptions: NextAuthOptions = {
@@ -72,7 +71,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error("Incorrect password");
         }
         if (user && !user.emailVerified) {
-          // Generate the email verification token
           const token = await generateVerificationToken(user?.email);
           await sendMail(user?.email, "Verify your email", token.token);
           throw new Error(
@@ -100,30 +98,21 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-
     async jwt({ token, user }: { token: JWT; user: CustomUser }) {
       if (user) {
-        // return { ...token, ...user };
-        user.role = user.role == null ? "user" : user.role;
-        token.user = user;
+        // Remove password from the token
+        const { password, ...userWithoutPassword } = user;
+        userWithoutPassword.role = user.role == null ? "user" : user.role;
+        token.user = userWithoutPassword;
       }
       return token;
     },
-    async session({
-      session,
-      token,
-      user,
-    }: {
-      session: CustomSession;
-      token: JWT;
-      user: User;
-    }) {
-      // return {
-      //   ...session,
-      //   username: token.email,
-      // };
-
-      session.user = token.user as CustomUser;
+    async session({ session, token }: { session: CustomSession; token: JWT }) {
+      // Remove password from the session
+      if (token?.user) {
+        const { password, ...userWithoutPassword } = token.user as CustomUser;
+        session.user = userWithoutPassword;
+      }
       return session;
     },
   },

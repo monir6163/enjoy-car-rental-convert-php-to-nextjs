@@ -12,9 +12,16 @@ import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 const Profile = ({ user }: any) => {
   const router = useRouter();
+  const handleLogout = async () => {
+    await signOut({ redirect: false });
+    toast.success("Logout successful");
+    router.push("/");
+    router.refresh();
+  };
 
   return (
     <div className="text-center">
@@ -54,9 +61,7 @@ const Profile = ({ user }: any) => {
           </DropdownMenuItem>
           <DropdownMenuItem
             className="text-lg font-medium text-gray-600 rounded cursor-pointer hover:bg-gray-100 p-2 transition duration-100 ease-in-out"
-            onClick={async () => {
-              await signOut({ callbackUrl: "/" });
-            }}
+            onClick={handleLogout}
           >
             <div className="flex items-center">
               <LogOutIcon size={15} className="mr-2" />

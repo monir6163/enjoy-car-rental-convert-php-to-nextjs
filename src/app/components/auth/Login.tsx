@@ -8,17 +8,20 @@ import {
   Stack,
   TextInput,
 } from "@mantine/core";
+import { useSession } from "next-auth/react";
 import Link from "next/link";
-import { useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast, ToastContainer } from "react-toastify";
 import Container from "../shared/Container";
 import { FormError } from "./Form-error";
 import { GithubLogin } from "./GithubLogin";
 import { GoogleButton } from "./GoogleLogin";
-const errorMessage = "Invalid login credentials";
 export default function LoginApp() {
   const params = useSearchParams();
+  const router = useRouter();
+  const { data: session } = useSession();
+  const user = session?.user as { role: string };
   const errorUrl = params.get("private");
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -35,9 +38,22 @@ export default function LoginApp() {
       return;
     } else {
       toast.success("Login successful");
-      window.location.href = "/";
+      router.refresh();
     }
   };
+
+  useEffect(() => {
+    if (session && session.user) {
+      router.refresh();
+      if (user?.role === "provider") {
+        router.push("/provider/dashboard");
+      } else if (user?.role === "admin") {
+        router.push("/admin/dashboard");
+      } else {
+        router.push("/");
+      }
+    }
+  }, [session, user, router]);
   //protecting error message
   useEffect(() => {
     if (window !== undefined) {
