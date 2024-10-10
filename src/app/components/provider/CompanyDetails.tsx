@@ -55,13 +55,13 @@ export default function CompanyDetails({
     } = companyDetails;
 
     if (
-      companyName &&
-      businessRegistrationNumber &&
-      contactName &&
-      phone &&
-      country_id &&
-      region_id &&
-      city
+      companyName?.trim() !== "" &&
+      businessRegistrationNumber?.trim() !== "" &&
+      contactName?.trim() !== "" &&
+      phone?.trim() !== "" &&
+      country_id !== -1 &&
+      region_id !== -1 &&
+      city?.trim() !== ""
     ) {
       next?.();
     } else {

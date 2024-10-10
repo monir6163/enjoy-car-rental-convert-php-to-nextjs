@@ -30,8 +30,8 @@ export default function LoginApp() {
     const res = await loginWithCredentials(email, password);
     setIsSubmitting(false);
     if (res?.error) {
-      setError(res?.error && errorMessage);
-      toast.error(errorMessage);
+      setError(res?.error);
+      toast.error(res?.error);
       return;
     } else {
       toast.success("Login successful");

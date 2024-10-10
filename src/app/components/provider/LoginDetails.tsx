@@ -1,5 +1,6 @@
 import { signUpWithCredentials } from "@/actions/auth";
 import { primaryGradient } from "@/const";
+import Toast from "@/lib/Toast";
 import {
   Box,
   Button,
@@ -18,6 +19,8 @@ import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
 import { toast } from "react-toastify";
 import { IReqProviderProps } from "../../../../types";
+import { FormError } from "../auth/Form-error";
+import { FormSuccess } from "../auth/Form-success";
 
 interface Props {
   prev: () => void;
@@ -37,6 +40,8 @@ export default function LoginDetails({
   const [passwordError, setPasswordError] = useState<string | undefined>(
     undefined
   );
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState<string | null>(null);
   const router = useRouter();
 
   const updateDetails = (key: keyof IReqProviderProps, value: string) => {
@@ -45,6 +50,9 @@ export default function LoginDetails({
 
   const handleCreateProvider = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
+    setError(null);
+    setSuccess(null);
+    setPasswordError(undefined);
     setIsCreate(true);
     if (!password) {
       setPasswordError("Password is required");
@@ -70,11 +78,12 @@ export default function LoginDetails({
       );
       setIsSubmitting(false);
       if (res.error) {
-        setPasswordError(res.error);
+        setError(res.error);
         setIsSubmitting(false);
       } else {
+        setSuccess(res.message ?? null);
         toast.success(res.message);
-        router.push("/login");
+        // router.push("/login");
       }
       setIsSubmitting(false);
     }
@@ -86,6 +95,7 @@ export default function LoginDetails({
           visible={isSubmitting}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
+        <Toast />
         <Box style={{ flexGrow: 1 }}>
           <Title mt="2rem">Login Details</Title>
           <Space mt="lg" />
@@ -156,6 +166,8 @@ export default function LoginDetails({
               </Notification>
             )}
             <Space mt="2rem" />
+            <FormSuccess message={success} />
+            <FormError message={error} />
             <Flex justify="space-between">
               <Button
                 variant="subtle"

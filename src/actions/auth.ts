@@ -4,7 +4,6 @@ import { sendMail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";
 import prisma from "@/prisma";
 import bcrypt from "bcrypt";
-import { revalidatePath } from "next/cache";
 import { IReqProviderProps } from "../../types";
 
 //create a new provider with the given credentials
@@ -22,22 +21,33 @@ export const signUpWithCredentials = async (
         email: email,
       },
     });
-    if (userExists) {
-      return { error: "User already exists" };
+    if (userExists?.emailVerified) {
+      return {
+        error: "Provider already exists. Please try another one. or Try Login",
+      };
     }
 
-    const res = await prisma.$transaction(async (prisma: any) => {
-      // Create the user first
-      const user = await prisma.user.create({
-        data: {
-          email: email,
-          name: companyDetails.contactName,
-          password: hashedPassword,
-          image: companyDetails.avatar,
-          role: "provider",
-        },
-      });
-
+    if (userExists && !userExists.emailVerified) {
+      // Generate the email verification token
+      const token = await generateVerificationToken(userExists?.email);
+      await sendMail(userExists?.email, "Verify your email", token.token);
+      return {
+        error:
+          "Provider is already registered but not verified. A new verification email has been sent.",
+      };
+    }
+    const user = await prisma.user.create({
+      data: {
+        email: email,
+        name: companyDetails.contactName,
+        password: hashedPassword,
+        image: companyDetails.avatar,
+        role: "provider",
+      },
+    });
+    if (!user) {
+      return { error: "Error creating provider" };
+    } else {
       // Use the userId from the created user for the provider
       const provider = await prisma.provider.create({
         data: {
@@ -56,11 +66,16 @@ export const signUpWithCredentials = async (
           longitude: companyDetails.longitude,
         },
       });
-
-      return { user, provider };
-    });
-    revalidatePath("/providers");
-    return { status: "success", message: "Provider created successfully" };
+      // Generate the email verification token
+      const token = await generateVerificationToken(email.toLowerCase());
+      await sendMail(email.toLowerCase(), "Verify your email", token.token);
+    }
+    // revalidatePath("/provider");
+    return {
+      status: "success",
+      message:
+        "Provider created successfully! Please check your email for verify",
+    };
   } catch (error: any) {
     return { error: error.message };
   }
@@ -80,7 +95,9 @@ export const signUpUserWithCredentials = async (
     });
 
     if (userExists?.emailVerified) {
-      return { error: "User already exists. Please try another one." };
+      return {
+        error: "User already exists. Please try another one. or Try Login",
+      };
     }
 
     if (userExists && !userExists.emailVerified) {
@@ -107,7 +124,7 @@ export const signUpUserWithCredentials = async (
 
     return {
       status: "success",
-      message: "User created successfully! Please check your email.",
+      message: "User created successfully! Please check your email for verify.",
     };
   } catch (error: any) {
     console.error("Error in signUpUserWithCredentials:", error);

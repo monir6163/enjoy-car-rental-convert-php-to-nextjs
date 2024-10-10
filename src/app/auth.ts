@@ -1,3 +1,5 @@
+import { sendMail } from "@/lib/mail";
+import { generateVerificationToken } from "@/lib/token";
 import prisma from "@/prisma";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import bcrypt from "bcrypt";
@@ -63,11 +65,19 @@ export const authOptions: NextAuthOptions = {
           },
         });
         if (!user) {
-          return { error: "No user found" };
+          throw new Error("No user found");
         }
         const valid = await bcrypt.compare(credentials.password, user.password);
         if (!valid) {
-          return { error: "Password is incorrect" };
+          throw new Error("Incorrect password");
+        }
+        if (user && !user.emailVerified) {
+          // Generate the email verification token
+          const token = await generateVerificationToken(user?.email);
+          await sendMail(user?.email, "Verify your email", token.token);
+          throw new Error(
+            "User email not verified. A new verification email has been sent."
+          );
         }
         if (user) {
           return user;

@@ -27,7 +27,7 @@ export default function SelectCountry({ value, onChange }: Props) {
       }
       value={value}
       onChange={(value) => onChange && onChange(value || "")}
-      disabled={isLoading}
+      disabled={countries?.length === 0 || isLoading}
       filter={optionsFilter}
     />
   );
