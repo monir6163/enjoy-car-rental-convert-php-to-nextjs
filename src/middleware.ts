@@ -8,7 +8,12 @@ export async function middleware(request: NextRequest) {
   const user: CustomUser | null = token?.user as CustomUser;
 
   // * Protected routes for user
-  const userProtectedRoutes = ["/cars"];
+  const userProtectedRoutes = [
+    "/cars",
+    "/my-account",
+    "/my-account/profile",
+    "/my-account/bookings",
+  ];
 
   // * Protected routes for admin
   const adminProtectedRoutes = ["/admin/dashboard"];
@@ -42,6 +47,55 @@ export async function middleware(request: NextRequest) {
         request.url
       )
     );
+  } else if (
+    providerProtectedRoutes.includes(pathname) &&
+    user?.role === "admin"
+  ) {
+    return NextResponse.redirect(
+      new URL(
+        "/login?private=You do not have access to this route.",
+        request.url
+      )
+    );
+  } else if (
+    adminProtectedRoutes.includes(pathname) &&
+    user?.role === "provider"
+  ) {
+    return NextResponse.redirect(
+      new URL(
+        "/login?private=You do not have access to this route.",
+        request.url
+      )
+    );
+  } else if (userProtectedRoutes.includes(pathname) && user?.role === "admin") {
+    return NextResponse.redirect(
+      new URL(
+        "/login?private=You do not have access to this route.",
+        request.url
+      )
+    );
+  } else if (
+    userProtectedRoutes.includes(pathname) &&
+    user?.role === "provider"
+  ) {
+    return NextResponse.redirect(
+      new URL(
+        "/login?private=You do not have access to this route.",
+        request.url
+      )
+    );
+  } else if (userProtectedRoutes.includes(pathname) && user?.role === "user") {
+    return NextResponse.next();
+  } else if (
+    adminProtectedRoutes.includes(pathname) &&
+    user?.role === "admin"
+  ) {
+    return NextResponse.next();
+  } else if (
+    providerProtectedRoutes.includes(pathname) &&
+    user?.role === "provider"
+  ) {
+    return NextResponse.next();
   }
 
   // * If user or admin tries to access login or register page while logged in

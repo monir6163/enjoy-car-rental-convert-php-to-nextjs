@@ -3,12 +3,12 @@ import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 
 import { AppContextProvider } from "@/context/AppContext";
-import { AuthContextProvider } from "@/context/AuthContext";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
 import "react-toastify/dist/ReactToastify.css";
+import { authOptions } from "./auth";
 import "./globals.css";
 import ReactQueryProvider from "./provider/ReactQueryProvider";
 import Providers from "./provider/SessionProvider";
@@ -27,14 +27,7 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const session = await getServerSession();
-  const user = session?.user
-    ? {
-        name: session.user.name ?? "",
-        email: session.user.email ?? "",
-        image: session.user.image ?? "",
-      }
-    : undefined;
+  const session = await getServerSession(authOptions);
   return (
     <html lang="en">
       <body
@@ -42,15 +35,12 @@ export default async function RootLayout({
       >
         <ReactQueryProvider>
           <Providers session={session}>
-            <AuthContextProvider user={user} session={session}>
-              <AppContextProvider>
-                <MantineProvider>
-                  <NextTopLoader />
-
-                  <main>{children}</main>
-                </MantineProvider>
-              </AppContextProvider>
-            </AuthContextProvider>
+            <AppContextProvider>
+              <MantineProvider>
+                <NextTopLoader />
+                <main>{children}</main>
+              </MantineProvider>
+            </AppContextProvider>
           </Providers>
         </ReactQueryProvider>
       </body>

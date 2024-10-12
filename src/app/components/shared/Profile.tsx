@@ -29,7 +29,7 @@ const Profile = ({ user }: any) => {
       <DropdownMenu>
         <DropdownMenuTrigger className="text-lg font-medium text-white md:text-gray-600 cursor-pointer">
           <Image
-            src={user?.image || "/user.png"}
+            src={user?.image || "/images/user.png"}
             alt={user?.name}
             width={40}
             height={40}
@@ -42,7 +42,7 @@ const Profile = ({ user }: any) => {
             hover:bg-gray-100 p-2 rounded transition duration-100 ease-in-out"
           >
             <Link
-              href={"/"}
+              href={"/my-account"}
               className="flex items-center 
             "
             >
@@ -54,7 +54,7 @@ const Profile = ({ user }: any) => {
             className="text-lg font-medium text-gray-600 cursor-pointer w-full
             hover:bg-gray-100 p-2 rounded transition duration-100 ease-in-out"
           >
-            <Link href={"/"} className="flex items-center">
+            <Link href={"/my-account/bookings"} className="flex items-center">
               <BookDashedIcon size={15} className="mr-2" />
               Booking
             </Link>

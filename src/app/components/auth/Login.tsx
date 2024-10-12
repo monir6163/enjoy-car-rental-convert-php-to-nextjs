@@ -47,10 +47,13 @@ export default function LoginApp() {
       router.refresh();
       if (user?.role === "provider") {
         router.push("/provider/dashboard");
+        router.refresh();
       } else if (user?.role === "admin") {
         router.push("/admin/dashboard");
+        router.refresh();
       } else {
         router.push("/");
+        router.refresh();
       }
     }
   }, [session, user, router]);
