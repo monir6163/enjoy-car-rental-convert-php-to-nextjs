@@ -8,8 +8,14 @@ export const useProfileForm = (
     initialValues: {
       firstName: user?.userProfile?.firstName || "",
       lastName: user?.userProfile?.lastName || "",
-      countryId: user?.userProfile?.countryId?.toString() || "",
-      regionId: user?.userProfile?.regionId?.toString() || "",
+      countryId:
+        user?.userProfile?.countryId?.toString() ||
+        user?.countries?.id.toString() ||
+        "",
+      regionId:
+        user?.userProfile?.regionId?.toString() ||
+        user?.regions?.id?.toString() ||
+        "",
       phone: user?.userProfile?.phone || "",
       city: user?.userProfile?.city || "",
       state: user?.userProfile?.state || "",

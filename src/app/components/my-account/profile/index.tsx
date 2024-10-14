@@ -161,9 +161,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
                 <Box>
                   <SelectCountry
                     value={form.values.countryId}
-                    onChange={(value) =>
-                      form.setFieldValue("country_id", value)
-                    }
+                    onChange={(value) => form.setFieldValue("countryId", value)}
                   />
                   {form.errors.country_id && (
                     <Input.Error>{form.errors.country_id}</Input.Error>
@@ -173,7 +171,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
                 <Box>
                   <SelectRegion
                     value={form.values.regionId}
-                    onChange={(value) => form.setFieldValue("region_id", value)}
+                    onChange={(value) => form.setFieldValue("regionId", value)}
                     countryId={form.values.countryId}
                   />
                   {form.errors.region_id && (
