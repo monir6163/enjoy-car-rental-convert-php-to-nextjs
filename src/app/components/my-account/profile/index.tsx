@@ -196,7 +196,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
                   placeholder="Elegant Quarters, No.1 Street"
                   value={form.values.state}
                   onChange={(event) =>
-                    form.setFieldValue("street", event.currentTarget.value)
+                    form.setFieldValue("state", event.currentTarget.value)
                   }
                 />
               </Group>
