@@ -40,8 +40,8 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
       id: userDetails?.id || "",
       email: userDetails?.email || "",
       ...form.values,
-      country_id: form.values.country_id,
-      region_id: form.values.region_id,
+      country_id: form.values.countryId,
+      region_id: form.values.regionId,
     };
     const res = await updateUserProfile(updateDetails);
     setIsUpdating(false);
@@ -120,9 +120,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
                   label="Date of Birth"
                   placeholder="DD/MM/YYYY"
                   value={
-                    form.values.dateOfBirth
-                      ? new Date(form.values.dateOfBirth)
-                      : undefined
+                    form.values.dob ? new Date(form.values.dob) : undefined
                   }
                   onChange={(date: Date | null) =>
                     form.setFieldValue("dateOfBirth", date?.toString() || "")
@@ -162,7 +160,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
               <Group grow>
                 <Box>
                   <SelectCountry
-                    value={form.values.country_id}
+                    value={form.values.countryId}
                     onChange={(value) =>
                       form.setFieldValue("country_id", value)
                     }
@@ -174,9 +172,9 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
 
                 <Box>
                   <SelectRegion
-                    value={form.values.region_id}
+                    value={form.values.regionId}
                     onChange={(value) => form.setFieldValue("region_id", value)}
-                    countryId={form.values.country_id}
+                    countryId={form.values.countryId}
                   />
                   {form.errors.region_id && (
                     <Input.Error>{form.errors.region_id}</Input.Error>
@@ -198,7 +196,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
                 <TextInput
                   label="Street Address"
                   placeholder="Elegant Quarters, No.1 Street"
-                  value={form.values.street}
+                  value={form.values.state}
                   onChange={(event) =>
                     form.setFieldValue("street", event.currentTarget.value)
                   }

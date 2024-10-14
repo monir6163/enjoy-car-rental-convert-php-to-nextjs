@@ -76,12 +76,12 @@ export interface IResCountryProps extends IBaseLocationProps {
 export interface IProfileDetails {
   firstName: string;
   lastName: string;
-  country_id: string;
-  region_id: string;
+  countryId: string;
+  regionId: string;
   phone: string;
   city: string;
-  street: string;
-  dateOfBirth: string;
+  state: string;
+  dob: string;
   gender: string;
   avatar: string;
 }
