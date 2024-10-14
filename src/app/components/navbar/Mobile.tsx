@@ -64,7 +64,11 @@ export default function Mobile() {
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 className={`h-10 w-10 ${
-                  pathname === "/login" || pathname === "/register"
+                  pathname === "/login" ||
+                  pathname === "/register" ||
+                  pathname === "/my-account" ||
+                  pathname === "/my-account/profile" ||
+                  pathname === "/my-account/bookings"
                     ? "text-black"
                     : "text-white"
                 }`}

@@ -1,9 +1,10 @@
+import { authOptions } from "@/app/auth";
 import { getServerSession } from "next-auth";
 import Link from "next/link";
 import Profile from "./Profile";
 
 const AuthButton = async () => {
-  const session = await getServerSession();
+  const session = await getServerSession(authOptions);
   return (
     <div className="text-center">
       {session ? (

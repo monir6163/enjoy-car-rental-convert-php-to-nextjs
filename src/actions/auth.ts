@@ -4,7 +4,7 @@ import { sendMail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";
 import prisma from "@/prisma";
 import bcrypt from "bcrypt";
-import { IReqProviderProps } from "../../types";
+import { IReqProviderProps, IReqUserProps } from "../../types";
 
 //create a new provider with the given credentials
 export const signUpWithCredentials = async (
@@ -129,5 +129,105 @@ export const signUpUserWithCredentials = async (
   } catch (error: any) {
     console.error("Error in signUpUserWithCredentials:", error);
     return { error: error.message };
+  }
+};
+
+// Update user profile details
+export const updateUserProfile = async (updateDetails: IReqUserProps) => {
+  try {
+    const id = updateDetails.id;
+    await prisma.user.update({
+      where: {
+        id: id,
+      },
+      data: {
+        image: updateDetails.avatar || "",
+        name: updateDetails.firstName + " " + updateDetails.lastName,
+      },
+    });
+
+    const existingUserProfile = await prisma.userProfile.findUnique({
+      where: {
+        userId: id,
+      },
+    });
+
+    if (existingUserProfile) {
+      await prisma.userProfile.update({
+        where: {
+          userId: id,
+        },
+        data: {
+          firstName: updateDetails.firstName,
+          lastName: updateDetails.lastName,
+          phone: updateDetails.phone,
+          countryId: updateDetails.country_id,
+          regionId: updateDetails.region_id,
+          city: updateDetails.city,
+          state: updateDetails.street,
+          dob: updateDetails?.dateOfBirth
+            ? new Date(updateDetails.dateOfBirth).toISOString()
+            : undefined,
+          gender: updateDetails.gender,
+          avatar: updateDetails.avatar,
+        },
+      });
+    } else {
+      await prisma.userProfile.create({
+        data: {
+          userId: id,
+          firstName: updateDetails.firstName,
+          lastName: updateDetails.lastName,
+          phone: updateDetails.phone,
+          countryId: updateDetails.country_id,
+          regionId: updateDetails.region_id,
+          city: updateDetails.city,
+          state: updateDetails.street,
+          dob: updateDetails?.dateOfBirth
+            ? new Date(updateDetails.dateOfBirth).toISOString()
+            : undefined,
+          gender: updateDetails.gender,
+          avatar: updateDetails.avatar,
+        },
+      });
+    }
+    return { status: "success", message: "Profile updated successfully" };
+  } catch (error) {
+    return { status: "error", message: "Failed to update profile" };
+  }
+};
+
+// get logged in user details
+export const getUserDetails = async (email: string) => {
+  try {
+    const user = await prisma.user.findUnique({
+      where: {
+        email: email,
+      },
+      select: {
+        id: true,
+        email: true,
+        image: true,
+        name: true,
+        role: true,
+        userProfile: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            countryId: true,
+            regionId: true,
+            city: true,
+            state: true,
+            dob: true,
+            gender: true,
+          },
+        },
+      },
+    });
+    return user;
+  } catch (error) {
+    return { error: "User fetch error" };
   }
 };

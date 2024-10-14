@@ -72,3 +72,44 @@ export interface IResCountryProps extends IBaseLocationProps {
   id: number;
   created_at: string;
 }
+
+export interface IProfileDetails {
+  firstName: string;
+  lastName: string;
+  country_id: string;
+  region_id: string;
+  phone: string;
+  city: string;
+  street: string;
+  dateOfBirth: string;
+  gender: string;
+  avatar: string;
+}
+export interface IBaseUserProps {
+  id: string;
+  firstName?: string;
+  lastName?: string;
+  dateOfBirth?: string;
+  gender?: string;
+  avatar?: string;
+  phone?: string;
+  email?: string;
+  // address
+  city?: string;
+  street?: string;
+  latitude?: number;
+  longitude?: number;
+}
+export interface IResUserProps extends IBaseUserProps {
+  created_at: string;
+  countries: IResCountryProps;
+  regions: RegionGetAllType;
+  userProfile: IProfileDetails;
+  user: IBaseUserProps;
+  image: string;
+}
+
+export interface IReqUserProps extends IBaseUserProps {
+  country_id?: string;
+  region_id?: string;
+}

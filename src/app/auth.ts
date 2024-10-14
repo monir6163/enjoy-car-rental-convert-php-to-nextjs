@@ -98,18 +98,39 @@ export const authOptions: NextAuthOptions = {
       }
       return true;
     },
-    async jwt({ token, user }: { token: JWT; user: CustomUser }) {
+    async jwt({
+      token,
+      user,
+      trigger,
+      session,
+    }: {
+      token: JWT;
+      user: CustomUser;
+      trigger?: any;
+      session?: any;
+    }) {
       if (user) {
         // Remove password from the token
         const { password, ...userWithoutPassword } = user;
         userWithoutPassword.role = user.role == null ? "user" : user.role;
         token.user = userWithoutPassword;
       }
+      if (trigger === "update") {
+        token.user = session.user;
+      }
       return token;
     },
-    async session({ session, token }: { session: CustomSession; token: JWT }) {
+    async session({
+      session,
+      token,
+      user,
+    }: {
+      session: CustomSession;
+      token: JWT;
+      user: CustomUser;
+    }) {
       // Remove password from the session
-      if (token?.user) {
+      if (token?.user && session) {
         const { password, ...userWithoutPassword } = token.user as CustomUser;
         session.user = userWithoutPassword;
       }

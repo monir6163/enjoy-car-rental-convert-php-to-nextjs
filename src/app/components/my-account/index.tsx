@@ -29,7 +29,7 @@ export const AccountLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <Container size="xl" py="4rem" mt="6rem">
-        <Flex>
+        <Flex direction={{ base: "column", sm: "row" }}>
           <Card withBorder mah={300} w="300px" style={{ zIndex: 1 }}>
             <Box h="60px" bg="orange.6">
               <Title order={4} ta="center" py={16} c="white">
