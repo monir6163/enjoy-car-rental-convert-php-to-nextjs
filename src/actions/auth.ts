@@ -164,7 +164,7 @@ export const updateUserProfile = async (updateDetails: IReqUserProps) => {
           countryId: updateDetails.country_id,
           regionId: updateDetails.region_id,
           city: updateDetails.city,
-          state: updateDetails.street,
+          state: updateDetails.state,
           dob: updateDetails?.dateOfBirth
             ? new Date(updateDetails.dateOfBirth).toISOString()
             : undefined,
@@ -182,7 +182,7 @@ export const updateUserProfile = async (updateDetails: IReqUserProps) => {
           countryId: updateDetails.country_id,
           regionId: updateDetails.region_id,
           city: updateDetails.city,
-          state: updateDetails.street,
+          state: updateDetails.state,
           dob: updateDetails?.dateOfBirth
             ? new Date(updateDetails.dateOfBirth).toISOString()
             : undefined,

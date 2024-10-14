@@ -96,7 +96,7 @@ export interface IBaseUserProps {
   email?: string;
   // address
   city?: string;
-  street?: string;
+  state?: string;
   latitude?: number;
   longitude?: number;
 }

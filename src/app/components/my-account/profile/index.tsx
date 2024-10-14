@@ -193,7 +193,7 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
 
                 <TextInput
                   label="Street Address"
-                  placeholder="Elegant Quarters, No.1 Street"
+                  placeholder="House number, street name"
                   value={form.values.state}
                   onChange={(event) =>
                     form.setFieldValue("state", event.currentTarget.value)
