@@ -17,7 +17,7 @@ export default function Navbar() {
   return (
     <>
       {/* only desktop */}
-      <nav className="hidden md:block fixed w-full h-[90px] bg-white shadow-md z-50 top-0">
+      <nav className="hidden nv md:block fixed w-full h-[90px] bg-white shadow-md z-50 top-0">
         <Container>
           <div className="flex relative items-center justify-between py-3">
             <div className="flex-shrink-0">

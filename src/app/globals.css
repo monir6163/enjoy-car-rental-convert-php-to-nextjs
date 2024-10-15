@@ -6,7 +6,7 @@ body::-webkit-scrollbar {
   display: none;
 }
 
-nav::before {
+.nv::before {
   background-image: url(../../public/images/htop.jpg);
   content: "";
   background-size: cover;

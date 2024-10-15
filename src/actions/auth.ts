@@ -231,3 +231,80 @@ export const getUserDetails = async (email: string) => {
     return { error: "User fetch error" };
   }
 };
+
+//get booking details of a user
+export const getBookingDetails = async (userId: string) => {
+  try {
+    const bookings = await prisma.booking.findMany({
+      where: {
+        userId: userId,
+      },
+      select: {
+        id: true,
+        bookingDate: true,
+        bookingTime: true,
+        bookingStatus: true,
+        bookingType: true,
+        bookingPrice: true,
+        bookingDetails: true,
+        provider: {
+          select: {
+            companyName: true,
+            contactName: true,
+            contactPhone: true,
+            email: true,
+            city: true,
+            street: true,
+            avatar: true,
+          },
+        },
+      },
+    });
+    return bookings;
+  } catch (error) {
+    console.log("Error in getBookingDetails:", error);
+    return { error: "Error fetching booking details" };
+  }
+};
+
+//get providerDetails of a provider by userId
+export const getProviderDetails = async (userId: string) => {
+  try {
+    const provider = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        email: true,
+        image: true,
+        name: true,
+        role: true,
+        Provider: {
+          select: {
+            id: true,
+            companyName: true,
+            contactName: true,
+            contactPhone: true,
+            active: true,
+            email: true,
+            country: {
+              select: {
+                name: true,
+              },
+            },
+            region: {
+              select: {
+                name: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    return provider;
+  } catch (error) {
+    console.log("Error in getProviderDetails:", error);
+    return { error: "Error fetching provider details" };
+  }
+};
