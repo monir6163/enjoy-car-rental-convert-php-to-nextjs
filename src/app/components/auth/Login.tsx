@@ -38,23 +38,13 @@ export default function LoginApp() {
       return;
     } else {
       toast.success("Login successful");
-      router.refresh();
     }
   };
 
   useEffect(() => {
     if (session && session.user) {
+      router.push("/");
       router.refresh();
-      if (user?.role === "provider") {
-        router.push("/provider/dashboard");
-        router.refresh();
-      } else if (user?.role === "admin") {
-        router.push("/admin/dashboard");
-        router.refresh();
-      } else {
-        router.push("/");
-        router.refresh();
-      }
     }
   }, [session, user, router]);
   //protecting error message

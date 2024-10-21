@@ -290,11 +290,13 @@ export const getProviderDetails = async (userId: string) => {
             email: true,
             country: {
               select: {
+                id: true,
                 name: true,
               },
             },
             region: {
               select: {
+                id: true,
                 name: true,
               },
             },

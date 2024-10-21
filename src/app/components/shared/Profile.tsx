@@ -7,7 +7,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import Toast from "@/lib/Toast";
-import { BookDashedIcon, LogOutIcon, User } from "lucide-react";
+import { LogOutIcon, User } from "lucide-react";
 import { signOut } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
@@ -41,24 +41,29 @@ const Profile = ({ user }: any) => {
             className="text-lg font-medium text-gray-600 cursor-pointer w-full
             hover:bg-gray-100 p-2 rounded transition duration-100 ease-in-out"
           >
-            <Link
-              href={"/my-account"}
-              className="flex items-center 
+            {user?.role === "provider" ? (
+              <Link
+                href={"/provider/dashboard"}
+                className="flex items-center 
             "
-            >
-              <User size={15} className="mr-2" />
-              Profile
-            </Link>
+              >
+                <User size={15} className="mr-2" />
+                Profile
+              </Link>
+            ) : (
+              <>
+                <Link
+                  href={"/my-account/profile"}
+                  className="flex items-center 
+          "
+                >
+                  <User size={15} className="mr-2" />
+                  Profile
+                </Link>
+              </>
+            )}
           </DropdownMenuItem>
-          <DropdownMenuItem
-            className="text-lg font-medium text-gray-600 cursor-pointer w-full
-            hover:bg-gray-100 p-2 rounded transition duration-100 ease-in-out"
-          >
-            <Link href={"/my-account/bookings"} className="flex items-center">
-              <BookDashedIcon size={15} className="mr-2" />
-              Booking
-            </Link>
-          </DropdownMenuItem>
+
           <DropdownMenuItem
             className="text-lg font-medium text-gray-600 rounded cursor-pointer hover:bg-gray-100 p-2 transition duration-100 ease-in-out"
             onClick={handleLogout}

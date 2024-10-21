@@ -1,3 +1,6 @@
+import { ReactNode } from "react";
+import { IconType } from "react-icons/lib";
+
 export interface Props {
   children: React.ReactNode;
 }
@@ -113,3 +116,57 @@ export interface IReqUserProps extends IBaseUserProps {
   country_id?: string;
   region_id?: string;
 }
+
+// cars types
+export interface IBaseCarProps {
+  make: string;
+  model: string;
+  year: number;
+  transmission: string;
+  engineCapacity: string;
+  fuelType: string;
+  description: string;
+  seatingCapacity: number;
+  numberOfBags: number;
+  numberOfDoors: number;
+  acAvailable: boolean;
+  acWorking: boolean;
+  images: string[];
+  otherFeatures: string[];
+  color: string;
+  status: string;
+  provider_id: string | undefined;
+  country_id: number | undefined;
+  region_id: number | undefined;
+  pricePerDay: number;
+  minimumRentalPeriodInDays: number | "";
+  maximumRentalPeriodInDays: number | "";
+}
+
+export interface IResCarProps extends IBaseCarProps {
+  id: number;
+  created_at: string;
+  type: string;
+  slug: string;
+}
+
+export interface IReqCarProps extends IBaseCarProps {
+  type: string;
+}
+
+export type ICarState = IReqCarProps | IResCarProps;
+
+export interface ICarContext {
+  state: ICarState;
+  updateProperty: (key: keyof IReqCarProps, value: any) => void;
+  addInitialState: (state: ICarState) => void;
+  addCarImage: (url: string) => void;
+  removeImage: (url: string) => void;
+  resetState: () => void;
+}
+
+export type SelectItem = {
+  label: string;
+  value: string;
+  icon?: ReactNode | IconType;
+};
