@@ -5,12 +5,14 @@ import { useDisclosure } from "@mantine/hooks";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
 import { toast } from "react-toastify";
-import { IResCarProps } from "../../../../types";
 import { AddOrEditCar } from "./AddOrEditCar";
+import { CarStatus } from "./CarStatus";
+import { ConfirmationModal } from "./ConfirmationModal";
 interface TableRowProps {
-  car: IResCarProps;
+  car: any;
+  providerDetails: any;
 }
-export default function TableRow({ car }: TableRowProps) {
+export default function TableRow({ car, providerDetails }: TableRowProps) {
   const pathname = usePathname();
   const router = useRouter();
   const [opened, { open, close }] = useDisclosure(false);
@@ -37,16 +39,16 @@ export default function TableRow({ car }: TableRowProps) {
       style={{ cursor: "pointer" }}
     >
       <Table.Td>
-        <Avatar src={car.images[0]} />
+        <Avatar src={car?.images[0]?.imageUrl} />
       </Table.Td>
       <Table.Td>{car.make}</Table.Td>
       <Table.Td>{car.model}</Table.Td>
       <Table.Td>{car.year}</Table.Td>
-      <Table.Td>{car.type}</Table.Td>
+      <Table.Td>{car.bodyType}</Table.Td>
       <Table.Td width="100px">
         <CarStatus status={car.status} id={car.id} />
       </Table.Td>
-      <Table.Td width="100px">
+      <Table.Td width="120px">
         <Group>
           <AddOrEditCar
             openButton={
@@ -63,6 +65,7 @@ export default function TableRow({ car }: TableRowProps) {
             open={open}
             close={close}
             opened={opened}
+            providerDetails={providerDetails}
           />
 
           <ConfirmationModal

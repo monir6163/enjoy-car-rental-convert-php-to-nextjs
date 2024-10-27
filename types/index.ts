@@ -1,6 +1,8 @@
 import { ReactNode } from "react";
 import { IconType } from "react-icons/lib";
 
+export type CarStatus = "available" | "pending" | "booked";
+export type BookingStatus = "pending" | "rejected" | "approved";
 export interface Props {
   children: React.ReactNode;
 }
@@ -46,6 +48,8 @@ export interface IBaseProviderProps {
 export interface IReqProviderProps extends IBaseProviderProps {
   country_id: number;
   region_id: number;
+  country: any;
+  region: any;
 }
 
 export const initialCompanyDetails: Partial<IReqProviderProps> = {
@@ -170,3 +174,20 @@ export type SelectItem = {
   value: string;
   icon?: ReactNode | IconType;
 };
+
+//booking types
+export interface IBaseBookingProps {
+  pickupDate: string;
+  provider_id: string;
+  car_id: string;
+  returnDate: string;
+  totalPrice: number;
+  status: string;
+  user_id: string;
+  users: { firstName: string; lastName: string; avatar: string };
+}
+export interface IResBookingProps extends IBaseBookingProps {
+  id: string;
+  created_at: string;
+  cars?: IResCarProps;
+}

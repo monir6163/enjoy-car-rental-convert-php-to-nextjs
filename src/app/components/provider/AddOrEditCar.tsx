@@ -1,4 +1,5 @@
 "use client";
+import { addCar } from "@/actions/carAction";
 import { primaryGradient } from "@/const";
 import { useCarContext } from "@/context/CarContext";
 import {
@@ -12,6 +13,7 @@ import {
   Flex,
   Group,
   Input,
+  LoadingOverlay,
   NumberInput,
   SegmentedControl,
   SimpleGrid,
@@ -19,10 +21,15 @@ import {
   Textarea,
 } from "@mantine/core";
 import { YearPickerInput } from "@mantine/dates";
-import { useSession } from "next-auth/react";
 import { CloudinaryUploadWidgetResults } from "next-cloudinary";
 import { useRouter } from "next/navigation";
-import { JSXElementConstructor, ReactElement, ReactNode } from "react";
+import {
+  JSXElementConstructor,
+  ReactElement,
+  ReactNode,
+  useState,
+} from "react";
+import { toast, ToastContainer } from "react-toastify";
 import { CurrentMode, IReqProviderProps } from "../../../../types";
 import { SelectCarMake } from "../home/filterFrom/SelectCarMake";
 import { SelectCarType } from "../home/filterFrom/SelectCarType";
@@ -46,12 +53,7 @@ export function AddOrEditCar({
   close,
   providerDetails,
 }: Props) {
-  const { data: session } = useSession();
-  const user = session?.user as {
-    id: string;
-    email: string;
-  };
-
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     state: carDetails,
     updateProperty,
@@ -60,7 +62,7 @@ export function AddOrEditCar({
     resetState,
   } = useCarContext();
 
-  const { refresh } = useRouter();
+  const { refresh, push } = useRouter();
 
   // update car image
   const handleUploadCarImages = async (
@@ -69,22 +71,57 @@ export function AddOrEditCar({
     const info: any = result?.info;
     addCarImage(info.secure_url);
   };
+  //add feature car
+  const handleAddOtherFeatures = (value: string) => {
+    let features = [];
+    if (value.includes("|")) {
+      features = value
+        .split("|")
+        .filter((item) => item.trim() !== "|" && item.trim() !== "")
+        .map((feature) => feature.trim());
+    } else {
+      features = [value];
+    }
+    updateProperty("otherFeatures", features);
+  };
 
   //handle Add New Car
   const handleAddNewCar = async () => {
+    setIsSubmitting(true);
     const { isValid, message } = isValidCarDetails(carDetails);
     if (isValid) {
       const details: any = {
         ...carDetails,
-        providerId: user?.id as string,
-        countryId: providerDetails.country_id,
-        regionId: providerDetails.region_id,
+        provider_id: providerDetails?.id,
+        country_id: providerDetails.country.id,
+        region_id: providerDetails.region.id,
       };
+      if (mode === "new") {
+        const car = await addCar(details);
+
+        if (car.error) {
+          toast.error(car.error);
+          setIsSubmitting(false);
+        } else {
+          toast.success("Car added successfully");
+          resetState();
+          close();
+          refresh();
+        }
+      }
+    } else {
+      toast.error(message);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <>
+      <ToastContainer position="bottom-left" />
+      <LoadingOverlay
+        visible={isSubmitting}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
       <Drawer
         position="right"
         size="xl"
@@ -233,7 +270,7 @@ export function AddOrEditCar({
             <Textarea
               placeholder="E.g. Bluetooth | Backup Camera | Android Screen |  Keyless Entry"
               defaultValue={carDetails.otherFeatures.join(" | ")}
-              // onChange={(e) => handleAddOtherFeatures(e.target.value)}
+              onChange={(e) => handleAddOtherFeatures(e.target.value)}
             />
           </Box>
         </Group>

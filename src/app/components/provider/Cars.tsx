@@ -26,8 +26,9 @@ const header = (
 export default function Cars({ cars, providerDetails }: Props) {
   const { resetState } = useCarContext();
   const [opened, { open, close }] = useDisclosure(false);
-
-  const rows = cars?.map((car) => <TableRow key={car.id} car={car} />);
+  const rows = cars?.map((car) => (
+    <TableRow key={car.id} car={car} providerDetails={providerDetails} />
+  ));
   return (
     <>
       <Divider
