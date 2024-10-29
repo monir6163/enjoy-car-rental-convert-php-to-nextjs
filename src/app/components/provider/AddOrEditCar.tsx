@@ -1,5 +1,5 @@
 "use client";
-import { addCar } from "@/actions/carAction";
+import { addCar, updateProviderCar } from "@/actions/carAction";
 import { primaryGradient } from "@/const";
 import { useCarContext } from "@/context/CarContext";
 import {
@@ -61,9 +61,7 @@ export function AddOrEditCar({
     removeImage,
     resetState,
   } = useCarContext();
-
-  const { refresh, push } = useRouter();
-
+  const { refresh } = useRouter();
   // update car image
   const handleUploadCarImages = async (
     result: CloudinaryUploadWidgetResults
@@ -100,13 +98,31 @@ export function AddOrEditCar({
         const car = await addCar(details);
 
         if (car.error) {
+          console.log("Error:", car.error);
           toast.error(car.error);
           setIsSubmitting(false);
         } else {
+          refresh();
+          setIsSubmitting(false);
           toast.success("Car added successfully");
           resetState();
           close();
+        }
+      }
+
+      // update car
+      if (mode === "edit") {
+        const cloneCarDetails = { ...details };
+        const updateCar = await updateProviderCar(cloneCarDetails);
+        if (updateCar?.error) {
+          toast.error(updateCar.error);
+          setIsSubmitting(false);
+        } else {
           refresh();
+          setIsSubmitting(false);
+          toast.success("Car updated successfully");
+          resetState();
+          close();
         }
       }
     } else {
@@ -145,8 +161,13 @@ export function AddOrEditCar({
           }}
         />
         <Flex wrap="wrap" gap={8} mb="2rem" mt="2rem">
-          {carDetails.images.map((image, i) => (
-            <CarImage key={i} url={image} removeImage={removeImage} />
+          {carDetails.images.map((image: any, i): any => (
+            <CarImage
+              key={i}
+              imageurl={image}
+              url={image}
+              removeImage={removeImage}
+            />
           ))}
         </Flex>
 
@@ -164,9 +185,9 @@ export function AddOrEditCar({
         </Group>
         <GridLayout>
           <SelectCarType
-            required={!carDetails.type}
-            value={carDetails.type}
-            onChange={(value) => updateProperty("type", value)}
+            required={!carDetails.bodyType}
+            value={carDetails.bodyType}
+            onChange={(value) => updateProperty("bodyType", value)}
           />
           <SelectCarMake
             value={carDetails.make}
@@ -206,14 +227,14 @@ export function AddOrEditCar({
           </Box>
 
           <Box>
-            <Input.Label required={!carDetails.engineCapacity}>
+            <Input.Label required={!carDetails.engineCapaciy}>
               Engine Capacity
             </Input.Label>
             <Input
               type="text"
               placeholder="2.5L"
-              value={carDetails.engineCapacity}
-              onChange={(e) => updateProperty("engineCapacity", e.target.value)}
+              value={carDetails.engineCapaciy}
+              onChange={(e) => updateProperty("engineCapaciy", e.target.value)}
             />
           </Box>
 
@@ -225,29 +246,29 @@ export function AddOrEditCar({
 
           <NumberInput
             label="Seating Capacity"
-            required={!carDetails.seatingCapacity}
+            required={!carDetails.seatsCapacity}
             step={1}
             min={1}
-            value={carDetails.seatingCapacity}
-            onChange={(value) => updateProperty("seatingCapacity", value)}
+            value={carDetails.seatsCapacity}
+            onChange={(value) => updateProperty("seatsCapacity", value)}
           />
 
           <NumberInput
             label="Number of Bags"
-            required={!carDetails.numberOfBags}
+            required={!carDetails.bagsCapacity}
             step={1}
             min={1}
-            value={carDetails.numberOfBags}
-            onChange={(value) => updateProperty("numberOfBags", value)}
+            value={carDetails.bagsCapacity}
+            onChange={(value) => updateProperty("bagsCapacity", value)}
           />
 
           <NumberInput
             label="Number of Doors"
-            required={!carDetails.numberOfDoors}
+            required={!carDetails.doorsCapacity}
             step={1}
             min={1}
-            value={carDetails.numberOfDoors}
-            onChange={(value) => updateProperty("numberOfDoors", value)}
+            value={carDetails.doorsCapacity}
+            onChange={(value) => updateProperty("doorsCapacity", value)}
           />
 
           <Box w="100%">
@@ -269,7 +290,9 @@ export function AddOrEditCar({
             </Input.Label>
             <Textarea
               placeholder="E.g. Bluetooth | Backup Camera | Android Screen |  Keyless Entry"
-              defaultValue={carDetails.otherFeatures.join(" | ")}
+              defaultValue={carDetails.otherFeatures
+                ?.map((f: any) => f.feature)
+                ?.join(" | ")}
               onChange={(e) => handleAddOtherFeatures(e.target.value)}
             />
           </Box>
@@ -307,23 +330,19 @@ export function AddOrEditCar({
         <GridLayout>
           <NumberInput
             label="Minimum Rental Period (Days)"
-            required={!carDetails.minimumRentalPeriodInDays}
+            required={!carDetails.minimumRent}
             step={1}
             min={1}
-            value={carDetails.minimumRentalPeriodInDays}
-            onChange={(value) =>
-              updateProperty("minimumRentalPeriodInDays", value)
-            }
+            value={carDetails.minimumRent}
+            onChange={(value) => updateProperty("minimumRent", value)}
           />
 
           <NumberInput
             label="Maximum Rental Period (Days)"
             step={1}
             min={1}
-            value={carDetails.maximumRentalPeriodInDays}
-            onChange={(value) =>
-              updateProperty("maximumRentalPeriodInDays", value)
-            }
+            value={carDetails.maximumRent}
+            onChange={(value) => updateProperty("maximumRent", value)}
           />
         </GridLayout>
 
@@ -352,16 +371,18 @@ const GridLayout = ({ children }: { children: ReactNode }) => (
 
 const CarImage = ({
   url,
+  imageurl,
   removeImage,
 }: {
   url: string;
+  imageurl: { imageUrl: string };
   removeImage: (url: string) => void;
 }) => (
   <Box style={{ position: "relative", display: "inline-block" }}>
-    <Avatar size="xl" src={url} />
+    <Avatar size="xl" src={imageurl?.imageUrl || url} />
     <CloseButton
       variant="filled"
-      onClick={() => removeImage(url)}
+      onClick={() => removeImage(imageurl?.imageUrl)}
       aria-label="Remove image"
       className="text-red-600 hover:bg-red-500 hover:text-white"
       style={{

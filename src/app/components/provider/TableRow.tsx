@@ -18,6 +18,7 @@ export default function TableRow({ car, providerDetails }: TableRowProps) {
   const [opened, { open, close }] = useDisclosure(false);
   const { addInitialState } = useCarContext();
   const { refresh } = useRouter();
+  // console.log("car", car);
 
   const handleDeleteCar = async (carId: number) => {
     const { error }: any = await deleteCar(carId);

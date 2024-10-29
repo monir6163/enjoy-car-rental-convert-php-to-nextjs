@@ -4,7 +4,7 @@ import { sendMail } from "@/lib/mail";
 import { generateVerificationToken } from "@/lib/token";
 import prisma from "@/prisma";
 import bcrypt from "bcrypt";
-import { IReqProviderProps, IReqUserProps } from "../../types";
+import { IReqProviderProps, IReqUserProps, IResReviewProps } from "../../types";
 
 //create a new provider with the given credentials
 export const signUpWithCredentials = async (
@@ -285,7 +285,13 @@ export const getProviderDetails = async (userId: string) => {
             id: true,
             companyName: true,
             contactName: true,
+            businessReg: true,
             contactPhone: true,
+            city: true,
+            street: true,
+            avatar: true,
+            latitude: true,
+            longitude: true,
             active: true,
             email: true,
             country: {
@@ -308,5 +314,82 @@ export const getProviderDetails = async (userId: string) => {
   } catch (error) {
     console.log("Error in getProviderDetails:", error);
     return { error: "Error fetching provider details" };
+  }
+};
+
+//update provider account details
+export const updateProviderAccount = async (
+  userId: string,
+  providerId: string,
+  companyDetails: Partial<IReqProviderProps>
+) => {
+  try {
+    const providerUpdate = await prisma.$transaction([
+      prisma.user.update({
+        where: {
+          id: userId,
+        },
+        data: {
+          email: companyDetails.email,
+          name: companyDetails.contactName,
+          image: companyDetails.avatar,
+        },
+      }),
+      prisma.provider.update({
+        where: {
+          id: providerId,
+        },
+        data: {
+          email: companyDetails.email,
+          companyName: companyDetails.companyName,
+          businessReg: companyDetails.businessReg,
+          contactName: companyDetails.contactName,
+          contactPhone: companyDetails.contactPhone,
+          countryId: companyDetails.country_id,
+          regionId: companyDetails.region_id,
+          city: companyDetails.city,
+          street: companyDetails.street,
+          avatar: companyDetails.avatar,
+          latitude: companyDetails.latitude,
+          longitude: companyDetails.longitude,
+        },
+      }),
+    ]);
+    if (!providerUpdate) {
+      return { error: "Error updating provider" };
+    }
+    return { status: "success", message: "Provider updated successfully" };
+  } catch (error) {
+    console.log("Error:", error);
+    return { error: "Failed to update provider" };
+  }
+};
+
+//get provider reviews
+export const providerGetReviews = async (
+  providerId: string
+): Promise<IResReviewProps[]> => {
+  try {
+    const reviews = await prisma.review.findMany({
+      where: {
+        providerId: providerId,
+      },
+      select: {
+        id: true,
+        user: {
+          select: {
+            name: true,
+            image: true,
+          },
+        },
+        review: true,
+        rating: true,
+        createdAt: true,
+      },
+    });
+    return reviews as IResReviewProps[];
+  } catch (error: any) {
+    console.log("Error in providerGetReviews:", error);
+    return [] as IResReviewProps[];
   }
 };

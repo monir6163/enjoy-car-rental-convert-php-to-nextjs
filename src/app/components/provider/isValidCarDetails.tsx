@@ -8,21 +8,21 @@ export const isValidCarDetails = (
   }
 
   if (
-    !carDetails.type ||
+    !carDetails.bodyType ||
     !carDetails.description ||
     !carDetails.make ||
     !carDetails.model ||
     !carDetails.year ||
     !carDetails.transmission ||
-    !carDetails.engineCapacity ||
+    !carDetails.engineCapaciy ||
     !carDetails.fuelType ||
     !carDetails.color ||
-    !carDetails.seatingCapacity ||
-    !carDetails.numberOfBags ||
-    !carDetails.numberOfDoors ||
+    !carDetails.seatsCapacity ||
+    !carDetails.bagsCapacity ||
+    !carDetails.doorsCapacity ||
     !carDetails.fuelType ||
     !carDetails.pricePerDay ||
-    !carDetails.minimumRentalPeriodInDays
+    !carDetails.minimumRent
   ) {
     return { isValid: false, message: "Please fill in all required fields" };
   }

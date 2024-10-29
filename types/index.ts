@@ -33,14 +33,18 @@ export interface RegionGetAllType extends CountryGetAllType {}
 export interface IBaseProviderProps {
   id: string;
   businessRegistrationNumber: string;
+
   city: string;
+  cityName: string;
   companyName: string;
   contactName: string;
   email: string;
   latitude: number;
   longitude: number;
   phone: string;
+  contactPhone: string;
   avatar: string;
+  image: string;
   profileUrl?: string;
   street: string;
 }
@@ -50,6 +54,7 @@ export interface IReqProviderProps extends IBaseProviderProps {
   region_id: number;
   country: any;
   region: any;
+  businessReg: string;
 }
 
 export const initialCompanyDetails: Partial<IReqProviderProps> = {
@@ -126,13 +131,14 @@ export interface IBaseCarProps {
   make: string;
   model: string;
   year: number;
+  bodyType: string;
   transmission: string;
-  engineCapacity: string;
+  engineCapaciy: string;
   fuelType: string;
   description: string;
-  seatingCapacity: number;
-  numberOfBags: number;
-  numberOfDoors: number;
+  seatsCapacity: number;
+  bagsCapacity: number;
+  doorsCapacity: number;
   acAvailable: boolean;
   acWorking: boolean;
   images: string[];
@@ -143,8 +149,8 @@ export interface IBaseCarProps {
   country_id: number | undefined;
   region_id: number | undefined;
   pricePerDay: number;
-  minimumRentalPeriodInDays: number | "";
-  maximumRentalPeriodInDays: number | "";
+  minimumRent: number | "";
+  maximumRent: number | "";
 }
 
 export interface IResCarProps extends IBaseCarProps {
@@ -155,7 +161,8 @@ export interface IResCarProps extends IBaseCarProps {
 }
 
 export interface IReqCarProps extends IBaseCarProps {
-  type: string;
+  bodyType: string;
+  id: number;
 }
 
 export type ICarState = IReqCarProps | IResCarProps;
@@ -190,4 +197,24 @@ export interface IResBookingProps extends IBaseBookingProps {
   id: string;
   created_at: string;
   cars?: IResCarProps;
+}
+
+//provider reviews
+export interface IResProviderProps extends IBaseProviderProps {
+  created_at: string;
+  country_id: number;
+  region_id: number;
+  country?: IResCountryProps;
+  region?: RegionGetAllType;
+}
+export interface IResReviewProps {
+  id: string;
+  created_at: string;
+  rate: number;
+  comment: string;
+  likes: number;
+  dislikes: number;
+  car_id: string;
+  providers: IResProviderProps;
+  users: IResUserProps;
 }

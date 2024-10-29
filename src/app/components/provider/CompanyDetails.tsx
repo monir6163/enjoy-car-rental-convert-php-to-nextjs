@@ -76,7 +76,7 @@ export default function CompanyDetails({
       <Box style={{ flexGrow: 1 }}>
         <Title className="text-center">Create New Provider Account</Title>
         <ProfilePhoto
-          profileUrl={companyDetails.avatar}
+          profileUrl={companyDetails.avatar || companyDetails.image}
           updateProfile={updateAvatar}
         />
         <Space mt="lg" />
@@ -110,7 +110,11 @@ export default function CompanyDetails({
               id="businessRegistrationNumber"
               required
               placeholder="Business Registration Number"
-              value={companyDetails.businessRegistrationNumber}
+              value={
+                companyDetails.businessRegistrationNumber
+                  ? companyDetails.businessRegistrationNumber
+                  : companyDetails.businessReg
+              }
               onChange={(e) =>
                 updateDetails(
                   "businessRegistrationNumber",
@@ -153,7 +157,7 @@ export default function CompanyDetails({
               id="phone"
               required
               placeholder="Phone"
-              value={companyDetails.phone}
+              value={companyDetails.phone || companyDetails.contactPhone}
               onChange={(e) => updateDetails("phone", e.currentTarget.value)}
             />
             {isNext && !companyDetails.phone && (
@@ -170,7 +174,10 @@ export default function CompanyDetails({
                 <span style={{ color: "red" }}>*</span>
               </Input.Label>
               <SelectCountry
-                value={companyDetails.country_id?.toString()}
+                value={
+                  companyDetails.country_id?.toString() ||
+                  companyDetails.country?.id?.toString()
+                }
                 onChange={(value) => {
                   updateDetails("country_id", value);
                   setSelectedCountry(
@@ -192,10 +199,14 @@ export default function CompanyDetails({
                   selectedCountry?.id ||
                   countries?.filter(
                     (country) =>
-                      country.id === companyDetails.country_id?.toString()
+                      country.id === companyDetails.country_id?.toString() ||
+                      companyDetails.country?.id?.toString()
                   )[0]?.id
                 }
-                value={companyDetails.region_id?.toString()}
+                value={
+                  companyDetails.region_id?.toString() ||
+                  companyDetails.region?.id?.toString()
+                }
                 onChange={(value) => {
                   updateDetails("region_id", value);
                 }}
@@ -216,7 +227,7 @@ export default function CompanyDetails({
                 type="text"
                 id="city"
                 placeholder="Dhaka"
-                value={companyDetails.city}
+                value={companyDetails.city || companyDetails.cityName}
                 onChange={(event) =>
                   updateDetails("city", event.currentTarget.value)
                 }

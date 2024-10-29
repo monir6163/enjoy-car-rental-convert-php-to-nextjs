@@ -14,6 +14,7 @@ export const getProviderCars = async (providerId: string) => {
         images: true,
         otherFeatures: true,
       },
+      orderBy: { createdAt: "desc" },
     });
     return providerCars;
   } catch (error) {
@@ -24,6 +25,7 @@ export const getProviderCars = async (providerId: string) => {
 
 //add provider car
 export const addCar = async (carDetails: IReqCarProps) => {
+  console.log("Car Details:", carDetails.images);
   try {
     const { isValid, message } = isValidCarDetails(carDetails);
     if (isValid) {
@@ -51,32 +53,32 @@ export const addCar = async (carDetails: IReqCarProps) => {
         data: {
           description: carDetails.description,
           slug: slugify(slugTitle),
-          bodyType: carDetails.type,
+          bodyType: carDetails.bodyType,
           make: carDetails.make,
           model: carDetails.model,
           year: carDetails.year,
           transmission: carDetails.transmission,
-          engineCapaciy: carDetails.engineCapacity,
+          engineCapaciy: carDetails.engineCapaciy,
           fuelType: carDetails.fuelType,
-          seatsCapacity: carDetails.seatingCapacity,
-          doorsCapacity: carDetails.numberOfDoors,
-          bagsCapacity: carDetails.numberOfBags,
+          seatsCapacity: carDetails.seatsCapacity,
+          doorsCapacity: carDetails.doorsCapacity,
+          bagsCapacity: carDetails.bagsCapacity,
           acAvailable: carDetails.acAvailable,
           acWorking: carDetails.acWorking,
           pricePerDay: carDetails.pricePerDay,
-          minimumRent: carDetails.minimumRentalPeriodInDays,
-          maximumRent: carDetails.maximumRentalPeriodInDays,
+          minimumRent: carDetails.minimumRent,
+          maximumRent: carDetails.maximumRent,
           color: carDetails.color,
           countryId: carDetails.country_id,
           regionId: carDetails.region_id,
           providerId: carDetails.provider_id,
           images: {
-            create: carDetails.images.map((image) => ({
+            create: carDetails?.images?.map((image) => ({
               imageUrl: image,
             })),
           },
           otherFeatures: {
-            create: carDetails.otherFeatures.map((feature) => ({
+            create: carDetails?.otherFeatures?.map((feature) => ({
               feature: feature,
             })),
           },
@@ -89,6 +91,99 @@ export const addCar = async (carDetails: IReqCarProps) => {
   } catch (error: any) {
     console.log("Error:", error);
     return { error: "Car added Faield" };
+  }
+};
+
+//update provider car
+export const updateProviderCar = async (carDetails: IReqCarProps) => {
+  console.log("Car Details:", carDetails);
+  // return { message: "Car updated successfully" };
+  try {
+    const { isValid, message } = isValidCarDetails(carDetails);
+    if (isValid) {
+      let slugTitle =
+        carDetails.make + " " + carDetails.model + " " + carDetails.year;
+
+      // Validate foreign keys
+      const providerExists = await prisma.provider.findUnique({
+        where: { id: carDetails.provider_id },
+      });
+      const countryExists = await prisma.country.findUnique({
+        where: { id: carDetails.country_id },
+      });
+      const regionExists = await prisma.region.findUnique({
+        where: { id: carDetails.region_id },
+      });
+
+      if (!providerExists || !countryExists || !regionExists) {
+        return {
+          error: "The specified provider, country, or region does not exist.",
+        };
+      }
+
+      const car = await prisma.car.update({
+        where: { id: carDetails.id },
+        data: {
+          description: carDetails.description,
+          slug: slugify(slugTitle),
+          bodyType: carDetails.bodyType,
+          make: carDetails.make,
+          model: carDetails.model,
+          year: carDetails.year,
+          transmission: carDetails.transmission,
+          engineCapaciy: carDetails.engineCapaciy,
+          fuelType: carDetails.fuelType,
+          seatsCapacity: carDetails.seatsCapacity,
+          doorsCapacity: carDetails.doorsCapacity,
+          bagsCapacity: carDetails.bagsCapacity,
+          acAvailable: carDetails.acAvailable,
+          acWorking: carDetails.acWorking,
+          pricePerDay: carDetails.pricePerDay,
+          minimumRent: carDetails.minimumRent,
+          maximumRent: carDetails.maximumRent,
+          color: carDetails.color,
+          countryId: carDetails.country_id,
+          regionId: carDetails.region_id,
+          providerId: carDetails.provider_id,
+          images: {
+            updateMany: carDetails.images
+              ?.filter((image: any) => image.id)
+              .map((image: any) => ({
+                where: { id: image.id },
+                data: { imageUrl: image.imageUrl },
+              })),
+            createMany: {
+              data: carDetails.images
+                ?.filter((image: any) => !image.id)
+                .map((image: any) => ({
+                  imageUrl: image,
+                })),
+            },
+          },
+
+          otherFeatures: {
+            updateMany: carDetails.otherFeatures
+              ?.filter((feature: any) => feature.id)
+              .map((feature: any) => ({
+                where: { id: feature.id },
+                data: { feature: feature.feature },
+              })),
+            createMany: {
+              data: carDetails.otherFeatures
+                ?.filter((feature: any) => !feature.id)
+                .map((feature: any) => ({
+                  feature: feature,
+                })),
+            },
+          },
+        },
+      });
+
+      return { message: "Car updated successfully" };
+    }
+  } catch (error) {
+    console.log("Error:", error);
+    return { error: "Failed to update car" };
   }
 };
 
@@ -107,4 +202,12 @@ export const updateCarStatus = async (carId: number, status: string) => {
 };
 
 //delete provider car
-export const deleteCar = async (carId: number) => {};
+export const deleteCar = async (carId: number) => {
+  try {
+    const car = await prisma.car.delete({ where: { id: carId } });
+    return { message: "Car deleted successfully" };
+  } catch (error) {
+    console.log("Error:", error);
+    return { error: "Failed to delete car" };
+  }
+};

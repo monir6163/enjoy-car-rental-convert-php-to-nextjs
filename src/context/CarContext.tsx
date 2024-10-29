@@ -8,15 +8,15 @@ const CarContext = createContext<ICarContext>(undefined as any);
 const initialCarState: IReqCarProps = {
   make: "",
   model: "",
-  type: "sedan",
+  bodyType: "sedan",
   year: new Date().getFullYear(),
   transmission: "automatic",
-  engineCapacity: "1.0L",
+  engineCapaciy: "1.0L",
   fuelType: "",
   description: "",
-  seatingCapacity: 5,
-  numberOfBags: 2,
-  numberOfDoors: 4,
+  seatsCapacity: 5,
+  bagsCapacity: 2,
+  doorsCapacity: 4,
   acAvailable: false,
   acWorking: false,
   images: [],
@@ -27,8 +27,9 @@ const initialCarState: IReqCarProps = {
   country_id: 0,
   region_id: 0,
   pricePerDay: 300,
-  minimumRentalPeriodInDays: 1,
-  maximumRentalPeriodInDays: "",
+  minimumRent: 1,
+  maximumRent: "",
+  id: 0,
 };
 
 const initialState: ICarState = initialCarState;
@@ -63,7 +64,7 @@ export const CarContextProvider = ({ children }: Props) => {
   const removeImage = (url: string) => {
     setState((prevState) => ({
       ...prevState,
-      images: prevState.images.filter((image) => image !== url),
+      images: prevState.images.filter((image: any) => image?.imageUrl !== url),
     }));
   };
 

@@ -13,7 +13,6 @@ import {
   IconCar,
   IconDashboard,
   IconMessage,
-  IconPlus,
   IconUser,
 } from "@tabler/icons-react";
 import { ReactNode, useState } from "react";
@@ -43,17 +42,12 @@ const data = [
     label: "My cars",
     endpoint: "/dashboard/cars",
   },
-  {
-    icon: <IconPlus size="1rem" />,
-    color: "cyan",
-    label: "Add Car",
-    endpoint: "/add-car",
-  },
+
   {
     icon: <IconMessage size="1rem" />,
     color: "orange",
     label: "My Reviews",
-    endpoint: "/reviews",
+    endpoint: "/dashboard/reviews",
   },
 ];
 export default function DashboardLayout({
@@ -117,7 +111,7 @@ export default function DashboardLayout({
               label="Account Settings"
               color="gray"
               icon={<IconUser size="1rem" />}
-              link={`/provider/my-account`}
+              link={`/provider/dashboard/my-account`}
             />
           </AppShell.Section>
         </AppShell.Navbar>
