@@ -52,6 +52,7 @@ export default function MyAccount({ user, providerDetails }: any) {
           image: details.avatar,
         },
       });
+      setIsUpdating(false);
       toast.success("Profile updated successfully");
       refresh();
     } else {

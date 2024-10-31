@@ -1,12 +1,25 @@
 "use client";
 
 import { DateValue } from "@mantine/dates";
-import { createContext, useCallback, useContext, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from "react";
+import { IconType } from "react-icons";
 import { CountryGetAllType, RegionGetAllType } from "../../types";
+export type SelectItem = {
+  label: string;
+  value: string;
+  icon?: ReactNode | IconType;
+};
 interface AppState {
   selectedCountry: CountryGetAllType | undefined;
   selectedRegion: RegionGetAllType | undefined;
   carModel: { label: string; value: string } | undefined;
+  carMake: SelectItem | undefined;
   picupDate: DateValue | undefined;
   returnDate: DateValue | undefined;
 }
@@ -15,6 +28,7 @@ interface IAppContext {
   setCountry: (selectedCountry: CountryGetAllType) => void;
   setRegion: (selectedRegion: RegionGetAllType) => void;
   setCarModel: (carModel: { label: string; value: string }) => void;
+  setMake: (selectedMake: SelectItem) => void;
   setPicupDate: (picupDate: DateValue) => void;
   setReturnDate: (returnDate: DateValue) => void;
 }
@@ -25,6 +39,7 @@ const initialState: AppState = {
   selectedCountry: undefined,
   selectedRegion: undefined,
   carModel: undefined,
+  carMake: undefined,
   picupDate: undefined,
   returnDate: undefined,
 };
@@ -47,6 +62,12 @@ export const AppContextProvider = ({
     },
     []
   );
+  const setMake = useCallback((selectedMake: SelectItem) => {
+    setState((prevState) => ({
+      ...prevState,
+      carMake: selectedMake,
+    }));
+  }, []);
   const setPicupDate = useCallback((picupDate: DateValue) => {
     setState((prevState) => ({ ...prevState, picupDate }));
   }, []);
@@ -60,6 +81,7 @@ export const AppContextProvider = ({
         setCountry,
         setRegion,
         setCarModel,
+        setMake,
         setPicupDate,
         setReturnDate,
       }}

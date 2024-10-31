@@ -3,20 +3,36 @@
 import { useAppContext } from "@/context/AppContext";
 import { useCountries } from "@/hooks/useCountries";
 import { useRegions } from "@/hooks/useRegions";
-import { Button } from "@mantine/core";
-import { useRouter } from "next/navigation";
+import { carMakes } from "@/lib/data";
+import {
+  getDefaultSelectedCountry,
+  getDefaultSelectedRegion,
+} from "@/lib/utils";
+import { Button, LoadingOverlay } from "@mantine/core";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
+import { toast } from "react-toastify";
 import DatePicker from "../cars/DatePicker";
-import CarModel from "./filterFrom/CarModel";
+import { SelectCarMake } from "./filterFrom/SelectCarMake";
 import SelectCountry from "./filterFrom/SelectCountry";
 import SelectRegion from "./filterFrom/SelectRegion";
 const CarReserveFrom = () => {
+  const searchParams = useSearchParams();
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
   const {
-    state: { selectedCountry, selectedRegion, carModel, picupDate, returnDate },
+    state: {
+      selectedCountry,
+      selectedRegion,
+      carMake,
+      carModel,
+      picupDate,
+      returnDate,
+    },
     setCountry,
     setRegion,
-    setCarModel,
+    setMake,
     setPicupDate,
     setReturnDate,
   } = useAppContext();
@@ -37,46 +53,84 @@ const CarReserveFrom = () => {
     }
   };
 
-  const handleCarModelChange = (value: string | null) => {
-    const carModel = { label: value || "", value: value || "" };
-    setCarModel(carModel);
+  const handleCarMakeChange = (value: string) => {
+    const selectedMake = carMakes.filter((make) => make.value === value)[0];
+    setMake(selectedMake);
   };
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSearchCars = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    //navigate to the cars page with the url query params
-    const url = `/cars?country=${selectedCountry?.name}&region=${selectedRegion?.name}&carModel=${carModel?.value}&pickupDate=${picupDate}&returnDate=${returnDate}`;
-    router.push(url);
+    setIsLoading(true);
+    if (
+      selectedCountry &&
+      selectedRegion &&
+      carMake &&
+      picupDate &&
+      returnDate
+    ) {
+      const params = `country=${selectedCountry?.id}&region=${selectedRegion?.id}&carMake=${carMake?.value}&pickupDate=${picupDate}&returnDate=${returnDate}`;
+      router.push(`/cars?${params}`);
+    } else {
+      setIsLoading(false);
+      toast.error("Please fill all the fields");
+    }
   };
+  useEffect(() => {
+    if (countries) {
+      const countryId = searchParams.get("country");
 
+      const selectedCountry = getDefaultSelectedCountry(countries, countryId);
+      setCountry(selectedCountry);
+    }
+  }, [countries, searchParams, setCountry]);
+  useEffect(() => {
+    if (regions) {
+      const regionId = searchParams.get("region");
+      const selectedRegion = getDefaultSelectedRegion(regions, regionId);
+      setRegion(selectedRegion);
+    }
+  }, [regions, searchParams, setRegion]);
   return (
-    <div className="carReservation">
-      <div className="">
-        <h2 className="mb-5 font-bold text-3xl">Car Reservation</h2>
-      </div>
-      <form onSubmit={handleSearch}>
-        <SelectCountry
-          onChange={handleCountryChange}
-          value={selectedCountry?.id}
+    <>
+      <div className="carReservation">
+        <LoadingOverlay
+          visible={isLoading}
+          zIndex={1000}
+          overlayProps={{ radius: "sm", blur: 2 }}
         />
-        <SelectRegion
-          onChange={handleRegionChange}
-          value={selectedRegion?.id}
-          countryId={selectedCountry?.id}
-        />
-        <CarModel
-          onChange={handleCarModelChange}
-          value={carModel?.value}
-          label={carModel?.label}
-        />
-        <DatePicker />
-        <div className="buttons">
-          <Button type="submit" variant="gradient" className="w-full" size="md">
-            Search for car
-          </Button>
+        <div className="">
+          <h2 className="mb-5 font-bold text-3xl">Car Reservation</h2>
         </div>
-      </form>
-    </div>
+
+        <form onSubmit={handleSearchCars}>
+          <SelectCountry
+            onChange={handleCountryChange}
+            value={selectedCountry?.id}
+          />
+          <SelectRegion
+            onChange={handleRegionChange}
+            value={selectedRegion?.id}
+            countryId={selectedCountry?.id}
+          />
+          <SelectCarMake
+            value={carMake?.value}
+            onChange={handleCarMakeChange}
+            addAll={true}
+          />
+          <DatePicker />
+          <div className="buttons">
+            <Button
+              type="submit"
+              variant="gradient"
+              className="w-full"
+              size="md"
+            >
+              Search for car
+            </Button>
+          </div>
+        </form>
+      </div>
+    </>
   );
 };
 

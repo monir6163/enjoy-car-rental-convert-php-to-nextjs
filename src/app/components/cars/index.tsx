@@ -27,7 +27,7 @@ const MapBox = dynamic(() => import("../shared/Map/Map"), {
   ssr: false,
 });
 
-export default function CarsPageLayout() {
+export default function CarsPageLayout({ cars }: any) {
   const [showMap, setShowMap] = useState<boolean>(false);
 
   //map toggle button
@@ -81,7 +81,7 @@ export default function CarsPageLayout() {
             </Box>
           </Card>
 
-          <CarList />
+          <CarList cars={cars || []} />
         </Flex>
       </Container>
     </>

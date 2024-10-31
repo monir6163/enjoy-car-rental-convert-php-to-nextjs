@@ -4,6 +4,7 @@ import "@mantine/dates/styles.css";
 
 import { AppContextProvider } from "@/context/AppContext";
 import { CarContextProvider } from "@/context/CarContext";
+import { FiltersContextProvider } from "@/context/FilterContext";
 import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
@@ -38,10 +39,12 @@ export default async function RootLayout({
           <Providers session={session}>
             <AppContextProvider>
               <CarContextProvider>
-                <MantineProvider>
-                  <NextTopLoader />
-                  <main>{children}</main>
-                </MantineProvider>
+                <FiltersContextProvider>
+                  <MantineProvider>
+                    <NextTopLoader />
+                    <main>{children}</main>
+                  </MantineProvider>
+                </FiltersContextProvider>
               </CarContextProvider>
             </AppContextProvider>
           </Providers>

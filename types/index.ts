@@ -218,3 +218,22 @@ export interface IResReviewProps {
   providers: IResProviderProps;
   users: IResUserProps;
 }
+
+//filter types
+export interface IFiltersState {
+  type: string;
+  minPrice: number;
+  maxPrice: number;
+  minYear: number;
+  maxYear: number;
+  transmission: string;
+  fuelType: string;
+}
+export interface IFiltersContext {
+  state: IFiltersState;
+  updateFilterProperty: (
+    key: keyof IFiltersState,
+    value: IFiltersState[keyof IFiltersState]
+  ) => void;
+  resetFilters: () => void;
+}

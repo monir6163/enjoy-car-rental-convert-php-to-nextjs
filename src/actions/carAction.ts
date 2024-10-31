@@ -211,3 +211,29 @@ export const deleteCar = async (carId: number) => {
     return { error: "Failed to delete car" };
   }
 };
+
+// get search cars
+export const getSearchedCars = async (searchQuery: any) => {
+  try {
+    const matchFilter: any = {
+      countryId: searchQuery.country,
+      regionId: searchQuery.region,
+    };
+    if (searchQuery.carMake && searchQuery.carMake !== "all") {
+      matchFilter.make = searchQuery.carMake;
+    }
+    const cars = await prisma.car.findMany({
+      where: matchFilter,
+      include: {
+        images: true,
+        otherFeatures: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    return cars;
+  } catch (error) {
+    console.log("Error:", error);
+    return { error: "Failed to get cars" };
+  }
+};

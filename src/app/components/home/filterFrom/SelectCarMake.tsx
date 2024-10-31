@@ -27,8 +27,9 @@ export function SelectCarMake({
   return (
     <Select
       width="100%"
-      label={label || "Car Make"}
-      placeholder="Toyota"
+      className="custom"
+      label={label || ""}
+      placeholder="Select car make"
       data={carMakes.map((make) => ({ label: make.label, value: make.value }))}
       value={value}
       onChange={

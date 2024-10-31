@@ -1,7 +1,7 @@
 "use client";
 import { optionsFilter } from "@/functions";
 import { Select } from "@mantine/core";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 const carTypes = [
   { label: "Any", value: "Any" },
@@ -37,6 +37,11 @@ export const SelectCarType = ({
   addAny,
   required = false,
 }: Props) => {
+  useEffect(() => {
+    if (!addAny) {
+      carTypes.filter((item) => item.value.toLowerCase() !== "any");
+    }
+  }, [addAny]);
   return (
     <Select
       width="100%"

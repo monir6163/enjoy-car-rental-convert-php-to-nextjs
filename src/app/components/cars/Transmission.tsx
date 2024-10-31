@@ -1,16 +1,21 @@
+import { useFiltersContext } from "@/context/FilterContext";
 import { SegmentedControl, Text } from "@mantine/core";
 
 export const Transmission = () => {
+  const { state, updateFilterProperty } = useFiltersContext();
   return (
     <>
       <Text my={16}>Transmission</Text>
+
       <SegmentedControl
         color="pink"
         radius="lg"
+        value={state.transmission}
+        onChange={(value) => updateFilterProperty("transmission", value)}
         data={[
-          { value: "Any", label: "Any" },
-          { value: "Automatic", label: "Automatic" },
-          { value: "Manual", label: "Manual" },
+          { label: "Any", value: "any" },
+          { label: "Manual", value: "manual" },
+          { label: "Automatic", value: "automatic" },
         ]}
       />
     </>

@@ -18,6 +18,7 @@ export const loginZodSchema = z.object({
     .max(10, "Password must be at most 10 characters"),
 });
 
+//custom function to format date
 export function formatDate(inputDate: Date | string): string {
   let date: Date;
 
@@ -39,6 +40,30 @@ export function formatDate(inputDate: Date | string): string {
   const formattedDate = date.toLocaleString("en-US", options);
   return formattedDate;
 }
+
+//custom function to define the default selected country
+export const getDefaultSelectedCountry = (
+  countries: any[],
+  countryId: string | null
+) => {
+  if (countryId) {
+    return countries.filter(
+      (country) => country.id.toString() === countryId
+    )[0];
+  }
+  return countries[0];
+};
+
+//default selected region
+export const getDefaultSelectedRegion = (
+  regions: any[],
+  regionId: string | null
+) => {
+  if (regionId) {
+    return regions.filter((region) => region.id.toString() === regionId)[0];
+  }
+  return regions[0];
+};
 
 export const carSliderData = [
   {

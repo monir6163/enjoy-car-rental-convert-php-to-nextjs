@@ -1,6 +1,6 @@
 import { optionsFilter } from "@/functions";
 import { Select } from "@mantine/core";
-import { ReactNode } from "react";
+import { ReactNode, useEffect } from "react";
 
 const fuelTypes = [
   { label: "Any", value: "Any" },
@@ -26,6 +26,12 @@ export const SelectFuelType = ({
   required,
   addAny,
 }: Props) => {
+  useEffect(() => {
+    if (!addAny) {
+      fuelTypes.filter((item) => item.value.toLowerCase() !== "any");
+    }
+  }, [addAny]);
+
   return (
     <Select
       width="100%"
@@ -34,7 +40,6 @@ export const SelectFuelType = ({
       required={required}
       data={fuelTypes}
       value={value}
-      defaultValue={"Any"}
       onChange={onChange}
       searchable
       maxDropdownHeight={280}
