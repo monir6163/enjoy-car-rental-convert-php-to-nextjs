@@ -20,7 +20,7 @@ export default function ReviewCard({ review }: Props) {
         <Avatar size="md" radius="xl" color="blue" />
         <Box>
           <Text size="sm" fw={500} className="text-muted">
-            {review.users.firstName} {review.users.lastName}
+            {review.user.name}
           </Text>
           <Rating value={review.rate} fractions={2} readOnly />
           <Text className="text-default">{review.comment}</Text>

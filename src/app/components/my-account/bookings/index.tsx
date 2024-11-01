@@ -19,6 +19,7 @@ import { StatusRenderer } from "../../StatusRenderer";
 interface BookingsProps {
   userId: string;
   bookings: any[];
+  car?: any;
 }
 const header = (
   <Table.Tr>
@@ -33,20 +34,21 @@ const header = (
 export default function Bookings({ userId, bookings }: BookingsProps) {
   const searchParams = useSearchParams();
   const carId = searchParams.get("car_id");
+
   const rows = bookings?.map((item) => (
     <TableRow
       key={item.id}
       bookingId={item.id}
       carId={carId}
-      dateBooked={new Date(item.created_at)}
-      car={item.cars as any}
-      pickupDate={new Date(item.pickupDate)}
+      dateBooked={new Date(item.createdAt)}
+      car={item.car as any}
+      pickupDate={new Date(item.pickUpDate)}
       returnDate={new Date(item.returnDate)}
       price={item.totalPrice}
       status={item.status as any}
     />
   ));
-  return bookings.length > 0 ? (
+  return bookings?.length > 0 ? (
     <>
       <Divider
         mb="lg"
@@ -78,7 +80,7 @@ interface TableRowProps {
   bookingId: string;
   carId: string | null;
   dateBooked: Date;
-  car: { slug: string; make: string; model: string; images: string[] };
+  car: { slug: string; make: string; model: string; images: any[] };
   pickupDate: Date;
   returnDate: Date;
   price: number;
@@ -97,7 +99,7 @@ export const TableRow = ({
       <Table.Td>{formatDate(dateBooked)}</Table.Td>
       <Table.Td>
         <Flex align="center" gap={4}>
-          <Avatar size="sm" radius="xl" src={car.images[0]} />
+          <Avatar size="sm" radius="xl" src={car.images[0]?.imageUrl} />
 
           <Text component={Link} href={`/cars/${car.slug}`}>
             {car.make} {car.model}

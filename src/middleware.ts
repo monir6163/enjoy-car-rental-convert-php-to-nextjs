@@ -9,7 +9,6 @@ export async function middleware(request: NextRequest) {
 
   // * Protected routes for user
   const userProtectedRoutes = [
-    "/cars",
     "/my-account",
     "/my-account/profile",
     "/my-account/bookings",

@@ -216,7 +216,7 @@ export interface IResReviewProps {
   dislikes: number;
   car_id: string;
   providers: IResProviderProps;
-  users: IResUserProps;
+  user: any;
 }
 
 //filter types

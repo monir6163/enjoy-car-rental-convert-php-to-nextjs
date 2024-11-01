@@ -241,21 +241,19 @@ export const getBookingDetails = async (userId: string) => {
       },
       select: {
         id: true,
-        bookingDate: true,
-        bookingTime: true,
-        bookingStatus: true,
-        bookingType: true,
-        bookingPrice: true,
-        bookingDetails: true,
-        provider: {
+        createdAt: true,
+        pickUpDate: true,
+        returnDate: true,
+        totalPrice: true,
+        status: true,
+        carId: true,
+        car: {
           select: {
-            companyName: true,
-            contactName: true,
-            contactPhone: true,
-            email: true,
-            city: true,
-            street: true,
-            avatar: true,
+            id: true,
+            slug: true,
+            make: true,
+            model: true,
+            images: true,
           },
         },
       },
@@ -264,6 +262,40 @@ export const getBookingDetails = async (userId: string) => {
   } catch (error) {
     console.log("Error in getBookingDetails:", error);
     return { error: "Error fetching booking details" };
+  }
+};
+
+//get booking details of a provider
+export const getProviderBookingDetails = async (
+  providerId: string,
+  carId: string
+) => {
+  try {
+    const bookings = await prisma.booking.findMany({
+      where: {
+        providerId: providerId,
+        carId: carId,
+      },
+      select: {
+        id: true,
+        createdAt: true,
+        pickUpDate: true,
+        returnDate: true,
+        totalPrice: true,
+        status: true,
+        user: {
+          select: {
+            id: true,
+            name: true,
+            image: true,
+          },
+        },
+      },
+    });
+    return bookings;
+  } catch (error) {
+    console.log("Error in getProviderBookingDetails:", error);
+    return { error: "Error fetching provider booking details" };
   }
 };
 
@@ -367,12 +399,31 @@ export const updateProviderAccount = async (
 
 //get provider reviews
 export const providerGetReviews = async (
-  providerId: string
+  userId: string
 ): Promise<IResReviewProps[]> => {
   try {
+    //get provider
+
+    const provider = await prisma.user.findUnique({
+      where: {
+        id: userId,
+      },
+      select: {
+        id: true,
+        name: true,
+        image: true,
+        Provider: {
+          select: {
+            id: true,
+            companyName: true,
+            avatar: true,
+          },
+        },
+      },
+    });
     const reviews = await prisma.review.findMany({
       where: {
-        providerId: providerId,
+        providerId: provider?.Provider?.id,
       },
       select: {
         id: true,
@@ -382,8 +433,10 @@ export const providerGetReviews = async (
             image: true,
           },
         },
-        review: true,
-        rating: true,
+        comment: true,
+        rate: true,
+        likes: true,
+        dislikes: true,
         createdAt: true,
       },
     });
@@ -391,5 +444,48 @@ export const providerGetReviews = async (
   } catch (error: any) {
     console.log("Error in providerGetReviews:", error);
     return [] as IResReviewProps[];
+  }
+};
+
+// update provider booking status also update car status
+export const updateProviderBookingStatus = async (
+  bookingId: string,
+  carId: string,
+  value: "approve" | "reject"
+) => {
+  try {
+    let bookingStatus = { status: "pending" };
+    let carStatus = { status: "pending" };
+    if (value === "approve") {
+      bookingStatus = { status: "approved" };
+      carStatus = { status: "booked" };
+    } else {
+      bookingStatus = { status: "rejected" };
+      carStatus = { status: "available" };
+    }
+    const res = await prisma.$transaction([
+      prisma.booking.update({
+        where: {
+          id: bookingId,
+        },
+        data: bookingStatus,
+      }),
+      prisma.car.update({
+        where: {
+          id: carId,
+        },
+        data: carStatus,
+      }),
+    ]);
+    if (!res) {
+      return { error: "Error updating booking status" };
+    }
+    return {
+      status: "success",
+      message: "Booking status updated successfully",
+    };
+  } catch (error) {
+    console.log("Error in updateProviderBookingStatus:", error);
+    return { error: "Failed to update booking status" };
   }
 };

@@ -1,8 +1,8 @@
 import { Button, Drawer, Flex, Space, Text, Title } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconFilterCog } from "@tabler/icons-react";
-import { SelectCarType } from "../home/filterFrom/SelectCarType";
-import { SelectFuelType } from "../home/filterFrom/SelectFuelType";
+import { BodyType } from "./BodyType";
+import { FuelType } from "./FuelType";
 import { PriceRange } from "./PriceRange";
 import { ResetFiltersButton } from "./ResetFiltersButton";
 import { Transmission } from "./Transmission";
@@ -31,12 +31,12 @@ export const FiltersDrawer = () => {
           <ResetFiltersButton />
         </Flex>
 
-        <SelectCarType />
+        <BodyType />
         <PriceRange />
         <YearModel />
         <Transmission />
         <Space my="lg" />
-        <SelectFuelType />
+        <FuelType />
       </Drawer>
 
       <Button

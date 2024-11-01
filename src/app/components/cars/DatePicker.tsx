@@ -1,5 +1,5 @@
 import { useAppContext } from "@/context/AppContext";
-import { Flex } from "@mantine/core";
+import { Box, Flex, Input } from "@mantine/core";
 import { DateInput, DateValue } from "@mantine/dates";
 import dayjs from "dayjs";
 
@@ -9,9 +9,10 @@ interface Props {
   onChange?: (value: DateValue) => void;
   minDate?: Date;
   maxDate?: Date;
+  triggered?: boolean;
 }
 
-export default function DatePicker() {
+export default function DatePicker({ triggered }: Props) {
   const {
     state: { picupDate, returnDate },
     setPicupDate,
@@ -29,30 +30,40 @@ export default function DatePicker() {
       }}
       className="custom"
     >
-      <PickupDate
-        value={picupDate}
-        onChange={(date) => {
-          setPicupDate(date);
-          if (
-            returnDate &&
-            dayjs(returnDate).isBefore(dayjs(date).add(1, "day"))
-          ) {
-            setReturnDate(null);
-          }
-        }}
-        placeholder="Select pickup date"
-        minDate={new Date()}
-      />
+      <Box>
+        <PickupDate
+          value={picupDate}
+          onChange={(date) => {
+            setPicupDate(date);
+            if (
+              returnDate &&
+              dayjs(returnDate).isBefore(dayjs(date).add(1, "day"))
+            ) {
+              setReturnDate(null);
+            }
+          }}
+          placeholder="Select pickup date"
+          minDate={new Date()}
+        />
+        {triggered && !picupDate && (
+          <Input.Error>Select pickup date</Input.Error>
+        )}
+      </Box>
 
-      <ReturnDate
-        value={returnDate}
-        onChange={setReturnDate}
-        placeholder="Select return date"
-        minDate={
-          picupDate ? dayjs(picupDate).add(1, "day").toDate() : new Date()
-        }
-        maxDate={dayjs(new Date()).add(1, "month").toDate()}
-      />
+      <Box>
+        <ReturnDate
+          value={returnDate}
+          onChange={setReturnDate}
+          placeholder="Select return date"
+          minDate={
+            picupDate ? dayjs(picupDate).add(1, "day").toDate() : new Date()
+          }
+          maxDate={dayjs(new Date()).add(1, "month").toDate()}
+        />
+        {triggered && !returnDate && (
+          <Input.Error>Select return date</Input.Error>
+        )}
+      </Box>
     </Flex>
   );
 }

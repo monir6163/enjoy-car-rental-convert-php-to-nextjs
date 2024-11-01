@@ -1,19 +1,33 @@
+import { getCarDetails } from "@/actions/carAction";
+import { authOptions } from "@/app/auth";
+import CarDetails from "@/app/components/cars/details/CarDetails";
 import Breadcrumb from "@/app/components/shared/Breadcrumb";
+import { getServerSession } from "next-auth";
+import { redirect } from "next/navigation";
 
-export default function page({ params }: any) {
+interface CarDetailsPageProps {
+  params: any;
+  searchParams: any;
+}
+
+export default async function page({ params }: CarDetailsPageProps) {
+  const session = await getServerSession(authOptions);
+  if (!session) {
+    return redirect("/login");
+  }
+  if (!params) {
+    return redirect("/cars");
+  }
   const { slug } = params as { slug: string };
+  const user = session?.user as { id: string };
+  const carDetails = await getCarDetails(user?.id, slug);
   return (
     <>
       <Breadcrumb label={"Rent a Car"} />
 
       <section className="py-10">
-        <h1 className="text-3xl font-bold text-center mb-10">
-          Rent a Car - {slug}
-        </h1>
         <div className="container mx-auto">
-          <p className="text-center text-lg">
-            This is the car rental page for {slug}.
-          </p>
+          <CarDetails carDetails={carDetails?.car} user={carDetails?.user} />
         </div>
       </section>
     </>

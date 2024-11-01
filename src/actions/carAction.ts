@@ -237,3 +237,87 @@ export const getSearchedCars = async (searchQuery: any) => {
     return { error: "Failed to get cars" };
   }
 };
+
+// get car details
+export const getCarDetails = async (userId: string, slug: string) => {
+  try {
+    const car = await prisma.car.findFirst({
+      where: { slug: slug },
+      include: {
+        images: {
+          select: { imageUrl: true },
+        },
+        otherFeatures: {
+          select: { feature: true },
+        },
+        provider: {
+          select: {
+            id: true,
+            companyName: true,
+            avatar: true,
+            email: true,
+            contactPhone: true,
+          },
+        },
+
+        country: {
+          select: { name: true },
+        },
+        region: {
+          select: { name: true },
+        },
+        review: {
+          select: {
+            id: true,
+            rate: true,
+            comment: true,
+            likes: true,
+            dislikes: true,
+            user: {
+              select: {
+                id: true,
+                name: true,
+                image: true,
+              },
+            },
+          },
+        },
+      },
+    });
+    const loggedInUser = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        image: true,
+        name: true,
+        role: true,
+        userProfile: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            phone: true,
+            countryId: true,
+            regionId: true,
+            city: true,
+            state: true,
+            dob: true,
+            gender: true,
+            region: {
+              select: { name: true },
+            },
+            country: {
+              select: { name: true },
+            },
+          },
+        },
+      },
+    });
+    // return like {car, user: loggedInUser, provider: car.provider, review: car.review}
+    return { car, user: loggedInUser };
+  } catch (error) {
+    console.log("Error:", error);
+    return { error: "Failed to get car details" };
+  }
+};

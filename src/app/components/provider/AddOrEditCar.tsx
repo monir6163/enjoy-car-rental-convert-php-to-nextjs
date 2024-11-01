@@ -98,7 +98,6 @@ export function AddOrEditCar({
         const car = await addCar(details);
 
         if (car.error) {
-          console.log("Error:", car.error);
           toast.error(car.error);
           setIsSubmitting(false);
         } else {

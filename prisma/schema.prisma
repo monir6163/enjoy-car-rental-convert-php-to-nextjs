@@ -172,8 +172,8 @@ model Car {
   country       Country      @relation(fields: [countryId], references: [id], onDelete: Cascade)
   region        Region       @relation(fields: [regionId], references: [id], onDelete: Cascade)
   provider      Provider     @relation(fields: [providerId], references: [id], onDelete: Cascade)
-  Booking       Booking[]
-  Review        Review[]
+  booking       Booking[]
+  review        Review[]
   images        CarImage[]
   otherFeatures CarFeature[]
 }

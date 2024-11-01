@@ -20,8 +20,13 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useEffect, useState } from "react";
 import { BookingStatus, IResBookingProps } from "../../../../types";
 
+import {
+  getProviderBookingDetails,
+  updateProviderBookingStatus,
+} from "@/actions/auth";
 import { ghCurrency } from "@/const";
 import { formatDate } from "@/lib/utils";
+import { toast } from "react-toastify";
 import { StatusRenderer } from "../StatusRenderer";
 
 const header = (
@@ -39,15 +44,15 @@ export default function Bookings({ providerId }: { providerId: string }) {
   const searchParams = useSearchParams();
   const carId = searchParams.get("car_id") || "";
 
-  const rows = bookings?.map((item) => (
+  const rows = bookings?.map((item: any) => (
     <TableRow
       key={item.id}
       bookingId={item.id}
       providerId={providerId}
       carId={carId}
-      dateBooked={new Date(item.created_at)}
-      user={item.users}
-      pickupDate={new Date(item.pickupDate)}
+      dateBooked={new Date(item.createdAt)}
+      user={item.user}
+      pickupDate={new Date(item.pickUpDate)}
       returnDate={new Date(item.returnDate)}
       price={item.totalPrice}
       status={item.status as BookingStatus}
@@ -57,14 +62,15 @@ export default function Bookings({ providerId }: { providerId: string }) {
     const fetchBookings = async () => {
       if (carId && providerId) {
         //server call to get bookings
-        if (bookings) {
-          setBookings(bookings as any);
+        const res = await getProviderBookingDetails(providerId, carId);
+        if (res) {
+          setBookings(res);
         }
       }
     };
 
     fetchBookings();
-  }, [bookings, carId, providerId]);
+  }, [carId, providerId]);
   return bookings.length > 0 ? (
     <Card my="3rem">
       <Divider
@@ -119,7 +125,13 @@ interface TableRowProps {
   carId: string;
   providerId: string;
   dateBooked: Date;
-  user: { firstName: string; lastName: string; avatar: string };
+  user: {
+    name: string;
+    firstName: string;
+    lastName: string;
+    avatar: string;
+    image: any;
+  };
   pickupDate: Date;
   returnDate: Date;
   price: number;
@@ -142,49 +154,18 @@ export const TableRow = ({
 
   const handleUpdateBooking = async (value: "approve" | "reject") => {
     setIsUpdating(true);
-    let bookingStatus = { status: "pending" };
-    let carStatus = { status: "pending" };
-
-    if (value === "approve") {
-      bookingStatus = {
-        status: "approved",
-      };
-      carStatus = {
-        status: "booked",
-      };
-    } else {
-      bookingStatus = {
-        status: "rejected",
-      };
-      carStatus = {
-        status: "available",
-      };
-    }
     //server call to update booking status and car status
-    // const { error } = await supabase
-    //   .from("bookings")
-    //   .update(bookingStatus)
-    //   .eq("id", bookingId)
-    //   .select();
 
-    // if (error) {
-    //   console.log(error);
-    //   return;
-    // }
+    const res = await updateProviderBookingStatus(bookingId, carId, value);
 
-    // const { error: error2 } = await supabase
-    //   .from("cars")
-    //   .update(carStatus)
-    //   .eq("id", carId)
-    //   .select();
-
-    // if (error2) {
-    //   console.log(error2);
-    // } else {
-    //   toast.info("Booking request has been updated");
-    //   setIsUpdating(false);
-    //   refresh();
-    // }
+    if (res?.status === "success") {
+      setIsUpdating(false);
+      toast.success("Booking status updated successfully");
+      refresh();
+    } else {
+      setIsUpdating(false);
+      toast.error("Failed to update booking status");
+    }
   };
 
   return (
@@ -192,8 +173,8 @@ export const TableRow = ({
       <Table.Td>{formatDate(dateBooked)}</Table.Td>
       <Table.Td>
         <Flex align="center" gap={4}>
-          <Avatar size="sm" radius="xl" src={user.avatar} />
-          <Text>{user.firstName}</Text>
+          <Avatar size="sm" radius="xl" src={user?.avatar || user?.image} />
+          <Text>{user?.name}</Text>
         </Flex>
       </Table.Td>
       <Table.Td>{formatDate(pickupDate)}</Table.Td>
