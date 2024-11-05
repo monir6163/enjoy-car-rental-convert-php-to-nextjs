@@ -66,9 +66,7 @@ export const AccountLayout = ({ children }: { children: React.ReactNode }) => {
               />
             </Box>
           </Card>
-          <Box px="xl" w="calc(100% - 300px)">
-            {children}
-          </Box>
+          <div className="">{children}</div>
         </Flex>
       </Container>
     </>

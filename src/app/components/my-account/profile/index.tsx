@@ -5,7 +5,6 @@ import { useProfileForm } from "@/hooks/useProfileForm";
 import {
   Box,
   Button,
-  Flex,
   Group,
   Input,
   LoadingOverlay,
@@ -66,13 +65,14 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
   };
   return (
     <>
-      <Flex gap="4rem">
+      <div className="flex flex-col gap-10 md:flex-row ">
         <Space mt="4rem" />
         <ProfilePhoto
           profileUrl={form.values.avatar}
           updateProfile={updateAvatar}
         />
-        <Box style={{ flexGrow: 1 }}>
+
+        <div>
           <Title c="gray.6" mb="4rem" size="1rem">
             Profile Details ({userDetails?.email})
           </Title>
@@ -209,8 +209,8 @@ export default function ProfileComponent({ userSession, userDetails }: Props) {
               {isUpdating ? "Updating..." : "Update Profile"}
             </Button>
           </form>
-        </Box>
-      </Flex>
+        </div>
+      </div>
     </>
   );
 }

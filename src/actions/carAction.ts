@@ -321,3 +321,19 @@ export const getCarDetails = async (userId: string, slug: string) => {
     return { error: "Failed to get car details" };
   }
 };
+
+// get all cars home page desc
+export const getAllCars = async () => {
+  try {
+    const cars = await prisma.car.findMany({
+      include: {
+        images: true,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+    return cars;
+  } catch (error) {
+    console.log("get home car", error);
+    return { message: "all car fetch Failed" };
+  }
+};

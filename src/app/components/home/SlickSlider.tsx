@@ -4,14 +4,14 @@
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 
-import { rentalCarData } from "@/lib/utils";
+import { ghCurrencySymbol } from "@/const";
 import Link from "next/link";
 import "slick-carousel/slick/slick-theme.css";
-const SlickSlider = () => {
+const SlickSlider = ({ cars }: any) => {
   let settings = {
     dots: true,
     arrows: true,
-    slidesToShow: 3,
+    slidesToShow: 4,
     slidesToScroll: 1,
     initialSlide: 0,
     className: "center",
@@ -52,40 +52,45 @@ const SlickSlider = () => {
   return (
     <div className="slider-container">
       <Slider {...settings}>
-        {rentalCarData.map((car, i) => (
+        {cars?.map((car: any, i: number) => (
           <div key={i} className="item">
             <div className="block w-full h-[420px] bg-white ml-auto mr-auto border border-gray-300 rounded-[20px] full_card">
               <div className="w-[40%] bg-[#cc0505] h-[25px] flex justify-center items-center price_border">
-                <p className="text-white text-sm">From 50</p>
+                <p className="text-white text-sm">
+                  PricePerDay {ghCurrencySymbol}
+                  {car?.pricePerDay}
+                </p>
               </div>
               <div className="ml-auto mr-auto pt-2 w-full max-w-[300px]">
                 <img
-                  src="/images/slider/1.png"
+                  src={car?.images[0]?.imageUrl}
                   alt="car"
                   className="w-full h-[200px] object-center max-w-[300px] object-contain "
                 />
               </div>
               <div className="pl-5 pr-5">
                 <div className="text-xl text-black pt-4">{car?.name}</div>
-                <div className="text-xs red_color pb-2">Automatic</div>
+                <div className="text-xs red_color pb-2 capitalize">
+                  {car?.transmission}
+                </div>
                 <div className="flex justify-between text-black text-sm pt-2">
-                  <div>1-3 days</div>
-                  <div>500</div>
+                  <div>BodyType</div>
+                  <div>{car?.bodyType}</div>
                 </div>
                 <div className="bg-[#e6e6e6] w-full h-[1px]"></div>
                 <div className="flex justify-between text-black text-sm pt-2">
-                  <div>1-3 days</div>
-                  <div>500</div>
+                  <div>Car Color</div>
+                  <div>{car?.color}</div>
                 </div>
                 <div className="bg-[#e6e6e6] w-full h-[1px]"></div>
                 <div className="flex justify-between text-black text-sm pt-2">
-                  <div>1-3 days</div>
-                  <div>500</div>
+                  <div>BagsCapacity</div>
+                  <div>{car?.bagsCapacity}</div>
                 </div>
                 <div className="bg-[#e6e6e6] w-full h-[1px]"></div>
                 <div className="flex justify-between text-black text-xs pt-2">
-                  <div>1-3 days</div>
-                  <div>500</div>
+                  <div>Ac-Available</div>
+                  <div>{car?.acAvailable === true ? "Yes" : "No"}</div>
                 </div>
 
                 <div className="pt-5 hidden details_btn">

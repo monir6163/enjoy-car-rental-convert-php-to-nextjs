@@ -13,6 +13,7 @@ import {
   IconCar,
   IconDashboard,
   IconMessage,
+  IconPlus,
   IconUser,
 } from "@tabler/icons-react";
 import { ReactNode, useState } from "react";
@@ -41,6 +42,12 @@ const data = [
     color: "violet",
     label: "My cars",
     endpoint: "/dashboard/cars",
+  },
+  {
+    icon: <IconPlus size="1rem" />,
+    color: "purple",
+    label: "Country",
+    endpoint: "/dashboard/add-country",
   },
 
   {

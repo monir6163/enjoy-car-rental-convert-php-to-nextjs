@@ -11,14 +11,7 @@ export default function ProvidersAccountCreation() {
     Partial<IReqProviderProps>
   >(initialCompanyDetails);
   return (
-    <Flex
-      direction="column"
-      mx="auto"
-      px="xl"
-      style={{
-        maxWidth: "70%",
-      }}
-    >
+    <Flex direction="column" mx="auto" px="xl">
       {page === 1 && (
         <CompanyDetails
           companyDetails={companyDetails}

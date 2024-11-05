@@ -1,7 +1,7 @@
 import Container from "../shared/Container";
 import SlickSlider from "./SlickSlider";
 
-const CarSection = () => {
+const CarSection = ({ cars }: any) => {
   return (
     <section className="mb-10 relative">
       <Container>
@@ -10,7 +10,7 @@ const CarSection = () => {
         </h2>
       </Container>
       {/* slick slider */}
-      <SlickSlider />
+      <SlickSlider cars={cars} />
     </section>
   );
 };
