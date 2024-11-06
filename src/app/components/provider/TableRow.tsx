@@ -4,7 +4,7 @@ import { ActionIcon, Avatar, Group, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { IconEdit, IconTrash } from "@tabler/icons-react";
 import { usePathname, useRouter } from "next/navigation";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { AddOrEditCar } from "./AddOrEditCar";
 import { CarStatus } from "./CarStatus";
 import { ConfirmationModal } from "./ConfirmationModal";

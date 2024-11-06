@@ -29,7 +29,8 @@ import {
   ReactNode,
   useState,
 } from "react";
-import { toast, ToastContainer } from "react-toastify";
+
+import toast from "react-hot-toast";
 import { CurrentMode, IReqProviderProps } from "../../../../types";
 import { SelectCarMake } from "../home/filterFrom/SelectCarMake";
 import { SelectCarType } from "../home/filterFrom/SelectCarType";
@@ -132,7 +133,6 @@ export function AddOrEditCar({
 
   return (
     <>
-      <ToastContainer position="bottom-left" />
       <LoadingOverlay
         visible={isSubmitting}
         overlayProps={{ radius: "sm", blur: 2 }}

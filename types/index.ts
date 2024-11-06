@@ -50,8 +50,8 @@ export interface IBaseProviderProps {
 }
 
 export interface IReqProviderProps extends IBaseProviderProps {
-  country_id: number;
-  region_id: number;
+  country_id: any;
+  region_id: any;
   country: any;
   region: any;
   businessReg: string;

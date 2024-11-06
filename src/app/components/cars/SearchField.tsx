@@ -11,7 +11,7 @@ import {
 } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { SelectCarMake } from "../home/filterFrom/SelectCarMake";
 import SelectCountry from "../home/filterFrom/SelectCountry";
 import SelectRegion from "../home/filterFrom/SelectRegion";

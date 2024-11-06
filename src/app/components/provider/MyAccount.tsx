@@ -16,8 +16,8 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import { BiLogOutCircle } from "react-icons/bi";
-import { toast } from "react-toastify";
 import { IReqProviderProps } from "../../../../types";
 import ProviderCompanyDetails from "./ProviderAccount";
 const initialState: Partial<IReqProviderProps> = {

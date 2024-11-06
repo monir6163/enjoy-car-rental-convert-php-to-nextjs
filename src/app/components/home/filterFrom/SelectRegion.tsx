@@ -14,6 +14,7 @@ export default function SelectRegion({
   onChange,
   ...rest
 }: Props) {
+  console.log({ value, countryId });
   const { regions, isLoading } = useRegions(countryId);
   return (
     <Select

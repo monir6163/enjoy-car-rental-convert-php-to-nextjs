@@ -12,7 +12,7 @@ import { Button, LoadingOverlay } from "@mantine/core";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import DatePicker from "../cars/DatePicker";
 import { SelectCarMake } from "./filterFrom/SelectCarMake";
 import SelectCountry from "./filterFrom/SelectCountry";

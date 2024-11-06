@@ -4,7 +4,7 @@ import { addRegion } from "@/actions/actions";
 import Toast from "@/lib/Toast";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import Loader from "../shared/Loader";
 
 export default function AddRegion({ countries }: any) {

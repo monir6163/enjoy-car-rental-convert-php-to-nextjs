@@ -7,7 +7,7 @@ import {
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { CarStatus as CarStatusType } from "../../../../types";
 import { StatusRenderer } from "../StatusRenderer";
 

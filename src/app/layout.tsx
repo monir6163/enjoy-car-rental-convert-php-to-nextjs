@@ -9,7 +9,6 @@ import type { Metadata } from "next";
 import { getServerSession } from "next-auth";
 import { Barlow_Condensed } from "next/font/google";
 import NextTopLoader from "nextjs-toploader";
-import "react-toastify/dist/ReactToastify.css";
 import { authOptions } from "./auth";
 import "./globals.css";
 import ReactQueryProvider from "./provider/ReactQueryProvider";

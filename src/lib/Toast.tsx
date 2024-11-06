@@ -1,20 +1,9 @@
-"use client";
-import { ToastContainer } from "react-toastify";
+import { Toaster } from "react-hot-toast";
 
 export default function Toast() {
   return (
     <>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={2000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <Toaster />
     </>
   );
 }

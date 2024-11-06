@@ -1,7 +1,7 @@
 import { Avatar, Flex } from "@mantine/core";
 import { User } from "lucide-react";
 import { CloudinaryUploadWidgetResults } from "next-cloudinary";
-import { toast, ToastContainer } from "react-toastify";
+import toast from "react-hot-toast";
 import Uploader from "./Uploader";
 interface Props {
   updateProfile: (url: string) => Promise<void>;
@@ -20,7 +20,6 @@ export default function ProfilePhoto({ updateProfile, profileUrl }: Props) {
   };
   return (
     <Flex direction="column" gap="sm" justify="flex-start" align="center">
-      <ToastContainer position="bottom-right" theme="colored" />
       <Avatar
         src={profileUrl}
         size="140px"

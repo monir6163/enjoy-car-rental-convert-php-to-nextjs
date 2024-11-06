@@ -26,7 +26,7 @@ import {
 } from "@/actions/auth";
 import { ghCurrency } from "@/const";
 import { formatDate } from "@/lib/utils";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { StatusRenderer } from "../StatusRenderer";
 
 const header = (

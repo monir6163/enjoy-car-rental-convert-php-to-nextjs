@@ -17,7 +17,7 @@ import { IconX } from "@tabler/icons-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import DatePicker from "../DatePicker";
 import classes from "./styles.module.css";
 

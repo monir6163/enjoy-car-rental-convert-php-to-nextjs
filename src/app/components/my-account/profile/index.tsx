@@ -17,7 +17,7 @@ import { DateInput } from "@mantine/dates";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { IReqUserProps, IResUserProps } from "../../../../../types";
 import SelectCountry from "../../home/filterFrom/SelectCountry";
 import SelectRegion from "../../home/filterFrom/SelectRegion";

@@ -17,7 +17,7 @@ import {
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Dispatch, SetStateAction, useState } from "react";
-import { toast } from "react-toastify";
+import toast from "react-hot-toast";
 import { IReqProviderProps } from "../../../../types";
 import { FormError } from "../auth/Form-error";
 import { FormSuccess } from "../auth/Form-success";

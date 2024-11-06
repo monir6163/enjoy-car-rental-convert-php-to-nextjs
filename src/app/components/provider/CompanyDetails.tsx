@@ -40,8 +40,10 @@ export default function CompanyDetails({
   >(undefined);
   const { countries } = useCountries();
   const updateDetails = (key: keyof IReqProviderProps, value: string) => {
+    console.log(value);
     setCompanyDetails((prev) => ({ ...prev, [key]: value }));
   };
+
   const isEditMode = mode != null && mode === "edit";
   const handleNext = () => {
     const {
@@ -71,6 +73,7 @@ export default function CompanyDetails({
   const updateAvatar = async (url: string) => {
     updateDetails("avatar", url);
   };
+
   return (
     <Flex gap="4rem">
       <Box style={{ flexGrow: 1 }}>

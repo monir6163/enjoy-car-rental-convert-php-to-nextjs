@@ -96,7 +96,6 @@ export const addCar = async (carDetails: IReqCarProps) => {
 
 //update provider car
 export const updateProviderCar = async (carDetails: IReqCarProps) => {
-  console.log("Car Details:", carDetails);
   // return { message: "Car updated successfully" };
   try {
     const { isValid, message } = isValidCarDetails(carDetails);
