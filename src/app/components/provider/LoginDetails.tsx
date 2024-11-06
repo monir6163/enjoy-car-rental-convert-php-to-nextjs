@@ -82,7 +82,7 @@ export default function LoginDetails({
         setIsSubmitting(false);
       } else {
         setSuccess(res.message ?? null);
-        toast.success(res.message);
+        toast.success(res?.message ?? "Account created successfully");
         // router.push("/login");
       }
       setIsSubmitting(false);

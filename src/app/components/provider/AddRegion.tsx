@@ -22,7 +22,7 @@ export default function AddRegion({ countries }: any) {
       setLoader(false);
       refresh();
     } else {
-      toast.error(res?.error);
+      toast.error(res?.error || "Something went wrong");
       setLoader(false);
     }
   };

@@ -16,7 +16,7 @@ import {
 import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import toast from "react-hot-toast";
+import toast, { Toaster } from "react-hot-toast";
 import { BiLogOutCircle } from "react-icons/bi";
 import { IReqProviderProps } from "../../../../types";
 import ProviderCompanyDetails from "./ProviderAccount";
@@ -75,6 +75,7 @@ export default function MyAccount({ user, providerDetails }: any) {
 
   return (
     <>
+      <Toaster />
       <Flex justify="flex-end" align="center">
         <ActionIcon
           onClick={handleSignOut}

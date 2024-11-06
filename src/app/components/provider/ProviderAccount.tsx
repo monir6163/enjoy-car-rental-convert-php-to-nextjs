@@ -192,17 +192,14 @@ export default function ProviderCompanyDetails({
                 <span style={{ color: "red" }}>*</span>
               </Input.Label>
               <SelectRegion
-                countryId={
-                  selectedCountry?.id ||
-                  countries?.filter(
-                    (country) =>
-                      country.id === companyDetails.country_id?.toString() ||
-                      companyDetails.country?.id?.toString()
-                  )[0]?.id
-                }
                 value={
                   companyDetails.region_id?.toString() ||
                   companyDetails.region?.id?.toString()
+                }
+                countryId={
+                  companyDetails.country_id?.toString() ||
+                  selectedCountry?.id?.toString() ||
+                  companyDetails.country?.id?.toString()
                 }
                 onChange={(value) => {
                   updateDetails("region_id", value);
