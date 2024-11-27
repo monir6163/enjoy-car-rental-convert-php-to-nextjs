@@ -143,8 +143,8 @@ model Region {
 }
 
 model Car {
-  id            String  @id @default(cuid())
-  slug          String  @unique
+  id            String       @id @default(cuid())
+  slug          String       @unique
   make          String
   model         String
   year          Int
@@ -159,9 +159,9 @@ model Car {
   bagsCapacity  Int
   acAvailable   Boolean
   acWorking     Boolean
-
   minimumRent   Int
   maximumRent   Int
+  pricePerHour  Int
   pricePerDay   Int
   status        String       @default("available")
   countryId     String
@@ -205,6 +205,7 @@ model Booking {
   providerId String
   pickUpDate DateTime
   returnDate DateTime
+  time       String
   totalPrice Int
   status     String   @default("pending")
   createdAt  DateTime @default(now())

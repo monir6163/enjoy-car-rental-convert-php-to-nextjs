@@ -17,6 +17,7 @@ import DatePicker from "../cars/DatePicker";
 import { SelectCarMake } from "./filterFrom/SelectCarMake";
 import SelectCountry from "./filterFrom/SelectCountry";
 import SelectRegion from "./filterFrom/SelectRegion";
+import SelectTime from "./filterFrom/SelectTime";
 const CarReserveFrom = () => {
   const searchParams = useSearchParams();
   const [isLoading, setIsLoading] = useState(false);
@@ -29,12 +30,12 @@ const CarReserveFrom = () => {
       carModel,
       picupDate,
       returnDate,
+      time,
     },
     setCountry,
     setRegion,
     setMake,
-    setPicupDate,
-    setReturnDate,
+    setTime,
   } = useAppContext();
   const { countries } = useCountries();
   const { regions } = useRegions(selectedCountry?.id);
@@ -66,9 +67,10 @@ const CarReserveFrom = () => {
       selectedRegion &&
       carMake &&
       picupDate &&
-      returnDate
+      returnDate &&
+      time
     ) {
-      const params = `country=${selectedCountry?.id}&region=${selectedRegion?.id}&carMake=${carMake?.value}&pickupDate=${picupDate}&returnDate=${returnDate}`;
+      const params = `country=${selectedCountry?.id}&region=${selectedRegion?.id}&carMake=${carMake?.value}&pickupDate=${picupDate}&returnDate=${returnDate}&time=${time}`;
       router.push(`/cars?${params}`);
     } else {
       setIsLoading(false);
@@ -118,6 +120,8 @@ const CarReserveFrom = () => {
             addAll={true}
           />
           <DatePicker />
+
+          <SelectTime value={time} onChange={(e) => setTime(e.target.value)} />
           <div className="buttons">
             <Button
               type="submit"

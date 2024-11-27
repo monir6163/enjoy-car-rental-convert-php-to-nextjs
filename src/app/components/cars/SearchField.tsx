@@ -5,6 +5,7 @@ import { useAppContext } from "@/context/AppContext";
 import { useCountries } from "@/hooks/useCountries";
 import { useRegions } from "@/hooks/useRegions";
 import { carMakes } from "@/lib/data";
+import Toast from "@/lib/Toast";
 import {
   getDefaultSelectedCountry,
   getDefaultSelectedRegion,
@@ -15,6 +16,7 @@ import toast from "react-hot-toast";
 import { SelectCarMake } from "../home/filterFrom/SelectCarMake";
 import SelectCountry from "../home/filterFrom/SelectCountry";
 import SelectRegion from "../home/filterFrom/SelectRegion";
+import SelectTime from "../home/filterFrom/SelectTime";
 import DatePicker from "./DatePicker";
 import styles from "./search.module.css";
 
@@ -29,6 +31,7 @@ export const SearchEngine = () => {
       carModel,
       picupDate,
       returnDate,
+      time,
     },
     setCountry,
     setRegion,
@@ -36,6 +39,7 @@ export const SearchEngine = () => {
     setMake,
     setPicupDate,
     setReturnDate,
+    setTime,
   } = useAppContext();
   const { countries } = useCountries();
   const { regions } = useRegions(selectedCountry?.id);
@@ -63,9 +67,10 @@ export const SearchEngine = () => {
       selectedRegion &&
       carMake &&
       picupDate &&
-      returnDate
+      returnDate &&
+      time
     ) {
-      const params = `country=${selectedCountry?.id}&region=${selectedRegion?.id}&carMake=${carMake?.value}&pickupDate=${picupDate}&returnDate=${returnDate}`;
+      const params = `country=${selectedCountry?.id}&region=${selectedRegion?.id}&carMake=${carMake?.value}&pickupDate=${picupDate}&returnDate=${returnDate}&time=${time}`;
       router.push(`/cars?${params}`);
     } else {
       toast.error("Please fill all fields");
@@ -114,8 +119,16 @@ export const SearchEngine = () => {
     }
   }, [searchParams, setReturnDate]);
 
+  useEffect(() => {
+    const timeParam = searchParams.get("time");
+    if (timeParam) {
+      setTime(timeParam);
+    }
+  }, [searchParams, setTime]);
+
   return (
     <Container className={styles.container} size="100%">
+      <Toast />
       <Flex
         direction={{ base: "column", sm: "row" }}
         justify="center"
@@ -140,8 +153,11 @@ export const SearchEngine = () => {
           label=""
         />
         <DatePicker />
-        {/* <PicupDate palceholder="Pickup Date" />
-        <ReturnDate palceholder="Return Date" /> */}
+
+        <SelectTime
+          value={time}
+          onChange={(e) => setTime(e.currentTarget.value)}
+        />
         <Button
           type="submit"
           className="text-white rounded"
@@ -149,6 +165,25 @@ export const SearchEngine = () => {
         >
           Search for car
         </Button>
+        {/* Reset url params */}
+        {searchParams.get("country") && (
+          <Button
+            type="button"
+            className="bg-btn-gradient rounded"
+            onClick={() => {
+              // clear all search fields
+              router.push("/cars");
+              router.refresh();
+
+              setMake({ value: "", label: "" });
+              setPicupDate(null);
+              setReturnDate(null);
+              setTime("");
+            }}
+          >
+            Reset Search
+          </Button>
+        )}
       </Flex>
     </Container>
   );

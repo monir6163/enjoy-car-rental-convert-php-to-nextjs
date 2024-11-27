@@ -1,9 +1,11 @@
 import { updateCarStatus } from "@/actions/carAction";
+import Toast from "@/lib/Toast";
 import { Loader, Menu, UnstyledButton } from "@mantine/core";
 import {
   IconCalendarCheck,
   IconHourglassLow,
   IconProgressCheck,
+  IconSquareRoundedXFilled,
 } from "@tabler/icons-react";
 import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
@@ -34,6 +36,12 @@ const statuses: {
     value: "booked",
     color: "red",
     icon: <IconCalendarCheck size={14} />,
+  },
+  {
+    display: "Not Available",
+    value: "not available",
+    color: "gray.6",
+    icon: <IconSquareRoundedXFilled size={14} />,
   },
 ];
 
@@ -66,6 +74,7 @@ export function CarStatus({ status, id }: TableActionsProps) {
   };
   return (
     <Menu shadow="md" width={200}>
+      <Toast />
       <Menu.Target>
         {isUpdating ? (
           <Loader size="xs" />

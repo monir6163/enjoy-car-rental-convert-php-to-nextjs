@@ -43,6 +43,14 @@ export function StatusRenderer({ status, variant }: Props) {
     );
   }
 
+  if (status === "not available") {
+    return (
+      <Badge {...defaultProps} color="gray" title="Not Available">
+        Not Available
+      </Badge>
+    );
+  }
+
   return (
     <Badge {...defaultProps} color="green">
       Available

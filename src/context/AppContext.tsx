@@ -22,6 +22,7 @@ interface AppState {
   carMake: SelectItem | undefined;
   picupDate: DateValue | undefined;
   returnDate: DateValue | undefined;
+  time: string | undefined;
 }
 interface IAppContext {
   state: AppState;
@@ -31,6 +32,7 @@ interface IAppContext {
   setMake: (selectedMake: SelectItem) => void;
   setPicupDate: (picupDate: DateValue) => void;
   setReturnDate: (returnDate: DateValue) => void;
+  setTime: (time: string) => void;
 }
 
 const AppContext = createContext<IAppContext>(undefined as any);
@@ -42,6 +44,7 @@ const initialState: AppState = {
   carMake: undefined,
   picupDate: undefined,
   returnDate: undefined,
+  time: undefined,
 };
 
 export const AppContextProvider = ({
@@ -74,6 +77,10 @@ export const AppContextProvider = ({
   const setReturnDate = useCallback((returnDate: DateValue) => {
     setState((prevState) => ({ ...prevState, returnDate }));
   }, []);
+
+  const setTime = useCallback((time: string) => {
+    setState((prevState) => ({ ...prevState, time }));
+  }, []);
   return (
     <AppContext.Provider
       value={{
@@ -84,6 +91,7 @@ export const AppContextProvider = ({
         setMake,
         setPicupDate,
         setReturnDate,
+        setTime,
       }}
     >
       {children}

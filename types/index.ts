@@ -1,7 +1,7 @@
 import { ReactNode } from "react";
 import { IconType } from "react-icons/lib";
 
-export type CarStatus = "available" | "pending" | "booked";
+export type CarStatus = "available" | "pending" | "booked" | "not available";
 export type BookingStatus = "pending" | "rejected" | "approved";
 export interface Props {
   children: React.ReactNode;
