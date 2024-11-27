@@ -14,7 +14,6 @@ export default function SelectRegion({
   onChange,
   ...rest
 }: Props) {
-  console.log({ value, countryId });
   const { regions, isLoading } = useRegions(countryId);
   return (
     <Select
@@ -24,8 +23,8 @@ export default function SelectRegion({
       data={
         regions
           ? regions?.map((region: RegionGetAllType) => ({
-              value: region.id as string,
-              label: region.name as string,
+              value: region?.id as string,
+              label: region?.name as string,
             }))
           : []
       }
