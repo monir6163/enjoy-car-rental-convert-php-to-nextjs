@@ -161,7 +161,6 @@ model Car {
   acWorking     Boolean
   minimumRent   Int
   maximumRent   Int
-  pricePerHour  Int
   pricePerDay   Int
   status        String       @default("available")
   countryId     String
@@ -205,7 +204,6 @@ model Booking {
   providerId String
   pickUpDate DateTime
   returnDate DateTime
-  time       String
   totalPrice Int
   status     String   @default("pending")
   createdAt  DateTime @default(now())
