@@ -402,7 +402,6 @@ export const providerGetReviews = async (
   userId: string
 ): Promise<IResReviewProps[]> => {
   try {
-    console.log("userId", userId);
     const reviews = await prisma.review.findMany({
       where: {
         providerId: userId,

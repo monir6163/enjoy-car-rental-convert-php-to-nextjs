@@ -70,8 +70,8 @@ export const likeDislikeReview = async (data: any) => {
     const review = await prisma.review.update({
       where: { id: data.reviewId },
       data: {
-        likes: data.likes,
-        dislikes: data.dislikes,
+        likes: Number(data.likes),
+        dislikes: Number(data.dislikes),
       },
     });
     return { status: "success", message: "Review Liked" };

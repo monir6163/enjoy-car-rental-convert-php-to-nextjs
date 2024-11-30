@@ -41,7 +41,7 @@ const Profile = ({ user }: any) => {
             className="text-lg font-medium text-gray-600 cursor-pointer w-full
             hover:bg-gray-100 p-2 rounded transition duration-100 ease-in-out"
           >
-            {user?.role === "provider" ? (
+            {user?.role === "provider" && (
               <Link
                 href={"/provider/dashboard"}
                 className="flex items-center 
@@ -50,12 +50,25 @@ const Profile = ({ user }: any) => {
                 <User size={15} className="mr-2" />
                 Profile
               </Link>
-            ) : (
+            )}
+            {user?.role === "user" && (
               <>
                 <Link
                   href={"/my-account/profile"}
                   className="flex items-center 
-          "
+       "
+                >
+                  <User size={15} className="mr-2" />
+                  Profile
+                </Link>
+              </>
+            )}
+            {user?.role === "admin" && (
+              <>
+                <Link
+                  href={"/admin/dashboard"}
+                  className="flex items-center 
+        "
                 >
                   <User size={15} className="mr-2" />
                   Profile

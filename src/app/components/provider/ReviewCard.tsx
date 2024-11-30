@@ -71,7 +71,7 @@ export default function ReviewCard({ review, user }: Props) {
           </Text>
           <Rating value={review.rate} fractions={2} readOnly />
           <Text className="text-default">{review.comment}</Text>
-          {user && (
+          {user?.role === "user" && (
             <>
               <Flex gap="md" my="lg">
                 <Box>
