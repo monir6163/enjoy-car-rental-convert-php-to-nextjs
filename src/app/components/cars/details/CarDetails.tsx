@@ -69,7 +69,7 @@ export default function CarDetails({ carDetails, user }: any) {
             </Title>
           }
         />
-        <Reviews reviews={carDetails?.review} />
+        <Reviews reviews={carDetails?.review} user={user} />
       </Box>
     </Container>
   );

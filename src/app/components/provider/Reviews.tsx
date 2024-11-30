@@ -4,8 +4,9 @@ import ReviewCard from "./ReviewCard";
 
 interface ReviewProps {
   reviews: IResReviewProps[];
+  user: any;
 }
-export default function Reviews({ reviews }: ReviewProps) {
+export default function Reviews({ reviews, user }: ReviewProps) {
   return (
     <div>
       <Divider
@@ -26,7 +27,7 @@ export default function Reviews({ reviews }: ReviewProps) {
       ) : (
         <>
           {reviews?.map((review) => (
-            <ReviewCard key={review.id} review={review} />
+            <ReviewCard key={review.id} review={review} user={user} />
           ))}
         </>
       )}

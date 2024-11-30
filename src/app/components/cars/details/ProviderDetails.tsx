@@ -28,7 +28,10 @@ export const ProviderDetails = ({ provider }: Props) => {
             {provider.companyName}
           </Title>
         </Flex>
-        <Flex ml={46} style={{ fontSize: "small" }}>
+        <div
+          className="flex flex-col ml-10 gap-2 md:flex-row justify-around"
+          style={{ fontSize: "small" }}
+        >
           <Text
             component="a"
             href={`tel:${provider.contactPhone}`}
@@ -36,9 +39,7 @@ export const ProviderDetails = ({ provider }: Props) => {
           >
             {provider.contactPhone}
           </Text>
-          <Text mx="xs" className="text-muted">
-            |
-          </Text>
+
           <Text
             component="a"
             href={`mailto:${provider.email}`}
@@ -46,7 +47,7 @@ export const ProviderDetails = ({ provider }: Props) => {
           >
             {provider.email}
           </Text>
-        </Flex>
+        </div>
       </Box>
     </Flex>
   );

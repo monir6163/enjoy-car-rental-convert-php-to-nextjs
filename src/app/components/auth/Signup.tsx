@@ -15,6 +15,7 @@ import toast from "react-hot-toast";
 import Container from "../shared/Container";
 import { FormError } from "./Form-error";
 import { FormSuccess } from "./Form-success";
+import { GithubLogin } from "./GithubLogin";
 import { GoogleButton } from "./GoogleLogin";
 
 export default function SignupApp() {
@@ -54,7 +55,10 @@ export default function SignupApp() {
           <p className="text-gray-500 font-inter text-sm text-center">
             Login to your account
           </p>
-          <GoogleButton />
+          <div className="flex gap-3">
+            <GoogleButton />
+            <GithubLogin />
+          </div>
           <Divider
             label="Or continue with email"
             labelPosition="center"
@@ -131,7 +135,7 @@ export default function SignupApp() {
             </button>
           </form>
           <Link
-            href={"/provider"}
+            href={"/create-provider"}
             className="text-sm text-blue-500 hover:underline hover:text-green-700"
           >
             Want to Rent your Car? Create Provider Account.

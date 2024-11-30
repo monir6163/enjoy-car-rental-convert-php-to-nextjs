@@ -84,6 +84,8 @@ export function AddOrEditCar({
     updateProperty("otherFeatures", features);
   };
 
+  console.log("carDetails", carDetails);
+
   //handle Add New Car
   const handleAddNewCar = async () => {
     setIsSubmitting(true);
@@ -113,6 +115,7 @@ export function AddOrEditCar({
       // update car
       if (mode === "edit") {
         const cloneCarDetails = { ...details };
+
         const updateCar = await updateProviderCar(cloneCarDetails);
         if (updateCar?.error) {
           toast.error(updateCar.error);
@@ -319,6 +322,12 @@ export function AddOrEditCar({
 
         <Group grow pt="xl">
           <NumberInput
+            label="Price Per Hour"
+            required={!carDetails.pricePerHour}
+            value={carDetails.pricePerHour}
+            onChange={(value) => updateProperty("pricePerHour", value)}
+          />
+          <NumberInput
             label="Price Per Day"
             required={!carDetails.pricePerDay}
             value={carDetails.pricePerDay}
@@ -328,7 +337,7 @@ export function AddOrEditCar({
         <Space pt="xl" />
         <GridLayout>
           <NumberInput
-            label="Minimum Rental Period (Days)"
+            label="Minimum Rental Period (Hours/Days)"
             required={!carDetails.minimumRent}
             step={1}
             min={1}
@@ -337,7 +346,7 @@ export function AddOrEditCar({
           />
 
           <NumberInput
-            label="Maximum Rental Period (Days)"
+            label="Maximum Rental Period (Hours/Days)"
             step={1}
             min={1}
             value={carDetails.maximumRent}

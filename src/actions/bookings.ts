@@ -14,6 +14,8 @@ export const createBooking = async (data: any) => {
           pickUpDate: data.pickupDate,
           returnDate: data.returnDate,
           totalPrice: data.totalPrice,
+          rentalTime: data.rentalTime,
+          hOrday: data.hOrday,
           status: data.status,
         },
       }),
@@ -26,5 +28,54 @@ export const createBooking = async (data: any) => {
   } catch (error) {
     console.log(error);
     return { error: "Car Booking Failed" };
+  }
+};
+
+// get all bookings
+
+// create review
+export const createReview = async (data: any) => {
+  try {
+    //check if the user has already reviewed the car
+    const reviewExists = await prisma.review.findFirst({
+      where: {
+        userId: data.userId,
+        carId: data.carId,
+      },
+    });
+    if (reviewExists) {
+      return { error: "You have already reviewed this car" };
+    }
+    const review = await prisma.review.create({
+      data: {
+        userId: data.userId,
+        carId: data.carId,
+        providerId: data.providerId,
+        rate: data.rate,
+        comment: data.comment,
+      },
+    });
+    return {
+      status: "success",
+      message: "Review Submit Successfully",
+    };
+  } catch (error) {
+    return { error: "Review Submit Failed" };
+  }
+};
+
+// like , dislike review
+export const likeDislikeReview = async (data: any) => {
+  try {
+    const review = await prisma.review.update({
+      where: { id: data.reviewId },
+      data: {
+        likes: data.likes,
+        dislikes: data.dislikes,
+      },
+    });
+    return { status: "success", message: "Review Liked" };
+  } catch (error) {
+    return { error: "Review Like Failed" };
   }
 };

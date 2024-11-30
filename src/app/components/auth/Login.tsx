@@ -126,7 +126,7 @@ export default function LoginApp() {
           </button>
         </form>
         <Link
-          href={"/provider"}
+          href={"/create-provider"}
           className="text-sm text-blue-500 hover:underline hover:text-green-700"
         >
           Want to Rent your Car? Create Provider Account.

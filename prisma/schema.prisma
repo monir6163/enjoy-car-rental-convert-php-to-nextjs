@@ -25,6 +25,7 @@ model User {
   Provider    Provider[]
   Booking     Booking[]
   Review      Review[]
+  Payment     Payment[]
 }
 
 model Account {
@@ -111,6 +112,7 @@ model Provider {
   Review       Review[]
   User         User?     @relation(fields: [userId], references: [id])
   userId       String?
+  Payment      Payment[]
 }
 
 model Country {
@@ -119,6 +121,7 @@ model Country {
   code        String?
   longitude   Float?
   latitude    Float?
+  status      String        @default("active")
   createdAt   DateTime      @default(now())
   updatedAt   DateTime      @updatedAt
   Region      Region[]
@@ -131,6 +134,7 @@ model Region {
   id        String   @id @default(cuid())
   name      String
   countryId String
+  status    String   @default("active")
   longitude Float?
   latitude  Float?
   createdAt DateTime @default(now())
@@ -161,6 +165,7 @@ model Car {
   acWorking     Boolean
   minimumRent   Int
   maximumRent   Int
+  pricePerHour  Int
   pricePerDay   Int
   status        String       @default("available")
   countryId     String
@@ -175,6 +180,7 @@ model Car {
   review        Review[]
   images        CarImage[]
   otherFeatures CarFeature[]
+  Payment       Payment[]
 }
 
 model CarImage {
@@ -205,13 +211,16 @@ model Booking {
   pickUpDate DateTime
   returnDate DateTime
   totalPrice Int
+  rentalTime String
+  hOrday     String
   status     String   @default("pending")
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
 
-  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  car      Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
-  provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  car      Car       @relation(fields: [carId], references: [id], onDelete: Cascade)
+  provider Provider  @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  Payment  Payment[]
 }
 
 model Review {
@@ -229,4 +238,23 @@ model Review {
   user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
   car      Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+}
+
+model Payment {
+  id          String   @id @default(cuid())
+  userId      String
+  providerId  String
+  carId       String
+  bookingId   String
+  paymentId   String
+  paymentType String
+  amount      Int
+  status      String   @default("pending")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  user     User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider Provider @relation(fields: [providerId], references: [id], onDelete: Cascade)
+  car      Car      @relation(fields: [carId], references: [id], onDelete: Cascade)
+  booking  Booking  @relation(fields: [bookingId], references: [id], onDelete: Cascade)
 }

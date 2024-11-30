@@ -1,7 +1,7 @@
 "use client";
 
 import { ghCurrency } from "@/const";
-import { formatDate } from "@/lib/utils";
+import { formatDate, formatTime } from "@/lib/utils";
 import {
   Avatar,
   Box,
@@ -24,6 +24,7 @@ interface BookingsProps {
 const header = (
   <Table.Tr>
     <Table.Th>Date Booked</Table.Th>
+    <Table.Th>Time</Table.Th>
     <Table.Th>Car</Table.Th>
     <Table.Th>Pickup Date</Table.Th>
     <Table.Th>Return Date</Table.Th>
@@ -39,8 +40,10 @@ export default function Bookings({ userId, bookings }: BookingsProps) {
     <TableRow
       key={item.id}
       bookingId={item.id}
+      hOrday={item.hOrday}
       carId={carId}
       dateBooked={new Date(item.createdAt)}
+      time={item.rentalTime}
       car={item.car as any}
       pickupDate={new Date(item.pickUpDate)}
       returnDate={new Date(item.returnDate)}
@@ -80,6 +83,8 @@ interface TableRowProps {
   bookingId: string;
   carId: string | null;
   dateBooked: Date;
+  hOrday: string;
+  time: string;
   car: { slug: string; make: string; model: string; images: any[] };
   pickupDate: Date;
   returnDate: Date;
@@ -88,6 +93,8 @@ interface TableRowProps {
 }
 export const TableRow = ({
   dateBooked,
+  hOrday,
+  time,
   car,
   pickupDate,
   returnDate,
@@ -97,6 +104,7 @@ export const TableRow = ({
   return (
     <Table.Tr>
       <Table.Td>{formatDate(dateBooked)}</Table.Td>
+      <Table.Td>{formatTime(time)}</Table.Td>
       <Table.Td>
         <Flex align="center" gap={4}>
           <Avatar size="sm" radius="xl" src={car.images[0]?.imageUrl} />
@@ -109,7 +117,7 @@ export const TableRow = ({
       <Table.Td>{formatDate(pickupDate)}</Table.Td>
       <Table.Td>{formatDate(returnDate)}</Table.Td>
       <Table.Td>
-        {ghCurrency} {price}
+        {ghCurrency} {price} ({hOrday})
       </Table.Td>
       <Table.Td width="100px">
         <StatusRenderer status={status} />

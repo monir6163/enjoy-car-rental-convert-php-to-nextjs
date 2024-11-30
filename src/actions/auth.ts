@@ -244,6 +244,8 @@ export const getBookingDetails = async (userId: string) => {
         createdAt: true,
         pickUpDate: true,
         returnDate: true,
+        rentalTime: true,
+        hOrday: true,
         totalPrice: true,
         status: true,
         carId: true,
@@ -260,7 +262,6 @@ export const getBookingDetails = async (userId: string) => {
     });
     return bookings;
   } catch (error) {
-    console.log("Error in getBookingDetails:", error);
     return { error: "Error fetching booking details" };
   }
 };
@@ -392,7 +393,6 @@ export const updateProviderAccount = async (
     }
     return { status: "success", message: "Provider updated successfully" };
   } catch (error) {
-    console.log("Error:", error);
     return { error: "Failed to update provider" };
   }
 };
@@ -402,47 +402,26 @@ export const providerGetReviews = async (
   userId: string
 ): Promise<IResReviewProps[]> => {
   try {
-    //get provider
-
-    const provider = await prisma.user.findUnique({
-      where: {
-        id: userId,
-      },
-      select: {
-        id: true,
-        name: true,
-        image: true,
-        Provider: {
-          select: {
-            id: true,
-            companyName: true,
-            avatar: true,
-          },
-        },
-      },
-    });
+    console.log("userId", userId);
     const reviews = await prisma.review.findMany({
       where: {
-        providerId: provider?.Provider?.id,
+        providerId: userId,
       },
       select: {
         id: true,
+        rate: true,
+        comment: true,
         user: {
           select: {
+            id: true,
             name: true,
             image: true,
           },
         },
-        comment: true,
-        rate: true,
-        likes: true,
-        dislikes: true,
-        createdAt: true,
       },
     });
-    return reviews as IResReviewProps[];
+    return reviews;
   } catch (error: any) {
-    console.log("Error in providerGetReviews:", error);
     return [] as IResReviewProps[];
   }
 };

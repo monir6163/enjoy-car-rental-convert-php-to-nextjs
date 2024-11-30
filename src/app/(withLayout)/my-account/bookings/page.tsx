@@ -15,11 +15,13 @@ export default async function BookingPage() {
   const bookings = (await getBookingDetails(user?.id)) || [];
   return (
     <AccountLayout>
-      {bookings.length > 0 ? (
-        <Bookings userId={user?.id} bookings={bookings} />
-      ) : (
-        <Bookings userId={user?.id} bookings={[]} />
-      )}
+      <div className="md:px-10">
+        {bookings.length > 0 ? (
+          <Bookings userId={user?.id} bookings={bookings} />
+        ) : (
+          <Bookings userId={user?.id} bookings={[]} />
+        )}
+      </div>
     </AccountLayout>
   );
 }

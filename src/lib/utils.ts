@@ -41,6 +41,15 @@ export function formatDate(inputDate: Date | string): string {
   return formattedDate;
 }
 
+//custom function to format time 16:00 => 4:00 pm
+export function formatTime(stringTime: string): string {
+  const [hours, minutes] = stringTime.split(":");
+  const time = `${parseInt(hours) % 12}:${minutes} ${
+    parseInt(hours) >= 12 ? "pm" : "am"
+  }`;
+  return time;
+}
+
 //custom function to define the default selected country
 export const getDefaultSelectedCountry = (
   countries: any[],

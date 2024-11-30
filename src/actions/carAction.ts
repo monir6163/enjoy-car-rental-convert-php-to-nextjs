@@ -25,7 +25,6 @@ export const getProviderCars = async (providerId: string) => {
 
 //add provider car
 export const addCar = async (carDetails: IReqCarProps) => {
-  console.log("Car Details:", carDetails.images);
   try {
     const { isValid, message } = isValidCarDetails(carDetails);
     if (isValid) {
@@ -65,6 +64,7 @@ export const addCar = async (carDetails: IReqCarProps) => {
           bagsCapacity: carDetails.bagsCapacity,
           acAvailable: carDetails.acAvailable,
           acWorking: carDetails.acWorking,
+          pricePerHour: carDetails.pricePerHour,
           pricePerDay: carDetails.pricePerDay,
           minimumRent: carDetails.minimumRent,
           maximumRent: carDetails.maximumRent,
@@ -89,7 +89,7 @@ export const addCar = async (carDetails: IReqCarProps) => {
     }
     return { error: message };
   } catch (error: any) {
-    console.log("Error:", error);
+    // console.log("Error:", error);
     return { error: "Car added Faield" };
   }
 };
@@ -137,6 +137,7 @@ export const updateProviderCar = async (carDetails: IReqCarProps) => {
           bagsCapacity: carDetails.bagsCapacity,
           acAvailable: carDetails.acAvailable,
           acWorking: carDetails.acWorking,
+          pricePerHour: carDetails.pricePerHour,
           pricePerDay: carDetails.pricePerDay,
           minimumRent: carDetails.minimumRent,
           maximumRent: carDetails.maximumRent,

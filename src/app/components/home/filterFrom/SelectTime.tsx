@@ -1,14 +1,13 @@
 import { ActionIcon, rem } from "@mantine/core";
 import { TimeInput } from "@mantine/dates";
 import { IconClock } from "@tabler/icons-react";
-import { useRef } from "react";
-export default function SelectTime({
-  value,
-  onChange,
-}: {
+import React, { ReactNode, useRef } from "react";
+interface Props {
+  label?: ReactNode;
   value?: string;
   onChange?: (event: React.ChangeEvent<HTMLInputElement>) => void;
-}) {
+}
+export default function SelectTime({ value, onChange, label }: Props) {
   const ref = useRef<HTMLInputElement>(null);
 
   const pickerControl = (
@@ -24,6 +23,7 @@ export default function SelectTime({
     <TimeInput
       width="100%"
       className="custom"
+      label={label || ""}
       ref={ref}
       rightSection={pickerControl}
       value={value}

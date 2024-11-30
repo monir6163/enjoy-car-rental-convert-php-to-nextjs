@@ -148,6 +148,7 @@ export interface IBaseCarProps {
   provider_id: string | undefined;
   country_id: number | undefined;
   region_id: number | undefined;
+  pricePerHour: number;
   pricePerDay: number;
   minimumRent: number | "";
   maximumRent: number | "";

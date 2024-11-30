@@ -15,11 +15,10 @@ export default async function ProviderReviews() {
     image?: string | null;
   };
   const providerDetails = await getProviderDetails(user?.id);
-
-  const reviews = await providerGetReviews(user?.id);
+  const reviews = await providerGetReviews(providerDetails?.Provider[0]?.id);
   return (
     <DashboardLayout user={user} providerDetails={providerDetails}>
-      <Reviews reviews={reviews} />
+      <Reviews reviews={reviews} user={user} />
     </DashboardLayout>
   );
 }

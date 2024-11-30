@@ -26,7 +26,7 @@ export default async function page({ params }: CarDetailsPageProps) {
       <Breadcrumb label={"Rent a Car"} />
 
       <section className="py-10">
-        <div className="container mx-auto">
+        <div className="mx-auto">
           <CarDetails carDetails={carDetails?.car} user={carDetails?.user} />
         </div>
       </section>

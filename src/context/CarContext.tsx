@@ -26,6 +26,7 @@ const initialCarState: IReqCarProps = {
   provider_id: "",
   country_id: 0,
   region_id: 0,
+  pricePerHour: 50,
   pricePerDay: 300,
   minimumRent: 1,
   maximumRent: "",
