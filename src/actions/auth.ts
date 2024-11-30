@@ -96,7 +96,7 @@ export const signUpUserWithCredentials = async (
 
     if (userExists?.emailVerified) {
       return {
-        error: "User already exists. Please try another one. or Try Login",
+        error: "User already exists. Please try another one. or Try login",
       };
     }
 
