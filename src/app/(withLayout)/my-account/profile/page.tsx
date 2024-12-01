@@ -7,13 +7,14 @@ import { redirect } from "next/navigation";
 
 export default async function ProfilePage() {
   const session = await getServerSession(authOptions);
-  if (!session) return redirect("/login");
   const user = session?.user as {
     id: string;
     name?: string | null;
     email: string;
     image?: string | null;
+    role: string;
   };
+  if (!session || user?.role !== "user") return redirect("/login");
   const userDetails = await getUserDetails(user?.email);
   return (
     <AccountLayout>

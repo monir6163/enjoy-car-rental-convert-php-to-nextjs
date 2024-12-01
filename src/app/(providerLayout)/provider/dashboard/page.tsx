@@ -14,13 +14,14 @@ import { redirect } from "next/navigation";
 
 export default async function page() {
   const getSession = await getServerSession(authOptions);
-  if (!getSession) return redirect("/login");
   const user = getSession?.user as {
     id: string;
     name?: string | null;
     email: string;
     image?: string | null;
+    role: string;
   };
+  if (!getSession || user?.role !== "provider") return redirect("/login");
   const providerDetails = await getProviderDetails(user?.id);
 
   const data = [

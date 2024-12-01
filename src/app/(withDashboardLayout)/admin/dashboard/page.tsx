@@ -4,6 +4,12 @@ import { redirect } from "next/navigation";
 
 export default async function page() {
   const getSession = await getServerSession(authOptions);
-  if (!getSession) return redirect("/login");
+  const user = getSession?.user as {
+    role: string;
+  };
+  if (!getSession || user?.role !== "admin") {
+    return redirect("/login");
+  }
+
   return <div className="py-28">page</div>;
 }

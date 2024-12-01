@@ -7,13 +7,14 @@ import { redirect } from "next/navigation";
 
 export default async function BookingPage() {
   const getSession = await getServerSession(authOptions);
-  if (!getSession) return redirect("/login");
   const user = getSession?.user as {
     id: string;
     name?: string | null;
     email: string;
     image?: string | null;
+    role: string;
   };
+  if (!getSession || user?.role !== "user") return redirect("/login");
   const bookings = (await getBookingDetails(user?.id)) || [];
   return (
     <AccountLayout>
