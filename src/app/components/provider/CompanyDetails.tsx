@@ -43,7 +43,7 @@ export default function CompanyDetails({
     console.log(value);
     setCompanyDetails((prev) => ({ ...prev, [key]: value }));
   };
-
+  window.scrollTo({ top: 0, behavior: "smooth" });
   const isEditMode = mode != null && mode === "edit";
   const handleNext = () => {
     const {
@@ -55,7 +55,7 @@ export default function CompanyDetails({
       region_id,
       city,
     } = companyDetails;
-
+    window.scrollTo({ top: 0, behavior: "smooth" });
     if (
       companyName?.trim() !== "" &&
       businessRegistrationNumber?.trim() !== "" &&

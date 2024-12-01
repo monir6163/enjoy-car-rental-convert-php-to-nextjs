@@ -1,5 +1,5 @@
 import { useFiltersContext } from "@/context/FilterContext";
-import { Box, Center, Flex, Space } from "@mantine/core";
+import { Box, Flex, Space } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { IResCarProps } from "../../../../types";
 import { CarCard } from "./CarCard";
@@ -13,6 +13,7 @@ export const CarList = ({ cars }: any) => {
   const total = Math.ceil(cars.length / itemsPerPage);
   const handlePageChange = (value: number) => {
     setPage(value);
+    window.scrollTo({ top: 0, behavior: "smooth" });
     const start = (value - 1) * itemsPerPage;
     const end = start + itemsPerPage;
     setVisibleCars(cars.slice(start, end));
@@ -50,34 +51,35 @@ export const CarList = ({ cars }: any) => {
 
     setVisibleCars(filteredCars.slice(0, itemsPerPage));
   }, [cars, state]);
+
   return (
-    <Box w={{ base: "100%", md: "calc(100% - 300px)" }}>
-      <Center mt="xl">
-        {visibleCars.length > itemsPerPage && (
+    <>
+      <Box w={{ base: "100%", md: "calc(100% - 300px)" }}>
+        {/* {Math.ceil(cars.length / itemsPerPage) > 1 && (
+          <PaginationButtons
+            value={activePage}
+            handlePageChange={handlePageChange}
+            total={total}
+          />
+        )} */}
+        {visibleCars.length === 0 ? (
+          <NoCarsFound />
+        ) : (
+          <Flex wrap="wrap" justify="space-between" gap="md">
+            {visibleCars?.map((car) => (
+              <CarCard key={car.slug} car={car} />
+            ))}
+          </Flex>
+        )}
+        <Space my={8} />
+        {Math.ceil(cars.length / itemsPerPage) > 1 && (
           <PaginationButtons
             value={activePage}
             handlePageChange={handlePageChange}
             total={total}
           />
         )}
-      </Center>
-      {visibleCars.length === 0 ? (
-        <NoCarsFound />
-      ) : (
-        <Flex wrap="wrap" justify="space-between" gap="md">
-          {visibleCars?.map((car) => (
-            <CarCard key={car.slug} car={car} />
-          ))}
-        </Flex>
-      )}
-      <Space my={8} />
-      {visibleCars.length > itemsPerPage && (
-        <PaginationButtons
-          value={activePage}
-          handlePageChange={handlePageChange}
-          total={total}
-        />
-      )}
-    </Box>
+      </Box>
+    </>
   );
 };
