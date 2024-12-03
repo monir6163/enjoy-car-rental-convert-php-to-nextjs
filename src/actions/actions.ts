@@ -4,7 +4,9 @@ import prisma from "../prisma";
 
 export async function getAllCountriesAsync(): Promise<CountryGetAllType[]> {
   try {
-    const countries = await prisma.country.findMany();
+    const countries = await prisma.country.findMany({
+      where: { status: "active" },
+    });
 
     return countries as CountryGetAllType[];
   } catch (error) {
@@ -19,6 +21,7 @@ export async function getAllRegionsAsync(
     const regions = await prisma.region.findMany({
       where: {
         countryId: countryId ? countryId : undefined,
+        status: "active",
       },
     });
     // console.log(countryId);

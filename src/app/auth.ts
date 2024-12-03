@@ -66,6 +66,11 @@ export const authOptions: NextAuthOptions = {
         if (!user) {
           throw new Error("No user found");
         }
+        if (user && user?.status !== "active") {
+          throw new Error(
+            "User account is not active. Please contact support."
+          );
+        }
         const valid = await bcrypt.compare(credentials.password, user.password);
         if (!valid) {
           throw new Error("Incorrect password");
