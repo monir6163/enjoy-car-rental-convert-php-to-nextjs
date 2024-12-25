@@ -138,7 +138,7 @@ export default function BookingDetails({ carDetails, user }: any) {
           <Box mt="sm">
             <SelectTime
               value={time}
-              onChange={(e) => setTime(e.target.value)}
+              onChange={(e) => setTime(e)}
               label="Time"
             />
           </Box>

@@ -29,9 +29,10 @@ export default function ProviderList({ allProviders }: ProviderListProps) {
     const res = await updateStatus(id, active, userId, status);
     if (res.error) {
       toast.error(res.error);
+    } else {
+      refresh();
+      toast.success(res.message || "Status updated successfully");
     }
-    refresh();
-    toast.success(res.message || "Status updated successfully");
   };
 
   const openModal = (provider: any) => {
@@ -43,9 +44,10 @@ export default function ProviderList({ allProviders }: ProviderListProps) {
     const res = await deleteProvider(id, userId);
     if (res.error) {
       toast.error(res.error);
+    } else {
+      refresh();
+      toast.success(res.message || "Provider deleted successfully");
     }
-    refresh();
-    toast.success(res.message || "Provider deleted successfully");
   };
 
   const rows = allProviders?.map((p: any, i: number) => (

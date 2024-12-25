@@ -160,8 +160,9 @@ export const TableRow = ({
 
     if (res?.status === "success") {
       setIsUpdating(false);
-      toast.success("Booking status updated successfully");
       refresh();
+      console.log("res", res);
+      toast.success("Booking status updated successfully");
     } else {
       setIsUpdating(false);
       toast.error("Failed to update booking status");

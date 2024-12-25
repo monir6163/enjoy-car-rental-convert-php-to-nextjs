@@ -43,7 +43,7 @@ export default function CompanyDetails({
     console.log(value);
     setCompanyDetails((prev) => ({ ...prev, [key]: value }));
   };
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  // window.scrollTo({ top: 0, behavior: "smooth" });
   const isEditMode = mode != null && mode === "edit";
   const handleNext = () => {
     const {

@@ -4,6 +4,7 @@ import { useAppContext } from "@/context/AppContext";
 import { useCountries } from "@/hooks/useCountries";
 import { useRegions } from "@/hooks/useRegions";
 import { carMakes } from "@/lib/data";
+import Toast from "@/lib/Toast";
 import {
   getDefaultSelectedCountry,
   getDefaultSelectedRegion,
@@ -100,6 +101,7 @@ const CarReserveFrom = () => {
           zIndex={1000}
           overlayProps={{ radius: "sm", blur: 2 }}
         />
+        <Toast />
         <div className="">
           <h2 className="mb-5 font-bold text-3xl">Car Reservation</h2>
         </div>
@@ -121,7 +123,7 @@ const CarReserveFrom = () => {
           />
           <DatePicker />
 
-          <SelectTime value={time} onChange={(e) => setTime(e.target.value)} />
+          <SelectTime value={time} onChange={(e) => setTime(e)} />
           <div className="buttons">
             <Button
               type="submit"

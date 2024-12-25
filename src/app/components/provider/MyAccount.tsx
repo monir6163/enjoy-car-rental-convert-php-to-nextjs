@@ -2,7 +2,6 @@
 import { updateProviderAccount } from "@/actions/auth";
 import { primaryGradient } from "@/const";
 import {
-  ActionIcon,
   Box,
   Button,
   Divider,
@@ -13,11 +12,10 @@ import {
   Text,
   Title,
 } from "@mantine/core";
-import { signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
-import { BiLogOutCircle } from "react-icons/bi";
 import { IReqProviderProps } from "../../../../types";
 import ProviderCompanyDetails from "./ProviderAccount";
 const initialState: Partial<IReqProviderProps> = {
@@ -60,11 +58,6 @@ export default function MyAccount({ user, providerDetails }: any) {
       setIsUpdating(false);
     }
   };
-  const handleSignOut = async () => {
-    await signOut({ redirect: false });
-    toast.success("Logged out successfully");
-    refresh();
-  };
 
   useEffect(() => {
     setDetails((prevState) => ({
@@ -76,24 +69,6 @@ export default function MyAccount({ user, providerDetails }: any) {
   return (
     <>
       <Toaster />
-      <Flex justify="flex-end" align="center">
-        <ActionIcon
-          onClick={handleSignOut}
-          color="red"
-          style={{ cursor: "pointer", width: "fit-content" }}
-        >
-          <BiLogOutCircle size="1.2rem" />
-
-          <Text
-            size="sm"
-            mx="xs"
-            className="text-muted"
-            style={{ cursor: "pointer" }}
-          >
-            Log out
-          </Text>
-        </ActionIcon>
-      </Flex>
 
       <ProviderCompanyDetails
         mode="edit"

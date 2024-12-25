@@ -48,6 +48,12 @@ export const getAllProvider = async () => {
             name: true,
           },
         },
+        Car: {
+          select: {
+            id: true,
+            status: true,
+          },
+        },
       },
       orderBy: { createdAt: "desc" },
     });
@@ -65,17 +71,15 @@ export const updateStatus = async (
   status: string
 ) => {
   try {
-    // const updateStatus = await prisma.user.update({
-    //   where: { id: userId },
-    //   data: { status: status },
-    // });
-    // if (updateStatus) {
-    //   await prisma.provider.update({
-    //     where: { id: id },
-    //     data: { active: active === "true" ? true : false },
-    //   });
-    // }
+    // Check if the provider has any pending bookings
+    const checkCar = await prisma.car.findFirst({
+      where: { providerId: id, status: { in: ["pending", "booked"] } },
+    });
+    if (checkCar) {
+      return { error: "Provider has pending or bookings", statusCode: 400 };
+    }
 
+    // Update user, provider, and cars in a transaction
     await prisma.$transaction([
       prisma.user.update({
         where: { id: userId },
@@ -83,7 +87,7 @@ export const updateStatus = async (
       }),
       prisma.provider.update({
         where: { id: id },
-        data: { active: active === "true" ? true : false },
+        data: { active: active === "true" },
       }),
       prisma.car.updateMany({
         where: { providerId: id },
@@ -91,15 +95,27 @@ export const updateStatus = async (
       }),
     ]);
 
-    return { status: true, message: "Status updated successfully" };
+    return {
+      status: true,
+      message: "Status updated successfully",
+      statusCode: 200,
+    };
   } catch (error) {
-    return { error: "Faield update status admin" };
+    console.error("Error updating status:", error);
+    return { error: "Failed to update status", statusCode: 500 };
   }
 };
 
 // delete provider from database by id and userId from provider and user table respectively
 export const deleteProvider = async (id: string, userId: string) => {
   try {
+    // Check if the provider has any pending bookings
+    const checkCar = await prisma.car.findFirst({
+      where: { providerId: id, status: { in: ["pending", "booked"] } },
+    });
+    if (checkCar) {
+      return { error: "Provider has pending or bookings", statusCode: 400 };
+    }
     await prisma.$transaction([
       prisma.provider.delete({ where: { id: id } }),
       prisma.user.delete({ where: { id: userId } }),
@@ -132,6 +148,13 @@ export const getAllCountry = async () => {
 // update status of country status column in database
 export const updateCountryStatus = async (id: string, status: string) => {
   try {
+    // Check if the countryid has any pending bookings
+    const checkCar = await prisma.car.findFirst({
+      where: { countryId: id, status: { in: ["pending", "booked"] } },
+    });
+    if (checkCar) {
+      return { error: "Provider has pending or bookings", statusCode: 400 };
+    }
     await prisma.$transaction([
       prisma.country.update({
         where: { id: id },
@@ -151,6 +174,13 @@ export const updateCountryStatus = async (id: string, status: string) => {
 // delete country from database by id
 export const deleteCountry = async (id: string) => {
   try {
+    // Check if the countryid has any pending bookings
+    const checkCar = await prisma.car.findFirst({
+      where: { countryId: id, status: { in: ["pending", "booked"] } },
+    });
+    if (checkCar) {
+      return { error: "Provider has pending or bookings", statusCode: 400 };
+    }
     // await prisma.$transaction([
     //   prisma.country.delete({ where: { id: id } }),
     //   prisma.region.deleteMany({ where: { countryId: id } }),
@@ -188,6 +218,13 @@ export const getAllRegion = async (countryId: string) => {
 // update status of region status column in database
 export const updateRegionStatus = async (id: string, status: string) => {
   try {
+    // Check if the countryid has any pending bookings
+    const checkCar = await prisma.car.findFirst({
+      where: { regionId: id, status: { in: ["pending", "booked"] } },
+    });
+    if (checkCar) {
+      return { error: "Provider has pending or bookings", statusCode: 400 };
+    }
     await prisma.region.update({
       where: { id: id },
       data: { status: status },

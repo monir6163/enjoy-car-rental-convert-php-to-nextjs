@@ -84,8 +84,6 @@ export function AddOrEditCar({
     updateProperty("otherFeatures", features);
   };
 
-  console.log("carDetails", carDetails);
-
   //handle Add New Car
   const handleAddNewCar = async () => {
     setIsSubmitting(true);

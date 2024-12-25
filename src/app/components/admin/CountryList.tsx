@@ -15,18 +15,20 @@ export default function CountryList({ countries }: any) {
     const res = await updateCountryStatus(id, status);
     if (res.error) {
       toast.error(res.error);
+    } else {
+      refresh();
+      toast.success(res.message || "Country status updated successfully");
     }
-    refresh();
-    toast.success(res.message || "Status updated successfully");
   };
 
   const handleDelete = async (id: string) => {
     const res = await deleteCountry(id);
     if (res.error) {
       toast.error(res.error);
+    } else {
+      refresh();
+      toast.success(res.message || "Country deleted successfully");
     }
-    refresh();
-    toast.success(res.message || "Country deleted successfully");
   };
 
   const rows = countries?.map((p: any, i: number) => (

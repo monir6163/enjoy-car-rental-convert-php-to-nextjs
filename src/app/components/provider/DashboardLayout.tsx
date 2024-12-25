@@ -1,5 +1,6 @@
 "use client";
 import {
+  ActionIcon,
   AppShell,
   Avatar,
   Burger,
@@ -16,8 +17,13 @@ import {
   IconPlus,
   IconUser,
 } from "@tabler/icons-react";
+import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { ReactNode, useState } from "react";
+import toast from "react-hot-toast";
+import { BiLogOutCircle } from "react-icons/bi";
 import { MainLink } from "./MainLink";
+import Notification from "./Notification";
 
 interface DashboardProps {
   children: ReactNode;
@@ -64,6 +70,12 @@ export default function DashboardLayout({
 }: DashboardProps) {
   const [opened, setOpened] = useState(false);
   const theme = useMantineTheme();
+  const { refresh } = useRouter();
+  const handleSignOut = async () => {
+    await signOut({ redirect: false });
+    toast.success("Logged out successfully");
+    refresh();
+  };
   return (
     <>
       <AppShell
@@ -93,8 +105,26 @@ export default function DashboardLayout({
                 </Text>
               </Flex>
             </Flex>
-
+            <Notification />
             {/* <ThemeSwitcher /> */}
+            <Flex justify="flex-end" align="center">
+              <ActionIcon
+                onClick={handleSignOut}
+                color="red"
+                style={{ cursor: "pointer", width: "fit-content" }}
+              >
+                <BiLogOutCircle size="1.2rem" />
+
+                <Text
+                  size="sm"
+                  mx="xs"
+                  className="text-muted"
+                  style={{ cursor: "pointer" }}
+                >
+                  Log out
+                </Text>
+              </ActionIcon>
+            </Flex>
           </Flex>
         </AppShell.Header>
 

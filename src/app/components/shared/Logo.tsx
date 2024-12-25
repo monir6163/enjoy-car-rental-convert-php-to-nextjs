@@ -10,7 +10,7 @@ const Logo = ({ className }: LogoProps) => {
     <Link
       href="/"
       className={cn(
-        "inline-flex text-[40px] font-bold text-gray-800 cursor-pointer uppercase",
+        "inline-flex items-center text-[40px] font-bold text-gray-800 cursor-pointer uppercase",
         className
       )}
     >
@@ -18,9 +18,10 @@ const Logo = ({ className }: LogoProps) => {
         alt="Logo"
         width={180}
         height={180}
-        className="mr-1 bg-slate-800 p-1 rounded-full"
-        src="/images/googamanialogopng.png"
+        className="mr-1 w-14 h-14"
+        src="/images/mini-car.gif"
       />
+      <span className="text-2xl">Car Rental</span>
     </Link>
   );
 };

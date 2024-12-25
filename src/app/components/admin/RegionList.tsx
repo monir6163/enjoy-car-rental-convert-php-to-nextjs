@@ -15,18 +15,20 @@ export default function RegionList({ regions }: any) {
     const res = await updateRegionStatus(id, status);
     if (res.error) {
       toast.error(res.error);
+    } else {
+      refresh();
+      toast.success(res.message || "Status updated successfully");
     }
-    refresh();
-    toast.success(res.message || "Status updated successfully");
   };
 
   const handleDelete = async (id: string) => {
     const res = await deleteRegion(id);
     if (res.error) {
       toast.error(res.error);
+    } else {
+      refresh();
+      toast.success(res.message || "Region deleted successfully");
     }
-    refresh();
-    toast.success(res.message || "Region deleted successfully");
   };
 
   const rows = regions?.map((p: any, i: number) => (

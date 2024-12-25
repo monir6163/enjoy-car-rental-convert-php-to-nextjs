@@ -190,13 +190,23 @@ export const updateProviderCar = async (carDetails: IReqCarProps) => {
 //status update provider car
 export const updateCarStatus = async (carId: number, status: string) => {
   try {
+    // Check rentalTime and hOrday
+    const carInfo = await prisma.booking.findFirst({
+      where: { carId: carId },
+      select: { rentalTime: true, hOrday: true, status: true },
+    });
+
+    // carInfo { rentalTime: '11:59', hOrday: '1d' }
+
+    // ========================
     const car = await prisma.car.update({
       where: { id: carId },
       data: { status: status },
     });
+
     return { data: car, message: "Car status updated successfully" };
   } catch (error) {
-    console.log("Error:", error);
+    console.error("Error:", error);
     return { error: "Failed to update car status" };
   }
 };

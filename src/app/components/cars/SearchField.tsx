@@ -156,7 +156,9 @@ export const SearchEngine = () => {
 
         <SelectTime
           value={time}
-          onChange={(e) => setTime(e.currentTarget.value)}
+          onChange={(e) => {
+            setTime(e);
+          }}
         />
         <Button
           type="submit"

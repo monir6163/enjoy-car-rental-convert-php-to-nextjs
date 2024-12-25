@@ -1,4 +1,5 @@
 import { getProviderDetails } from "@/actions/auth";
+import { carTypeStatics, prodiverStatics } from "@/actions/statics";
 import { authOptions } from "@/app/auth";
 import { CarStats } from "@/app/components/provider/CarStats";
 import DashboardLayout from "@/app/components/provider/DashboardLayout";
@@ -23,35 +24,43 @@ export default async function page() {
   };
   if (!getSession || user?.role !== "provider") return redirect("/login");
   const providerDetails = await getProviderDetails(user?.id);
-
+  // console.log(providerDetails?.Provider[0]?.id);
+  const { totalBooking, totalCar, totalReview, totalUser } =
+    await prodiverStatics(providerDetails?.Provider[0]?.id);
+  const carType = await carTypeStatics(providerDetails?.Provider[0]?.id);
   const data = [
     {
-      title: "Requests",
+      title: "Booking",
       icon: <IconAlertCircle />,
-      value: "0",
+      value: totalBooking?.toString(),
     },
     {
       title: "Total Cars",
       icon: <IconCar />,
-      value: "0",
+      value: totalCar?.toString(),
     },
 
     {
       title: "Total Reviews",
       icon: <IconMessage2 />,
-      value: "0",
+      value: totalReview?.toString(),
     },
 
     {
       title: "My Users",
       icon: <IconUsers />,
-      value: "0",
+      value: totalUser?.userId?.toString(),
     },
   ];
+  //car type
+  const dataCar = Object?.entries(carType?.carType)?.map(([label, value]) => ({
+    label,
+    value,
+  }));
   return (
     <DashboardLayout user={user} providerDetails={providerDetails}>
       <Stats data={data} />
-      <CarStats />
+      <CarStats dataCar={dataCar} />
     </DashboardLayout>
   );
 }
