@@ -58,24 +58,24 @@ const data = [
     endpoint: "/dashboard/all-country",
   },
 
-  {
-    icon: <IconMessage size="1rem" />,
-    color: "orange",
-    label: "Pages",
-    endpoint: "/dashboard/pages-list",
-  },
-  {
-    icon: <IconMessage size="1rem" />,
-    color: "blue",
-    label: "Blog",
-    endpoint: "/dashboard/blog-list",
-  },
-  {
-    icon: <IconSettings size="1rem" />,
-    color: "cyan",
-    label: "Website Settings",
-    endpoint: "/dashboard/website-settings",
-  },
+  // {
+  //   icon: <IconMessage size="1rem" />,
+  //   color: "orange",
+  //   label: "Pages",
+  //   endpoint: "/dashboard/pages-list",
+  // },
+  // {
+  //   icon: <IconMessage size="1rem" />,
+  //   color: "blue",
+  //   label: "Blog",
+  //   endpoint: "/dashboard/blog-list",
+  // },
+  // {
+  //   icon: <IconSettings size="1rem" />,
+  //   color: "cyan",
+  //   label: "Website Settings",
+  //   endpoint: "/dashboard/website-settings",
+  // },
 ];
 export default function AdminDashboard({
   children,
