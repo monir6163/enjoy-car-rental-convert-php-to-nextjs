@@ -43,3 +43,17 @@ export const carTypeStatics = async (providerId: any) => {
     return { error: error.message, statusCode: 500 };
   }
 };
+
+// admin statics
+// admin statics
+export const adminStatics = async ()=>{
+  try {
+    const totalBooking = await prisma.booking.count();
+    const totalCar = await prisma.car.count();
+    const totalReview = await prisma.review.count();
+    const totalUser = await prisma.booking.count();
+    return { totalBooking, totalCar, totalReview, totalUser, statusCode: 200 };
+  } catch (error:any) {
+    return { error: error.message, statusCode: 500 };
+  }
+}

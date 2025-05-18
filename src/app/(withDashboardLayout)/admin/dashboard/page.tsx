@@ -3,6 +3,14 @@ import { authOptions } from "@/app/auth";
 import AdminDashboard from "@/app/components/admin/AdminDashboard";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
+import {
+  IconAlertCircle,
+  IconCar,
+  IconMessage2,
+  IconUsers,
+} from "@tabler/icons-react";
+import AdminStats from "@/app/components/admin/Stats";
+import { adminStatics } from "@/actions/statics";
 
 export default async function page() {
   const getSession = await getServerSession(authOptions);
@@ -16,10 +24,35 @@ export default async function page() {
   if (!getSession || user?.role !== "admin") {
     return redirect("/login");
   }
-  const admin = await getAdminDetails(user.id);
+  const admin = await getAdminDetails(user?.id);
+  const {totalBooking,totalCar,totalReview,totalUser} = await adminStatics();
+  const data = [
+    {
+      title: "Booking",
+      icon: <IconAlertCircle />,
+      value: totalBooking?.toString(),
+    },
+    {
+      title: "Total Cars",
+      icon: <IconCar />,
+      value: totalCar?.toString(),
+    },
+
+    {
+      title: "Total Reviews",
+      icon: <IconMessage2 />,
+      value: totalReview?.toString(),
+    },
+
+    {
+      title: "My Users",
+      icon: <IconUsers />,
+      value: totalUser?.toString(),
+    },
+  ];
   return (
     <AdminDashboard adminDetails={admin} user={user}>
-      <h1>Work In Progress website setting...</h1>
+      <AdminStats data={data}/>
     </AdminDashboard>
   );
 }
