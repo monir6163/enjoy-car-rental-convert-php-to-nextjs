@@ -77,7 +77,12 @@ export const authOptions: NextAuthOptions = {
         }
         if (user && !user.emailVerified) {
           const token = await generateVerificationToken(user?.email);
-          await sendMail(user?.email, "Verify your email", token.token);
+          await sendMail(
+            user?.email,
+            "Verify your email",
+            token.token,
+            "verify"
+          );
           throw new Error(
             "User email not verified. A new verification email has been sent."
           );

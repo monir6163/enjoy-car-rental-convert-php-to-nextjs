@@ -30,7 +30,12 @@ export const signUpWithCredentials = async (
     if (userExists && !userExists.emailVerified) {
       // Generate the email verification token
       const token = await generateVerificationToken(userExists?.email);
-      await sendMail(userExists?.email, "Verify your email", token.token);
+      await sendMail(
+        userExists?.email,
+        "Verify your email",
+        token.token,
+        "verify"
+      );
       return {
         error:
           "Provider is already registered but not verified. A new verification email has been sent.",
@@ -68,7 +73,12 @@ export const signUpWithCredentials = async (
       });
       // Generate the email verification token
       const token = await generateVerificationToken(email.toLowerCase());
-      await sendMail(email.toLowerCase(), "Verify your email", token.token);
+      await sendMail(
+        email.toLowerCase(),
+        "Verify your email",
+        token.token,
+        "verify"
+      );
     }
     // revalidatePath("/provider");
     return {
@@ -103,7 +113,12 @@ export const signUpUserWithCredentials = async (
     if (userExists && !userExists.emailVerified) {
       // Generate the email verification token
       const token = await generateVerificationToken(userExists?.email);
-      await sendMail(userExists?.email, "Verify your email", token.token);
+      await sendMail(
+        userExists?.email,
+        "Verify your email",
+        token.token,
+        "verify"
+      );
       return {
         error:
           "User is already registered but not verified. A new verification email has been sent.",
@@ -120,7 +135,12 @@ export const signUpUserWithCredentials = async (
 
     // Generate the email verification token
     const token = await generateVerificationToken(email.toLowerCase());
-    await sendMail(email.toLowerCase(), "Verify your email", token.token);
+    await sendMail(
+      email.toLowerCase(),
+      "Verify your email",
+      token.token,
+      "verify"
+    );
 
     return {
       status: "success",
@@ -466,4 +486,88 @@ export const updateProviderBookingStatus = async (
     console.log("Error in updateProviderBookingStatus:", error);
     return { error: "Failed to update booking status" };
   }
+};
+
+// forgot password link send email
+export const forgotPassword = async (email: string) => {
+  const checkEmail = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (!checkEmail) {
+    return {
+      error: "Email not found",
+      status: 404,
+    };
+  }
+  const token = await prisma.verificationToken.create({
+    data: {
+      email: email,
+      token: Math.floor(100000 + Math.random() * 900000).toString(),
+      expires: new Date(Date.now() + 5 * 60 * 1000), // 5 minutes
+    },
+  });
+
+  // send email
+  await sendMail(email, "Forgot password token", token.token, "reset");
+
+  return {
+    success: "Email sent",
+    status: 200,
+  };
+};
+
+// verfify token
+export const verifyToken = async (token: string) => {
+  const checkToken = await prisma.verificationToken.findFirst({
+    where: {
+      token: token,
+    },
+  });
+  if (!checkToken) {
+    return {
+      error: "Invalid token",
+      status: 404,
+    };
+  }
+  if (checkToken.expires < new Date()) {
+    return {
+      error: "Token expired",
+      status: 400,
+    };
+  }
+  return {
+    success: "Token verified",
+    status: 200,
+  };
+};
+// reset password
+export const resetPassword = async (email: string, newpassword: string) => {
+  const checkEmail = await prisma.user.findUnique({
+    where: {
+      email: email,
+    },
+  });
+  if (!checkEmail) {
+    return {
+      error: "Email not found",
+      status: 404,
+    };
+  }
+  const hashedPassword = await bcrypt.hash(newpassword, 10);
+  const updatePass = await prisma.user.update({
+    where: {
+      email: email,
+    },
+    data: {
+      password: hashedPassword,
+    },
+  });
+  // send email
+  // await sendMail(email, "Forgot password token", token.token, "reset");
+  return {
+    success: "Password Reset successfully",
+    status: 200,
+  };
 };

@@ -16,14 +16,24 @@ const transporter = nodemailer.createTransport({
 export const sendMail = async (
   email: string,
   subject: string,
-  token: string
+  token: string,
+  mode: "verify" | "reset"
 ) => {
   const confirmationLink = `${domain}/verify-email?token=${token}`;
   const mailOptions = {
     from: "<onboardin@gmail.com>",
     to: email,
     subject: subject,
-    html: `<p>Click <a href="${confirmationLink}">here</a> to verify your email.</p>`,
+    html: `${
+      mode === "reset"
+        ? `
+      <p>Your Reset Password Token is: ${token}</p>
+    `
+        : `
+      <p>Click the link below to verify your email:</p>
+      <a href="${confirmationLink}">Verify Email</a>
+    `
+    }`,
   };
   try {
     await transporter.sendMail(mailOptions);
