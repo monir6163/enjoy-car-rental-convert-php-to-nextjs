@@ -30,19 +30,19 @@ export default function Navbar() {
                 <Link href="/" className="flex items-center space-x-2">
                   <MapPin size={24} className="text-red-500" />{" "}
                   <span className="text-white font-medium text-base">
-                    Fieldcrest Rd 660 Avery Creek, NY 10301, USA
+                    Mirpur, Dhaka, Bangladesh
                   </span>
                 </Link>
                 <Link href="/" className="flex items-center space-x-2">
                   <Mail size={24} className="text-red-500" />{" "}
                   <span className="text-white font-medium text-base">
-                    info@googamania.com
+                    info@enjoycarrental.com
                   </span>
                 </Link>
                 <Link href="/" className="flex items-center space-x-2">
                   <PhoneCall size={24} className="text-red-500" />{" "}
                   <span className="text-white font-medium text-base">
-                    (646) 893-6694
+                    +8801747706163
                   </span>
                 </Link>
               </div>

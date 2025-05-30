@@ -19,12 +19,12 @@ export default function Footer() {
         <div className={styles.footer}>
           <div className={styles.footer_left}>
             <Logo />
-            <p className="text-base mt-4 text-justify">
+            <p className="mt-4 text-justify">
               Enjoy Rent a Car offers you a safe and reliable car rental service
               with and without a driver. We have been operating in the territory
               of Montenegro for 5 years, with more than 3000 satisfied clients.
             </p>
-            <p className="text-sm mt-4 text-justify">
+            <p className="mt-4 text-justify">
               All our experiences and offers are created to make your
               unforgettable trip and everyday life in Montenegro easier, more
               comfortable, safer and faster with Enjoy Rent a Car.
@@ -36,7 +36,7 @@ export default function Footer() {
               <div className={styles.info}>
                 <Link href="" className="text-white flex gap-1">
                   <MapPin size={24} className="text-red-500" />
-                  Šuranj bb., 85330 Kotor, Montenegro
+                  Mirpur, Dhaka, Bangladesh
                 </Link>
                 <Link
                   href={`mailto:admin@admin.com`}
@@ -46,11 +46,11 @@ export default function Footer() {
                   info@enjoycarrental.com
                 </Link>
                 <Link
-                  href={`tel:+382 69 123 456`}
+                  href={`tel:+8801747706163`}
                   className="text-white flex gap-1"
                 >
                   <PhoneCall size={24} className="text-red-500" />
-                  +382 69 123 456
+                  +8801747706163
                 </Link>
               </div>
             </div>
@@ -91,9 +91,9 @@ export default function Footer() {
         </div>
         <div className={styles.copyright}>
           <p className="text-center text-white text-base">
-            &copy; 2024 -{" "}
+            &copy; {new Date().getFullYear()} -{" "}
             <Link href={"/"} className="text-red-600 hover:underline">
-              Monir Hossain
+              Team SDP4
             </Link>{" "}
             - {"  "}
             All rights reserved
